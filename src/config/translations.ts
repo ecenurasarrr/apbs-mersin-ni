@@ -1,0 +1,153 @@
+export const translations = {
+  tr: {
+    navbar: {
+      title: "Akademik Personel Bilgi Sistemi",
+      profile: "Kullanıcı Bilgilerim",
+      logout: "Güvenli Çıkış",
+      akademik_calismalar: "Akademik Çalışmalar",
+      projeler_patentler: "Projeler & Patentler",
+      etkinlikler: "Etkinlikler",
+      arastirmalar: "Araştırmalar",
+      hakemlikler: "Hakemlikler",
+      oduller: "Ödüller",
+      islemler: "İşlemler",
+      faaliyet_raporu: "Faaliyet Raporu",
+      duyurular: "Duyurular"
+    },
+    menu: {
+      tezlerim: "Tezlerim",
+      yonetilen_tezler: "Yönetilen Tezler",
+      ogrenim_durumu: "Öğrenim Durumu",
+      akademik_gorevler: "Akademik Görevler",
+      bilimsel_gorevler: "Bilimsel Görevler",
+      idari_gorevler: "İdari Görevler",
+      yayinlar: "Yayınlar",
+      atiflar: "Atıflar",
+      kitaplar: "Kitaplar",
+      yabanci_dil: "Yabancı Dil",
+      yurtdisi_akademik_deneyim: "Yurtdışı Akademik Deneyim",
+      belge_sertifika: "Belge/Sertifika",
+      projeler: "Projeler",
+      patentler: "Patentler",
+      tasarimlar: "Tasarımlar",
+      bilimsel_toplantilar: "Bilimsel Toplantılar",
+      bilimsel_kuruluslara_uyelikler: "Bilimsel Kuruluşlara Üyelikler",
+      sanatsal_etkinlikler: "Sanatsal Etkinlikler",
+      doktora_sonrasi_arastirma: "Doktora Sonrası Araştırma",
+      misafir_arastirma: "Misafir Araştırma",
+      arastirma_yoksis: "Araştırma (Yöksis)"
+    },
+    dashboard: {
+      welcome: "Akademik Personel Bilgi Sistemi'ne Hoş Geldiniz",
+      description: "Tüm akademik çalışmalarınızı, projelerinizi, etkinlik ve ödüllerinizi bu platform üzerinden merkezi olarak görüntüleyebilir ve yönetebilirsiniz. Hızlı erişim için aşağıdaki kategorileri kullanabilirsiniz.",
+      taninma: "Tanınma"
+    },
+    common: {
+      home: "Ana Sayfa",
+      create: "Oluştur",
+      cancel: "İptal",
+      search: "Arama...",
+      options: "Seçenekler",
+      no_records: "Kayıt bulunamadı.",
+      back: "Geri Dön",
+      report_create: "Rapor Oluştur",
+      edit: "Düzenle",
+      delete: "Sil",
+      date: "Tarih",
+      year: "Yıl",
+      status: "Durum"
+    },
+    profile: {
+      title: "Kullanıcı Bilgileri",
+      tc: "T.C. Kimlik No",
+      birth: "Doğum Tarihi",
+      home_address: "Ev Adresi",
+      work_address: "İş Adresi",
+      gsm: "GSM",
+      email: "E-Mail",
+      other_email: "Diğer E-Mail",
+      url: "URL",
+      stats: "İstatistikler & Grafikler",
+      content: "Sunum / İstatistik İçeriği",
+      activity_table: "Faaliyet Puan Tablosu",
+      no_activity: "Faaliyet Puan Tablosu verileri henüz oluşturulmadı."
+    }
+  },
+  en: {
+    navbar: {
+      title: "Academic Personnel Information System",
+      profile: "My Profile",
+      logout: "Secure Logout",
+      akademik_calismalar: "Academic Studies",
+      projeler_patentler: "Projects & Patents",
+      etkinlikler: "Events",
+      arastirmalar: "Researches",
+      hakemlikler: "Peer Reviews",
+      oduller: "Awards",
+      islemler: "Operations",
+      faaliyet_raporu: "Activity Report",
+      duyurular: "Announcements"
+    },
+    menu: {
+      tezlerim: "My Theses",
+      yonetilen_tezler: "Supervised Theses",
+      ogrenim_durumu: "Education Status",
+      akademik_gorevler: "Academic Duties",
+      bilimsel_gorevler: "Scientific Duties",
+      idari_gorevler: "Administrative Duties",
+      yayinlar: "Publications",
+      atiflar: "Citations",
+      kitaplar: "Books",
+      yabanci_dil: "Foreign Languages",
+      yurtdisi_akademik_deneyim: "International Academic Experience",
+      belge_sertifika: "Documents/Certificates",
+      projeler: "Projects",
+      patentler: "Patents",
+      tasarimlar: "Designs",
+      bilimsel_toplantilar: "Scientific Meetings",
+      bilimsel_kuruluslara_uyelikler: "Scientific Association Memberships",
+      sanatsal_etkinlikler: "Artistic Events",
+      doktora_sonrasi_arastirma: "Post-Doctoral Research",
+      misafir_arastirma: "Visiting Research",
+      arastirma_yoksis: "Research (YÖKSİS)"
+    },
+    dashboard: {
+      welcome: "Welcome to the Academic Personnel Information System",
+      description: "You can centrally view and manage all your academic studies, projects, events, and awards through this platform. Use the categories below for quick access.",
+      taninma: "Recognition"
+    },
+    common: {
+      home: "Home",
+      create: "Create",
+      cancel: "Cancel",
+      search: "Search...",
+      options: "Options",
+      no_records: "No records found.",
+      back: "Go Back",
+      report_create: "Generate Report",
+      edit: "Edit",
+      delete: "Delete",
+      date: "Date",
+      year: "Year",
+      status: "Status"
+    },
+    profile: {
+      title: "User Information",
+      tc: "National ID",
+      birth: "Date of Birth",
+      home_address: "Home Address",
+      work_address: "Work Address",
+      gsm: "Mobile",
+      email: "E-Mail",
+      other_email: "Alternate E-Mail",
+      url: "URL",
+      stats: "Statistics & Charts",
+      content: "Presentation / Statistics Content",
+      activity_table: "Activity Score Table",
+      no_activity: "Activity Score Table data has not been generated yet."
+    }
+  }
+};
+
+export type Language = 'tr' | 'en';
+export type TranslationKey = keyof typeof translations.tr | string;

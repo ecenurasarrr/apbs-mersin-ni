@@ -1,0 +1,296 @@
+generator client {
+  provider   = "prisma-client-js"
+  engineType = "library"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id          Int       @id @default(autoincrement())
+  tcNo        String    @unique
+  fullName    String
+  title       String?
+  birthDate   DateTime?
+  homeAddress String?
+  workAddress String?
+  gsm         String?
+  email       String    @unique
+  otherEmail  String?
+  url         String?
+  password    String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  awards                    Award[]
+  peerReviews               PeerReview[]
+  theses                    Thesis[]
+  supervisedTheses          SupervisedThesis[]
+  educations                Education[]
+  academicDuties            AcademicDuty[]
+  scientificDuties          ScientificDuty[]
+  administrativeDuties      AdministrativeDuty[]
+  publications              Publication[]
+  citations                 Citation[]
+  books                     Book[]
+  foreignLanguages          ForeignLanguage[]
+  internationalExperiences  InternationalExperience[]
+  certificates              Certificate[]
+  projects                  Project[]
+  patents                   Patent[]
+  designs                   Design[]
+  scientificMeetings        ScientificMeeting[]
+  organizationMemberships   OrganizationMembership[]
+  artisticActivities        ArtisticActivity[]
+  postdoctoralResearches    PostdoctoralResearch[]
+  visitingResearches        VisitingResearch[]
+  yoksisResearches          YoksisResearch[]
+  announcements             Announcement[]
+}
+
+model Award {
+  id        Int      @id @default(autoincrement())
+  name      String
+  year      String
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model PeerReview {
+  id        Int      @id @default(autoincrement())
+  name      String
+  year      String
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Thesis {
+  id        Int      @id @default(autoincrement())
+  title     String
+  date      String
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model SupervisedThesis {
+  id        Int      @id @default(autoincrement())
+  title     String
+  student   String
+  date      String
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Education {
+  id        Int      @id @default(autoincrement())
+  title     String
+  date      String
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model AcademicDuty {
+  id        Int      @id @default(autoincrement())
+  title     String
+  date      String
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ScientificDuty {
+  id        Int      @id @default(autoincrement())
+  title     String
+  date      String
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model AdministrativeDuty {
+  id        Int      @id @default(autoincrement())
+  title     String
+  date      String
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Publication {
+  id        Int      @id @default(autoincrement())
+  title     String
+  date      String
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Citation {
+  id        Int      @id @default(autoincrement())
+  title     String
+  date      String
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Book {
+  id        Int      @id @default(autoincrement())
+  title     String
+  date      String
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ForeignLanguage {
+  id        Int      @id @default(autoincrement())
+  language  String
+  level     String
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model InternationalExperience {
+  id          Int      @id @default(autoincrement())
+  institution String
+  country     String
+  date        String
+  userId      Int
+  user        User     @relation(fields: [userId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Certificate {
+  id        Int      @id @default(autoincrement())
+  title     String
+  date      String
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Project {
+  id        Int      @id @default(autoincrement())
+  title     String
+  status    String
+  date      String
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Patent {
+  id        Int      @id @default(autoincrement())
+  title     String
+  number    String
+  date      String
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Design {
+  id        Int      @id @default(autoincrement())
+  title     String
+  date      String
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ScientificMeeting {
+  id        Int      @id @default(autoincrement())
+  title     String
+  date      String
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model OrganizationMembership {
+  id           Int      @id @default(autoincrement())
+  organization String
+  date         String
+  userId       Int
+  user         User     @relation(fields: [userId], references: [id])
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model ArtisticActivity {
+  id        Int      @id @default(autoincrement())
+  title     String
+  date      String
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model PostdoctoralResearch {
+  id          Int      @id @default(autoincrement())
+  title       String
+  institution String
+  date        String
+  userId      Int
+  user        User     @relation(fields: [userId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model VisitingResearch {
+  id          Int      @id @default(autoincrement())
+  title       String
+  institution String
+  date        String
+  userId      Int
+  user        User     @relation(fields: [userId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model YoksisResearch {
+  id        Int      @id @default(autoincrement())
+  title     String
+  date      String
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Announcement {
+  id        Int      @id @default(autoincrement())
+  title     String
+  date      String
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

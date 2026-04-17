@@ -1,0 +1,210 @@
+"use client";
+
+import { useState } from "react";
+import Link from "next/link";
+import { FileText, Home, ChevronRight, Loader2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { useLanguage } from "@/context/LanguageContext";
+
+const SECTIONS = [
+  { value: "tezlerim",                    label: "Tezlerim",                       api: "/api/akademik-calismalar/tezlerim" },
+  { value: "yonetilen-tezler",            label: "Yönetilen Tezler",               api: "/api/akademik-calismalar/yonetilen-tezler" },
+  { value: "ogrenim-durumu",              label: "Öğrenim Durumu",                 api: "/api/akademik-calismalar/ogrenim-durumu" },
+  { value: "akademik-gorevler",           label: "Akademik Görevler",              api: "/api/akademik-calismalar/akademik-gorevler" },
+  { value: "bilimsel-gorevler",           label: "Bilimsel Görevler",              api: "/api/akademik-calismalar/bilimsel-gorevler" },
+  { value: "idari-gorevler",              label: "İdari Görevler",                 api: "/api/akademik-calismalar/idari-gorevler" },
+  { value: "yayinlar",                    label: "Yayınlar",                       api: "/api/akademik-calismalar/yayinlar" },
+  { value: "atiflar",                     label: "Atıflar",                        api: "/api/akademik-calismalar/atiflar" },
+  { value: "kitaplar",                    label: "Kitaplar",                       api: "/api/akademik-calismalar/kitaplar" },
+  { value: "yabanci-dil",                 label: "Yabancı Dil",                    api: "/api/akademik-calismalar/yabanci-dil" },
+  { value: "yurtdisi",                    label: "Yurtdışı Akademik Deneyim",      api: "/api/akademik-calismalar/yurtdisi-akademik-deneyim" },
+  { value: "belge-sertifika",             label: "Belge/Sertifika",                api: "/api/akademik-calismalar/belge-sertifika" },
+  { value: "projeler",                    label: "Projeler",                       api: "/api/projeler-ve-patentler/projeler" },
+  { value: "patentler",                   label: "Patentler",                      api: "/api/projeler-ve-patentler/patentler" },
+  { value: "tasarimlar",                  label: "Tasarımlar",                     api: "/api/projeler-ve-patentler/tasarimlar" },
+  { value: "bilimsel-toplantilar",        label: "Bilimsel Toplantılar",           api: "/api/etkinlikler/bilimsel-toplantilar" },
+  { value: "uyelikler",                   label: "Bilimsel Kuruluş Üyelikleri",    api: "/api/etkinlikler/bilimsel-kuruluslara-uyelikler" },
+  { value: "sanatsal",                    label: "Sanatsal Etkinlikler",           api: "/api/etkinlikler/sanatsal-etkinlikler" },
+  { value: "doktora-sonrasi",             label: "Doktora Sonrası Araştırma",      api: "/api/arastirmalar/doktora-sonrasi" },
+  { value: "misafir",                     label: "Misafir Araştırma",              api: "/api/arastirmalar/misafir" },
+  { value: "yoksis",                      label: "Araştırma (YÖKSİS)",             api: "/api/arastirmalar/yoksis" },
+  { value: "hakemlikler",                 label: "Hakemlikler",                    api: "/api/hakemlikler" },
+  { value: "oduller",                     label: "Ödüller",                        api: "/api/oduller" },
+];
+
+export default function FaaliyetRaporuPage() {
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [selected, setSelected] = useState<string[]>(SECTIONS.map((s) => s.value));
+  const [generating, setGenerating] = useState(false);
+  const { t } = useLanguage();
+
+  const toggleSection = (value: string) => {
+    setSelected((prev) =>
+      prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value]
+    );
+  };
+
+  const handleGenerate = async () => {
+    setGenerating(true);
+    try {
+      const profile = await fetch("/api/profil").then((r) => r.json());
+      const chosenSections = SECTIONS.filter((s) => selected.includes(s.value));
+
+      const results = await Promise.all(
+        chosenSections.map(async (s) => {
+          const data = await fetch(s.api).then((r) => r.json());
+          return { label: s.label, data: Array.isArray(data) ? data : [] };
+        })
+      );
+
+      // Tarih filtresi
+      const filterByDate = (items: Record<string, string>[]) => {
+        if (!startDate && !endDate) return items;
+        return items.filter((item) => {
+          const d = item.date || item.year || "";
+          if (!d) return true;
+          const itemDate = d.length === 4 ? `${d}-01-01` : d;
+          if (startDate && itemDate < startDate) return false;
+          if (endDate && itemDate > endDate) return false;
+          return true;
+        });
+      };
+
+      const html = buildReportHtml(profile, results, filterByDate, startDate, endDate);
+      const blob = new Blob([html], { type: "text/html;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const win = window.open(url, "_blank");
+      if (win) win.focus();
+    } finally {
+      setGenerating(false);
+    }
+  };
+
+  return (
+    <div className="container mx-auto px-4 py-8 max-w-4xl">
+      <nav className="flex items-center text-sm text-muted-foreground mb-6">
+        <ol className="flex items-center space-x-2">
+          <li><Link href="/" className="hover:text-foreground flex items-center gap-1"><Home size={14} /> {t("common.home")}</Link></li>
+          <ChevronRight size={14} />
+          <li><span className="text-foreground font-medium">{t("navbar.islemler")}</span></li>
+          <ChevronRight size={14} />
+          <li><span className="text-foreground font-medium">{t("navbar.faaliyet_raporu")}</span></li>
+        </ol>
+      </nav>
+
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold tracking-tight mb-2">{t("navbar.faaliyet_raporu")}</h1>
+      </div>
+
+      <Card className="shadow-sm border-border">
+        <CardHeader className="bg-slate-50/50 border-b">
+          <CardTitle className="text-xl">Rapor Kriterleri</CardTitle>
+          <CardDescription>Raporunuza dahil edilecek zaman aralığını ve bölümleri seçin.</CardDescription>
+        </CardHeader>
+        <CardContent className="p-6 space-y-6">
+          {/* Tarih aralığı */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Başlangıç Tarihi</label>
+              <Input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Bitiş Tarihi</label>
+              <Input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
+            </div>
+          </div>
+
+          {/* Bölüm seçimi */}
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <label className="text-sm font-medium">Dahil Edilecek Bölümler</label>
+              <div className="flex gap-2">
+                <button onClick={() => setSelected(SECTIONS.map((s) => s.value))} className="text-xs text-blue-600 hover:underline">Tümünü Seç</button>
+                <span className="text-xs text-slate-300">|</span>
+                <button onClick={() => setSelected([])} className="text-xs text-slate-500 hover:underline">Temizle</button>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-2 border rounded-lg p-4 bg-slate-50/50">
+              {SECTIONS.map((s) => (
+                <label key={s.value} className="flex items-center gap-2 cursor-pointer text-sm hover:text-slate-900">
+                  <input
+                    type="checkbox"
+                    checked={selected.includes(s.value)}
+                    onChange={() => toggleSection(s.value)}
+                    className="w-4 h-4 rounded"
+                  />
+                  {s.label}
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <div className="pt-4 flex items-center justify-end border-t gap-2">
+            <Button variant="outline" type="button" onClick={() => window.history.back()}>{t("common.back")}</Button>
+            <Button onClick={handleGenerate} disabled={generating || selected.length === 0} className="gap-2 bg-emerald-600 hover:bg-emerald-700">
+              {generating ? <Loader2 size={16} className="animate-spin" /> : <FileText size={16} />}
+              {t("common.report_create")}
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+function buildReportHtml(
+  profile: Record<string, string>,
+  sections: { label: string; data: Record<string, string>[] }[],
+  filterByDate: (items: Record<string, string>[]) => Record<string, string>[],
+  startDate: string,
+  endDate: string
+) {
+  const name = profile?.fullName ?? "Akademisyen";
+  const dateRange = startDate || endDate
+    ? `${startDate ? new Date(startDate).toLocaleDateString("tr-TR") : "Başlangıç"} - ${endDate ? new Date(endDate).toLocaleDateString("tr-TR") : "Bugün"}`
+    : "Tüm Dönem";
+
+  const sectionsHtml = sections.map(({ label, data }) => {
+    const filtered = filterByDate(data);
+    if (filtered.length === 0) return `<h2>${label}</h2><p class="empty">Kayıt bulunamadı.</p>`;
+    const keys = Object.keys(filtered[0]).filter((k) => !["id", "userId", "createdAt", "updatedAt"].includes(k));
+    const rows = filtered.map((row) =>
+      `<tr>${keys.map((k) => `<td>${row[k] ?? "-"}</td>`).join("")}</tr>`
+    ).join("");
+    const headers = keys.map((k) => `<th>${k}</th>`).join("");
+    return `<h2>${label} <span class="count">(${filtered.length})</span></h2><table><thead><tr>${headers}</tr></thead><tbody>${rows}</tbody></table>`;
+  }).join("");
+
+  return `<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Faaliyet Raporu - ${name}</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 900px; margin: 30px auto; padding: 0 24px; color: #1e293b; font-size: 13px; }
+    .header { border-bottom: 3px solid #1E6B9B; padding-bottom: 12px; margin-bottom: 24px; }
+    .header h1 { color: #1E6B9B; margin: 0 0 4px; font-size: 20px; }
+    .header p { color: #64748b; margin: 0; font-size: 12px; }
+    h2 { color: #465362; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; margin: 24px 0 8px; border-left: 3px solid #1E6B9B; padding-left: 8px; }
+    .count { color: #94a3b8; font-weight: normal; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 8px; }
+    th { background: #f1f5f9; text-align: left; padding: 6px 10px; font-size: 11px; text-transform: uppercase; color: #64748b; }
+    td { padding: 6px 10px; border-bottom: 1px solid #f1f5f9; }
+    .empty { color: #94a3b8; font-style: italic; font-size: 12px; }
+    @media print { button { display: none; } }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Faaliyet Raporu — ${name}</h1>
+    <p>Dönem: ${dateRange} &nbsp;|&nbsp; Oluşturulma: ${new Date().toLocaleDateString("tr-TR")}</p>
+  </div>
+  ${sectionsHtml}
+  <br/>
+  <button onclick="window.print()" style="padding:8px 20px;background:#1E6B9B;color:white;border:none;border-radius:4px;cursor:pointer;">PDF olarak kaydet (Yazdır)</button>
+</body>
+</html>`;
+}
