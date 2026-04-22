@@ -1,3 +1,4 @@
+import { PrismaPg } from '@prisma/adapter-pg';
 import { PrismaClient } from '@prisma/client';
 
 const globalForPrisma = global as unknown as { prisma: PrismaClient };
@@ -9,10 +10,12 @@ const getDatabaseUrl = () => {
          '';
 };
 
+const adapter = new PrismaPg({ connectionString: getDatabaseUrl() });
+
 export const prisma =
   globalForPrisma.prisma ||
   new PrismaClient({
-    datasourceUrl: getDatabaseUrl(),
+    adapter,
     log: process.env.NODE_ENV === 'development' ? ['error'] : [],
   });
 
