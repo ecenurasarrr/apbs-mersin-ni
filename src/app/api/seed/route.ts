@@ -1,0 +1,22 @@
+import { NextResponse } from 'next/server';
+import { prisma } from '@/lib/prisma';
+
+// Bu endpoint sadece bir kez çalıştırılmalı, sonra silinmeli
+export async function GET() {
+  try {
+    const user = await prisma.user.upsert({
+      where: { tcNo: '18974099456' },
+      update: {},
+      create: {
+        tcNo: '18974099456',
+        fullName: 'Lis. Öğr. Ece Nur Aşar',
+        email: 'ecenurasar123@gmail.com',
+        title: 'Lisans Öğrencisi',
+      },
+    });
+    return NextResponse.json({ success: true, user: { id: user.id, tcNo: user.tcNo, fullName: user.fullName } });
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e);
+    return NextResponse.json({ error: msg }, { status: 500 });
+  }
+}
