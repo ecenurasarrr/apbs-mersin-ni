@@ -107,7 +107,7 @@ export default function GirisPage() {
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                     className="flex-1 px-3 py-2 rounded border border-slate-300 bg-white text-sm outline-none focus:border-[#3d8b8b] transition"
-                    autoComplete="off"
+                    autoComplete="new-password"
                     autoFocus
                   />
                   <span className="text-slate-500 text-sm px-1">@</span>
@@ -166,7 +166,7 @@ export default function GirisPage() {
                   value={misafirEmail}
                   onChange={(e) => setMisafirEmail(e.target.value)}
                   className="w-full px-3 py-2 rounded border border-slate-300 bg-white text-sm outline-none focus:border-[#3d8b8b] transition"
-                  autoComplete="off"
+                  autoComplete="new-password"
                   autoFocus
                 />
                 <div className="relative">
