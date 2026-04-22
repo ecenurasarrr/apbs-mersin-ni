@@ -6,15 +6,16 @@ export async function GET() {
   try {
     const user = await prisma.user.upsert({
       where: { tcNo: '18974099456' },
-      update: {},
+      update: { password: null },
       create: {
         tcNo: '18974099456',
         fullName: 'Lis. Öğr. Ece Nur Aşar',
         email: 'ecenurasar123@gmail.com',
         title: 'Lisans Öğrencisi',
+        password: null,
       },
     });
-    return NextResponse.json({ success: true, user: { id: user.id, tcNo: user.tcNo, fullName: user.fullName } });
+    return NextResponse.json({ success: true, message: 'Şifre sıfırlandı. Şimdi istediğin şifreyle giriş yapabilirsin.', user: { id: user.id, tcNo: user.tcNo } });
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e);
     return NextResponse.json({ error: msg }, { status: 500 });
