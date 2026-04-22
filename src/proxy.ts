@@ -4,7 +4,7 @@ import type { NextRequest } from 'next/server';
 const SESSION_COOKIE = 'apbs_session';
 
 // Bu rotalar giriş gerektirmez
-const PUBLIC_PATHS = ['/giris', '/api/auth/login', '/api/auth/logout'];
+const PUBLIC_PATHS = ['/giris', '/api/auth/login', '/api/auth/logout', '/api/seed'];
 
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
