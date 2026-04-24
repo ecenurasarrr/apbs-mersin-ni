@@ -38,9 +38,9 @@ export default function GirisPage() {
         body: JSON.stringify({ tcNo, password: kurPassword.trim() }),
       });
       const data = await res.json();
-      if (!res.ok) { setKurError(data.error || "Giriş başarısız."); return; }
-      router.push("/"); router.refresh();
-    } catch { setKurError("Sunucu hatası."); }
+      if (!res.ok) { setError(data.error || "Giriş başarısız."); return; }
+      window.location.href = "/";
+    } catch { setError("Sunucu hatası. Lütfen tekrar deneyin."); }
     finally { setKurLoading(false); }
   };
 
@@ -58,7 +58,7 @@ export default function GirisPage() {
       });
       const data = await res.json();
       if (!res.ok) { setMisafirError(data.error || "Giriş başarısız."); return; }
-      router.push("/"); router.refresh();
+      window.location.href = "/";
     } catch { setMisafirError("Sunucu hatası."); }
     finally { setMisafirLoading(false); }
   };
