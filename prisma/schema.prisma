@@ -20,6 +20,7 @@ model User {
   otherEmail  String?
   url         String?
   password    String?
+  role        String    @default("user") // "user" veya "admin"
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 

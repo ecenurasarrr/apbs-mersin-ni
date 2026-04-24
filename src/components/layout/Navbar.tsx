@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { User, LogOut, ChevronDown, FlaskConical, Settings, Award, Target, Calendar, CheckCircle, Trophy } from "lucide-react";
+import { User, LogOut, ChevronDown, FlaskConical, Settings, Award, Target, Calendar, CheckCircle, Trophy, Shield } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useLanguage } from "@/context/LanguageContext";
@@ -13,6 +13,7 @@ export function Navbar() {
   const router = useRouter();
   const [initials, setInitials] = useState("U");
   const [fullName, setFullName] = useState("");
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     fetch("/api/auth/me")
@@ -23,6 +24,7 @@ export function Navbar() {
           setInitials(
             user.fullName.split(" ").map((w: string) => w[0]).slice(0, 2).join("").toUpperCase()
           );
+          setIsAdmin(user.role === 'admin');
         }
       })
       .catch(() => {});
@@ -74,6 +76,12 @@ export function Navbar() {
             >
               <LogOut size={16} /> <span className="hidden sm:inline-block">{t('navbar.logout')}</span>
             </button>
+
+            {isAdmin && (
+              <Link href="/admin" className="hover:text-[#1E6B9B] transition-colors flex items-center gap-2">
+                <Shield size={16} /> <span className="hidden sm:inline-block">Admin</span>
+              </Link>
+            )}
 
             <Avatar className="cursor-pointer h-10 w-10 border-2 border-[#1E6B9B]/20">
               <AvatarFallback className="bg-[#1E6B9B] text-white font-semibold">{initials}</AvatarFallback>

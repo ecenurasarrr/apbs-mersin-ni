@@ -1,11 +1,12 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { getDefaultUser } from '@/lib/api-helpers';
+import { requireSessionUser } from '@/lib/api-helpers';
 
 export async function GET() {
   try {
-    const user = await getDefaultUser();
-    const uid = user.id;
+    const { user, error: authError } = await requireSessionUser();
+    if (authError) return authError;
+    const uid = user!.id;
 
     const [
       tezlerim, yonetilenTezler, yayinlar, kitaplar, atiflar,

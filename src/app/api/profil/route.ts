@@ -1,11 +1,12 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { getDefaultUser } from '@/lib/api-helpers';
+import { requireSessionUser } from '@/lib/api-helpers';
 
 export async function GET() {
   try {
-    const user = await getDefaultUser();
-    const full = await prisma.user.findUnique({ where: { id: user.id } });
+    const { user, error: authError } = await requireSessionUser();
+    if (authError) return authError;
+    const full = await prisma.user.findUnique({ where: { id: user!.id } });
     return NextResponse.json(full);
   } catch {
     return NextResponse.json({ error: 'Failed' }, { status: 500 });
@@ -15,9 +16,10 @@ export async function GET() {
 export async function PUT(req: Request) {
   try {
     const body = await req.json();
-    const user = await getDefaultUser();
+    const { user, error: authError } = await requireSessionUser();
+    if (authError) return authError;
     const updated = await prisma.user.update({
-      where: { id: user.id },
+      where: { id: user!.id },
       data: {
         fullName:    body.fullName    ?? undefined,
         title:       body.title       ?? undefined,

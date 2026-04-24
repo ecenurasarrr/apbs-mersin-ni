@@ -1,8 +1,9 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { getSession } from '@/lib/auth';
 
+// Geriye dönük uyumluluk için — yeni kodda getSessionUser kullan
 const DEFAULT_TC = '18974099456';
-
 export async function getDefaultUser() {
   return prisma.user.upsert({
     where: { tcNo: DEFAULT_TC },
@@ -13,6 +14,26 @@ export async function getDefaultUser() {
       email: 'ecenurasar123@gmail.com',
     },
   });
+}
+
+// Session'daki kullanıcıyı döner, yoksa null
+export async function getSessionUser() {
+  const session = await getSession();
+  if (!session) return null;
+  return prisma.user.findUnique({ where: { id: session.userId } });
+}
+
+// Session kullanıcısını döner, yoksa 401 response
+export async function requireSessionUser(): Promise<{ user: Awaited<ReturnType<typeof prisma.user.findUnique>>; error?: never } | { error: NextResponse; user?: never }> {
+  const session = await getSession();
+  if (!session) {
+    return { error: NextResponse.json({ error: 'Oturum bulunamadı.' }, { status: 401 }) };
+  }
+  const user = await prisma.user.findUnique({ where: { id: session.userId } });
+  if (!user) {
+    return { error: NextResponse.json({ error: 'Kullanıcı bulunamadı.' }, { status: 401 }) };
+  }
+  return { user };
 }
 
 export function getIdFromUrl(url: string): number | null {
