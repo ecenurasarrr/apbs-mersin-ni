@@ -16,6 +16,8 @@ model User {
   homeAddress String?
   workAddress String?
   gsm         String?
+  phone       String?
+  fax         String?
   email       String    @unique
   otherEmail  String?
   url         String?

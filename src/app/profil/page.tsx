@@ -12,7 +12,8 @@ import { useLanguage } from "@/context/LanguageContext";
 interface UserProfile {
   id: number; tcNo: string; fullName: string; title: string | null;
   birthDate: string | null; homeAddress: string | null; workAddress: string | null;
-  gsm: string | null; email: string; otherEmail: string | null; url: string | null;
+  gsm: string | null; phone: string | null; fax: string | null;
+  email: string; otherEmail: string | null; url: string | null;
 }
 
 interface StatItem { label: string; value: number; }
@@ -218,6 +219,8 @@ export default function ProfilePage() {
                 <Field label={t("profile.home_address")} field="homeAddress" />
                 <Field label={t("profile.work_address")} field="workAddress" />
                 <Field label={t("profile.gsm")} field="gsm" />
+                <Field label="Telefon" field="phone" />
+                <Field label="Faks" field="fax" />
                 <Field label={t("profile.email")} field="email" type="email" />
                 <Field label={t("profile.other_email")} field="otherEmail" type="email" />
                 <Field label={t("profile.url")} field="url" />

@@ -27,6 +27,8 @@ export async function PUT(req: Request) {
         homeAddress: body.homeAddress ?? undefined,
         workAddress: body.workAddress ?? undefined,
         gsm:         body.gsm         ?? undefined,
+        phone:       body.phone       ?? undefined,
+        fax:         body.fax         ?? undefined,
         email:       body.email       ?? undefined,
         otherEmail:  body.otherEmail  ?? undefined,
         url:         body.url         ?? undefined,

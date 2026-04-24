@@ -1,13 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { Loader2, Eye, EyeOff } from "lucide-react";
 
 type Step = "landing" | "kurumsal" | "misafir";
 
 export default function GirisPage() {
-  const router = useRouter();
   const [step, setStep] = useState<Step>("landing");
 
   // Kurumsal giriş
@@ -38,9 +36,9 @@ export default function GirisPage() {
         body: JSON.stringify({ tcNo, password: kurPassword.trim() }),
       });
       const data = await res.json();
-      if (!res.ok) { setError(data.error || "Giriş başarısız."); return; }
+      if (!res.ok) { setKurError(data.error || "Giriş başarısız."); return; }
       window.location.href = "/";
-    } catch { setError("Sunucu hatası. Lütfen tekrar deneyin."); }
+    } catch { setKurError("Sunucu hatası. Lütfen tekrar deneyin."); }
     finally { setKurLoading(false); }
   };
 
@@ -64,24 +62,24 @@ export default function GirisPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#3d5166]">
-      <div className="bg-[#eef1f5] rounded-lg shadow-xl w-full max-w-sm mx-4 overflow-hidden">
-        <div className="flex flex-col items-center pt-8 pb-6 px-8">
+    <div className="min-h-screen flex items-center justify-center bg-[#3d5166] px-4">
+      <div className="bg-[#eef1f5] rounded-lg shadow-xl w-full max-w-sm overflow-hidden">
+        <div className="flex flex-col items-center pt-8 pb-6 px-6 sm:px-8">
 
           {/* Logo */}
           <div className="mb-4">
-            <img src="/logo_tr.png" alt="Mersin Üniversitesi" className="w-[140px] h-[140px] object-contain" />
+            <img src="/logo_tr.png" alt="Mersin Üniversitesi" className="w-[120px] h-[120px] sm:w-[140px] sm:h-[140px] object-contain" />
           </div>
 
           {/* LANDING */}
           {step === "landing" && (
             <>
-              <h3 className="text-center text-[#3d8b8b] font-semibold text-base leading-snug mb-6">
+              <h3 className="text-center text-[#3d8b8b] font-semibold text-sm sm:text-base leading-snug mb-6">
                 Mersin Üniversitesi<br />Akademik Personel Bilgi Sistemi
               </h3>
               <button
                 onClick={() => setStep("kurumsal")}
-                className="w-full bg-[#3d8b8b] hover:bg-[#2e7070] text-white font-bold uppercase py-3 rounded transition-colors tracking-widest text-sm mb-4"
+                className="w-full bg-[#3d8b8b] hover:bg-[#2e7070] active:bg-[#256060] text-white font-bold uppercase py-3 rounded transition-colors tracking-widest text-sm mb-4"
               >
                 Oturum Aç
               </button>
@@ -106,15 +104,15 @@ export default function GirisPage() {
                     placeholder="Kullanıcı Adı"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
-                    className="flex-1 px-3 py-2 rounded border border-slate-300 bg-white text-sm outline-none focus:border-[#3d8b8b] transition"
+                    className="flex-1 min-w-0 px-3 py-2 rounded border border-slate-300 bg-white text-sm outline-none focus:border-[#3d8b8b] transition"
                     autoComplete="new-password"
                     autoFocus
                   />
-                  <span className="text-slate-500 text-sm px-1">@</span>
+                  <span className="text-slate-500 text-sm px-1 shrink-0">@</span>
                   <select
                     value={domain}
                     onChange={(e) => setDomain(e.target.value)}
-                    className="px-2 py-2 rounded border border-slate-300 bg-white text-sm outline-none focus:border-[#3d8b8b] transition"
+                    className="shrink-0 px-1 py-2 rounded border border-slate-300 bg-white text-xs outline-none focus:border-[#3d8b8b] transition"
                   >
                     <option value="mersin.edu.tr">mersin.edu.tr</option>
                     <option value="ogr.mersin.edu.tr">ogr.mersin.edu.tr</option>
@@ -135,7 +133,7 @@ export default function GirisPage() {
                 <a href="#" className="block text-xs text-[#3d8b8b] hover:underline">Parola Değiştirme</a>
                 {kurError && <p className="text-red-600 text-xs bg-red-50 border border-red-200 rounded px-2 py-1">{kurError}</p>}
                 <button type="submit" disabled={kurLoading}
-                  className="w-full bg-[#3d8b8b] hover:bg-[#2e7070] disabled:opacity-60 text-white font-bold py-2.5 rounded transition-colors text-sm flex items-center justify-center gap-2">
+                  className="w-full bg-[#3d8b8b] hover:bg-[#2e7070] active:bg-[#256060] disabled:opacity-60 text-white font-bold py-2.5 rounded transition-colors text-sm flex items-center justify-center gap-2">
                   {kurLoading && <Loader2 size={15} className="animate-spin" />} Giriş Yap
                 </button>
                 <div className="text-xs text-slate-500 text-center pt-1">
@@ -156,7 +154,7 @@ export default function GirisPage() {
           {/* MİSAFİR GİRİŞ */}
           {step === "misafir" && (
             <>
-              <h3 className="text-center text-[#3d8b8b] font-semibold text-base leading-snug mb-4">
+              <h3 className="text-center text-[#3d8b8b] font-semibold text-sm sm:text-base leading-snug mb-4">
                 Misafir Öğretim Elemanları<br />için Giriş
               </h3>
               <form onSubmit={handleMisafir} className="w-full space-y-3">
@@ -183,7 +181,7 @@ export default function GirisPage() {
                 </div>
                 {misafirError && <p className="text-red-600 text-xs bg-red-50 border border-red-200 rounded px-2 py-1">{misafirError}</p>}
                 <button type="submit" disabled={misafirLoading}
-                  className="w-full bg-[#3d8b8b] hover:bg-[#2e7070] disabled:opacity-60 text-white font-bold py-2.5 rounded transition-colors text-sm flex items-center justify-center gap-2">
+                  className="w-full bg-[#3d8b8b] hover:bg-[#2e7070] active:bg-[#256060] disabled:opacity-60 text-white font-bold py-2.5 rounded transition-colors text-sm flex items-center justify-center gap-2">
                   {misafirLoading && <Loader2 size={15} className="animate-spin" />} Oturum Aç
                 </button>
                 <p className="text-xs text-slate-500 text-center">
