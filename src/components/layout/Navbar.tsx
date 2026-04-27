@@ -109,6 +109,7 @@ export function Navbar() {
                   [t("menu.bilimsel_gorevler"), "bilimsel-gorevler"],
                   [t("menu.idari_gorevler"), "idari-gorevler"],
                   [t("menu.yayinlar"), "yayinlar"],
+                  [t("menu.bildiriler"), "bildiriler"],
                   [t("menu.atiflar"), "atiflar"],
                   [t("menu.kitaplar"), "kitaplar"],
                   [t("menu.yabanci_dil"), "yabanci-dil"],

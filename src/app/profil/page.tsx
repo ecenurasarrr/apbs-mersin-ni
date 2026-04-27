@@ -24,6 +24,7 @@ interface Stats {
 
 const CV_SECTIONS = [
   { label: "Yayınlar", api: "/api/akademik-calismalar/yayinlar", keys: ["title", "date"] },
+  { label: "Bildiriler", api: "/api/akademik-calismalar/bildiriler", keys: ["title", "date"] },
   { label: "Kitaplar", api: "/api/akademik-calismalar/kitaplar", keys: ["title", "date"] },
   { label: "Atıflar", api: "/api/akademik-calismalar/atiflar", keys: ["title", "date"] },
   { label: "Tezlerim", api: "/api/akademik-calismalar/tezlerim", keys: ["title", "date"] },
