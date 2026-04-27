@@ -22,14 +22,39 @@ interface Stats {
   arastirmalar: StatItem[]; taninma: StatItem[]; toplam: number;
 }
 
-function buildCvHtml(title: string, lang: "tr" | "en", data: UserProfile) {
+const CV_SECTIONS = [
+  { label: "Yayınlar", api: "/api/akademik-calismalar/yayinlar", keys: ["title", "date"] },
+  { label: "Kitaplar", api: "/api/akademik-calismalar/kitaplar", keys: ["title", "date"] },
+  { label: "Atıflar", api: "/api/akademik-calismalar/atiflar", keys: ["title", "date"] },
+  { label: "Tezlerim", api: "/api/akademik-calismalar/tezlerim", keys: ["title", "date"] },
+  { label: "Yönetilen Tezler", api: "/api/akademik-calismalar/yonetilen-tezler", keys: ["title", "student", "date"] },
+  { label: "Projeler", api: "/api/projeler-ve-patentler/projeler", keys: ["title", "status", "date"] },
+  { label: "Patentler", api: "/api/projeler-ve-patentler/patentler", keys: ["title", "number", "date"] },
+  { label: "Hakemlikler", api: "/api/hakemlikler", keys: ["name", "year"] },
+  { label: "Ödüller", api: "/api/oduller", keys: ["name", "year"] },
+  { label: "Bilimsel Toplantılar", api: "/api/etkinlikler/bilimsel-toplantilar", keys: ["title", "date"] },
+];
+
+function buildCvHtml(title: string, lang: "tr" | "en", data: UserProfile, sections: { label: string; rows: Record<string, string>[] }[]) {
   const labels = lang === "tr"
     ? { tc: "T.C. Kimlik No", birth: "Doğum Tarihi", home: "Ev Adresi", work: "İş Adresi", gsm: "GSM", email: "E-Mail", other: "Diğer E-Mail", url: "URL" }
     : { tc: "National ID", birth: "Date of Birth", home: "Home Address", work: "Work Address", gsm: "Mobile", email: "E-Mail", other: "Alt. E-Mail", url: "URL" };
   const birth = data.birthDate ? new Date(data.birthDate).toLocaleDateString(lang === "tr" ? "tr-TR" : "en-GB") : "-";
+
+  const sectionsHtml = sections.filter(s => s.rows.length > 0).map(s => {
+    const keys = Object.keys(s.rows[0]).filter(k => !["id","userId","createdAt","updatedAt"].includes(k));
+    const rows = s.rows.map(r => `<tr>${keys.map(k => `<td>${r[k] ?? "-"}</td>`).join("")}</tr>`).join("");
+    const headers = keys.map(k => `<th style="background:#f1f5f9;text-align:left;padding:6px 10px;font-size:11px;text-transform:uppercase;color:#64748b">${k}</th>`).join("");
+    return `<h2>${s.label} (${s.rows.length})</h2><table><thead><tr>${headers}</tr></thead><tbody>${rows}</tbody></table>`;
+  }).join("");
+
   return `<!DOCTYPE html><html lang="${lang}"><head><meta charset="UTF-8"/><title>${title} - ${data.fullName}</title>
-  <style>body{font-family:Arial,sans-serif;max-width:800px;margin:40px auto;padding:0 24px;color:#1e293b}h1{color:#1E6B9B;border-bottom:2px solid #1E6B9B;padding-bottom:8px}h2{color:#465362;font-size:14px;text-transform:uppercase;letter-spacing:1px;margin-top:24px}table{width:100%;border-collapse:collapse;margin-top:8px}td{padding:8px 12px;border-bottom:1px solid #e2e8f0;font-size:13px}td:first-child{font-weight:bold;color:#64748b;width:35%}@media print{button{display:none}}</style>
-  </head><body><h1>${data.fullName}</h1><h2>${title}</h2><table>
+  <style>body{font-family:Arial,sans-serif;max-width:900px;margin:30px auto;padding:0 24px;color:#1e293b;font-size:13px}h1{color:#1E6B9B;border-bottom:2px solid #1E6B9B;padding-bottom:8px;font-size:20px}h2{color:#465362;font-size:12px;text-transform:uppercase;letter-spacing:1px;margin-top:20px;border-left:3px solid #1E6B9B;padding-left:8px}table{width:100%;border-collapse:collapse;margin-top:6px;margin-bottom:8px}td,th{padding:6px 10px;border-bottom:1px solid #f1f5f9;font-size:12px}td:first-child{font-weight:bold;color:#64748b}@media print{button{display:none}}</style>
+  </head><body>
+  <h1>${data.fullName}</h1>
+  <p style="color:#64748b;font-size:12px;margin-top:-8px">${title} — Oluşturulma: ${new Date().toLocaleDateString("tr-TR")}</p>
+  <h2>Kişisel Bilgiler</h2>
+  <table>
   <tr><td>${labels.tc}</td><td>${data.tcNo}</td></tr>
   <tr><td>${labels.birth}</td><td>${birth}</td></tr>
   <tr><td>${labels.home}</td><td>${data.homeAddress ?? "-"}</td></tr>
@@ -38,11 +63,23 @@ function buildCvHtml(title: string, lang: "tr" | "en", data: UserProfile) {
   <tr><td>${labels.email}</td><td>${data.email}</td></tr>
   <tr><td>${labels.other}</td><td>${data.otherEmail ?? "-"}</td></tr>
   <tr><td>${labels.url}</td><td>${data.url ?? "-"}</td></tr>
-  </table><br/><button onclick="window.print()" style="margin-top:24px;padding:8px 20px;background:#1E6B9B;color:white;border:none;border-radius:4px;cursor:pointer;font-size:13px;">${lang === "tr" ? "PDF olarak kaydet (Yazdır)" : "Save as PDF (Print)"}</button></body></html>`;
+  </table>
+  ${sectionsHtml}
+  <br/><button onclick="window.print()" style="margin-top:24px;padding:8px 20px;background:#1E6B9B;color:white;border:none;border-radius:4px;cursor:pointer;font-size:13px;">${lang === "tr" ? "PDF olarak kaydet (Yazdır)" : "Save as PDF (Print)"}</button>
+  </body></html>`;
 }
 
-function openCv(title: string, lang: "tr" | "en", data: UserProfile) {
-  const blob = new Blob([buildCvHtml(title, lang, data)], { type: "text/html;charset=utf-8" });
+async function openCv(title: string, lang: "tr" | "en", data: UserProfile) {
+  const sections = await Promise.all(
+    CV_SECTIONS.map(async (s) => {
+      try {
+        const res = await fetch(s.api);
+        const rows = await res.json();
+        return { label: s.label, rows: Array.isArray(rows) ? rows : [] };
+      } catch { return { label: s.label, rows: [] }; }
+    })
+  );
+  const blob = new Blob([buildCvHtml(title, lang, data, sections)], { type: "text/html;charset=utf-8" });
   const win = window.open(URL.createObjectURL(blob), "_blank");
   if (win) win.focus();
 }

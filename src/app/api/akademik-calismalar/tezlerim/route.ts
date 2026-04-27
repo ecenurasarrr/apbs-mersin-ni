@@ -14,7 +14,16 @@ export async function POST(req: Request) {
     const body = await req.json();
     const { user, error: authError } = await requireSessionUser();
     if (authError) return authError;
-    const item = await prisma.thesis.create({ data: { title: body.title?.trim(), date: body.date?.trim(), userId: user!.id } });
+    const item = await prisma.thesis.create({
+      data: {
+        title: body.title?.trim(),
+        department: body.department?.trim(),
+        advisor: body.advisor?.trim(),
+        file: body.file?.trim(),
+        date: body.date?.trim(),
+        userId: user!.id,
+      },
+    });
     return NextResponse.json(item, { status: 201 });
   } catch { return NextResponse.json({ error: 'Failed' }, { status: 500 }); }
 }

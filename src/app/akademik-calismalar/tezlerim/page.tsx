@@ -12,14 +12,19 @@ export default function Page() {
         { label: t("menu.tezlerim") },
       ]}
       fields={[
-        { key: "title", label: "Tez Adı", placeholder: "Tez adını giriniz" },
+        { key: "department", label: "Bölüm", placeholder: "Bölüm adı" },
+        { key: "advisor", label: "Danışman Adı", placeholder: "Danışman adı" },
+        { key: "title", label: "Başlık", placeholder: "Tez başlığı" },
+        { key: "file", label: "Dosya", placeholder: "Dosya bağlantısı veya adı" },
         { key: "date", label: t("common.date"), placeholder: "Tarih" },
       ]}
       apiPath="/api/akademik-calismalar/tezlerim"
       
       columns={[
-        { key: "title", label: "Tez Adı" },
-        { key: "date", label: t("common.date") },
+        { key: "department", label: "Bölüm" },
+        { key: "advisor", label: "Danışman Adı" },
+        { key: "title", label: "Başlık" },
+        { key: "file", label: "Dosya" },
       ]}
     />
   );

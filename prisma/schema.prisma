@@ -73,13 +73,16 @@ model PeerReview {
 }
 
 model Thesis {
-  id        Int      @id @default(autoincrement())
-  title     String
-  date      String
-  userId    Int
-  user      User     @relation(fields: [userId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          Int      @id @default(autoincrement())
+  title       String
+  department  String?
+  advisor     String?
+  file        String?
+  date        String
+  userId      Int
+  user        User     @relation(fields: [userId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model SupervisedThesis {
