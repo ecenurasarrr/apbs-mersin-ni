@@ -12,13 +12,13 @@ export default function Page() {
         { label: t("menu.kitaplar") },
       ]}
       fields={[
-        { key: "title", label: "Kitap Adı", placeholder: "Kitap adını giriniz" },
+        { key: "title", label: t("fields.book_title"), placeholder: t("fields.book_title_placeholder") },
         { key: "date", label: t("common.date"), placeholder: "Tarih" },
       ]}
       apiPath="/api/akademik-calismalar/kitaplar"
       
       columns={[
-        { key: "title", label: "Kitap Adı" },
+        { key: "title", label: t("fields.book_title") },
         { key: "date", label: t("common.date") },
       ]}
     />

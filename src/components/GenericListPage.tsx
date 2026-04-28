@@ -94,7 +94,7 @@ export default function GenericListPage({
   };
 
   const handleDelete = async (id: number) => {
-    if (!confirm("Bu kaydı silmek istediğinizden emin misiniz?")) return;
+    if (!confirm(t("common.confirm_delete"))) return;
     try {
       await fetch(`${apiPath}/${id}`, { method: 'DELETE' });
       fetchData();
@@ -191,7 +191,7 @@ export default function GenericListPage({
                   onKeyDown={(e) => e.key === "Enter" && handleCreate()}
                 />
               ))}
-              <Button onClick={handleCreate} className="shrink-0">Kaydet</Button>
+              <Button onClick={handleCreate} className="shrink-0">{t("common.save")}</Button>
             </div>
           )}
         </CardHeader>
@@ -213,7 +213,7 @@ export default function GenericListPage({
                   <TableRow>
                     <TableCell colSpan={columns.length + 2} className="h-32 text-center text-muted-foreground">
                       <div className="flex items-center justify-center gap-2">
-                        <Loader2 className="h-5 w-5 animate-spin" /> Yükleniyor...
+                        <Loader2 className="h-5 w-5 animate-spin" /> {t("common.loading")}
                       </div>
                     </TableCell>
                   </TableRow>
@@ -242,8 +242,8 @@ export default function GenericListPage({
                         <div className="flex justify-end gap-2">
                           {editingId === row.id ? (
                             <>
-                              <Button variant="ghost" size="sm" className="h-8 text-green-600 hover:text-green-700" onClick={() => handleEditSave(row.id)}>Kaydet</Button>
-                              <Button variant="ghost" size="sm" className="h-8 text-slate-500" onClick={() => setEditingId(null)}>İptal</Button>
+                              <Button variant="ghost" size="sm" className="h-8 text-green-600 hover:text-green-700" onClick={() => handleEditSave(row.id)}>{t("common.save")}</Button>
+                              <Button variant="ghost" size="sm" className="h-8 text-slate-500" onClick={() => setEditingId(null)}>{t("common.cancel")}</Button>
                             </>
                           ) : (
                             <>

@@ -12,15 +12,15 @@ export default function Page() {
         { label: t("menu.yonetilen_tezler") },
       ]}
       fields={[
-        { key: "title", label: "Tez Adı", placeholder: "Tez adını giriniz" },
-        { key: "student", label: "Öğrenci", placeholder: "Öğrenci adı" },
+        { key: "title", label: t("fields.thesis_title"), placeholder: t("fields.thesis_title_placeholder") },
+        { key: "student", label: t("fields.student"), placeholder: t("fields.student_placeholder") },
         { key: "date", label: t("common.date"), placeholder: "Tarih" },
       ]}
       apiPath="/api/akademik-calismalar/yonetilen-tezler"
       
       columns={[
-        { key: "title", label: "Tez Adı" },
-        { key: "student", label: "Öğrenci" },
+        { key: "title", label: t("fields.thesis_title") },
+        { key: "student", label: t("fields.student") },
         { key: "date", label: t("common.date") },
       ]}
     />

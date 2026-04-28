@@ -12,15 +12,15 @@ export default function Page() {
         { label: t("menu.patentler") },
       ]}
       fields={[
-        { key: "title", label: "Patent Adı", placeholder: "Patent adını giriniz" },
-        { key: "number", label: "Patent No", placeholder: "Patent numarası" },
+        { key: "title", label: t("fields.patent_name"), placeholder: t("fields.patent_name_placeholder") },
+        { key: "number", label: t("fields.patent_number"), placeholder: t("fields.patent_number_placeholder") },
         { key: "date", label: t("common.date"), placeholder: "Tarih" },
       ]}
       apiPath="/api/projeler-ve-patentler/patentler"
       
       columns={[
-        { key: "title", label: "Patent Adı" },
-        { key: "number", label: "Patent No" },
+        { key: "title", label: t("fields.patent_name") },
+        { key: "number", label: t("fields.patent_number") },
         { key: "date", label: t("common.date") },
       ]}
     />

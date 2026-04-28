@@ -12,13 +12,13 @@ export default function Page() {
         { label: t("navbar.duyurular") },
       ]}
       fields={[
-        { key: "title", label: "Duyuru Başlığı", placeholder: "Duyuru başlığını giriniz" },
+        { key: "title", label: t("fields.announcement_title"), placeholder: t("fields.announcement_title_placeholder") },
         { key: "date", label: t("common.date"), placeholder: "Tarih" },
       ]}
       apiPath="/api/islemler/duyurular"
       
       columns={[
-        { key: "title", label: "Duyuru Başlığı" },
+        { key: "title", label: t("fields.announcement_title") },
         { key: "date", label: t("common.date") },
       ]}
     />

@@ -12,13 +12,13 @@ export default function Page() {
         { label: t("menu.sanatsal_etkinlikler") },
       ]}
       fields={[
-        { key: "title", label: "Etkinlik Adı", placeholder: "Etkinlik adını giriniz" },
+        { key: "title", label: t("fields.event_title"), placeholder: t("fields.event_title_placeholder") },
         { key: "date", label: t("common.date"), placeholder: "Tarih" },
       ]}
       apiPath="/api/etkinlikler/sanatsal-etkinlikler"
       
       columns={[
-        { key: "title", label: "Etkinlik Adı" },
+        { key: "title", label: t("fields.event_title") },
         { key: "date", label: t("common.date") },
       ]}
     />

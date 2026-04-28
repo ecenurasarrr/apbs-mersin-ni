@@ -12,13 +12,13 @@ export default function Page() {
         { label: t("menu.yayinlar") },
       ]}
       fields={[
-        { key: "title", label: "Yayın Adı", placeholder: "Yayın adını giriniz" },
+        { key: "title", label: t("fields.publication_title"), placeholder: t("fields.publication_title_placeholder") },
         { key: "date", label: t("common.date"), placeholder: "Tarih" },
       ]}
       apiPath="/api/akademik-calismalar/yayinlar"
       
       columns={[
-        { key: "title", label: "Yayın Adı" },
+        { key: "title", label: t("fields.publication_title") },
         { key: "date", label: t("common.date") },
       ]}
     />

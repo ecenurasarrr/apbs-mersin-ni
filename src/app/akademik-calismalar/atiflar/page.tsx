@@ -12,13 +12,13 @@ export default function Page() {
         { label: t("menu.atiflar") },
       ]}
       fields={[
-        { key: "title", label: "Atıf Adı", placeholder: "Atıf adını giriniz" },
+        { key: "title", label: t("fields.citation_name"), placeholder: t("fields.citation_name_placeholder") },
         { key: "date", label: t("common.date"), placeholder: "Tarih" },
       ]}
       apiPath="/api/akademik-calismalar/atiflar"
       
       columns={[
-        { key: "title", label: "Atıf Adı" },
+        { key: "title", label: t("fields.citation_name") },
         { key: "date", label: t("common.date") },
       ]}
     />

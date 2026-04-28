@@ -12,13 +12,13 @@ export default function Page() {
         { label: t("menu.idari_gorevler") },
       ]}
       fields={[
-        { key: "title", label: "Görev Adı", placeholder: "Görev adını giriniz" },
+        { key: "title", label: t("fields.task_name"), placeholder: t("fields.task_name_placeholder") },
         { key: "date", label: t("common.date"), placeholder: "Tarih" },
       ]}
       apiPath="/api/akademik-calismalar/idari-gorevler"
       
       columns={[
-        { key: "title", label: "Görev Adı" },
+        { key: "title", label: t("fields.task_name") },
         { key: "date", label: t("common.date") },
       ]}
     />

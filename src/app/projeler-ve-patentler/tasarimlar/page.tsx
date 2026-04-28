@@ -12,13 +12,13 @@ export default function Page() {
         { label: t("menu.tasarimlar") },
       ]}
       fields={[
-        { key: "title", label: "Tasarım Adı", placeholder: "Tasarım adını giriniz" },
+        { key: "title", label: t("fields.design_name"), placeholder: t("fields.design_name_placeholder") },
         { key: "date", label: t("common.date"), placeholder: "Tarih" },
       ]}
       apiPath="/api/projeler-ve-patentler/tasarimlar"
       
       columns={[
-        { key: "title", label: "Tasarım Adı" },
+        { key: "title", label: t("fields.design_name") },
         { key: "date", label: t("common.date") },
       ]}
     />

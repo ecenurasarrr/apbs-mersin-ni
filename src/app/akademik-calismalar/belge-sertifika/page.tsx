@@ -12,13 +12,13 @@ export default function Page() {
         { label: t("menu.belge_sertifika") },
       ]}
       fields={[
-        { key: "title", label: "Belge/Sertifika Adı", placeholder: "Belge/Sertifika adını giriniz" },
+        { key: "title", label: t("fields.certificate"), placeholder: t("fields.certificate_placeholder") },
         { key: "date", label: t("common.date"), placeholder: "Tarih" },
       ]}
       apiPath="/api/akademik-calismalar/belge-sertifika"
       
       columns={[
-        { key: "title", label: "Belge/Sertifika Adı" },
+        { key: "title", label: t("fields.certificate") },
         { key: "date", label: t("common.date") },
       ]}
     />

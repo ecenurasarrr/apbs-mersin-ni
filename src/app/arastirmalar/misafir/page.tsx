@@ -12,15 +12,15 @@ export default function Page() {
         { label: t("menu.misafir_arastirma") },
       ]}
       fields={[
-        { key: "title", label: "Araştırma Adı", placeholder: "Araştırma adını giriniz" },
-        { key: "institution", label: "Kurum", placeholder: "Kurum adı" },
+        { key: "title", label: t("fields.research_name"), placeholder: t("fields.research_name_placeholder") },
+        { key: "institution", label: t("fields.institution"), placeholder: t("fields.institution_placeholder") },
         { key: "date", label: t("common.date"), placeholder: "Tarih" },
       ]}
       apiPath="/api/arastirmalar/misafir"
       
       columns={[
-        { key: "title", label: "Araştırma Adı" },
-        { key: "institution", label: "Kurum" },
+        { key: "title", label: t("fields.research_name") },
+        { key: "institution", label: t("fields.institution") },
         { key: "date", label: t("common.date") },
       ]}
     />

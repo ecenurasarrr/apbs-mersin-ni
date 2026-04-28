@@ -10,11 +10,11 @@ export default function Page() {
       breadcrumbs={[{ label: t("navbar.oduller") }]}
       apiPath="/api/oduller"
       fields={[
-        { key: "name", label: "Ödül Adı", placeholder: "Ödül adını giriniz" },
+        { key: "name", label: t("fields.award_name"), placeholder: t("fields.award_name_placeholder") },
         { key: "year", label: t("common.year"), placeholder: "Yıl" },
       ]}
       columns={[
-        { key: "name", label: "Ödül Adı" },
+        { key: "name", label: t("fields.award_name") },
         { key: "year", label: t("common.year") },
       ]}
     />

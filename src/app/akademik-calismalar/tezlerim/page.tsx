@@ -12,19 +12,19 @@ export default function Page() {
         { label: t("menu.tezlerim") },
       ]}
       fields={[
-        { key: "department", label: "Bölüm", placeholder: "Bölüm adı" },
-        { key: "advisor", label: "Danışman Adı", placeholder: "Danışman adı" },
-        { key: "title", label: "Başlık", placeholder: "Tez başlığı" },
-        { key: "file", label: "Dosya", placeholder: "Dosya bağlantısı veya adı" },
+        { key: "department", label: t("fields.department"), placeholder: t("fields.department_placeholder") },
+        { key: "advisor", label: t("fields.advisor_name"), placeholder: t("fields.advisor_name_placeholder") },
+        { key: "title", label: t("fields.title"), placeholder: t("fields.title_placeholder") },
+        { key: "file", label: t("fields.file"), placeholder: t("fields.file_placeholder") },
         { key: "date", label: t("common.date"), placeholder: "Tarih" },
       ]}
       apiPath="/api/akademik-calismalar/tezlerim"
       
       columns={[
-        { key: "department", label: "Bölüm" },
-        { key: "advisor", label: "Danışman Adı" },
-        { key: "title", label: "Başlık" },
-        { key: "file", label: "Dosya" },
+        { key: "department", label: t("fields.department") },
+        { key: "advisor", label: t("fields.advisor_name") },
+        { key: "title", label: t("fields.title") },
+        { key: "file", label: t("fields.file") },
       ]}
     />
   );

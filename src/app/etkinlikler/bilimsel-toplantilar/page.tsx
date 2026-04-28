@@ -12,13 +12,13 @@ export default function Page() {
         { label: t("menu.bilimsel_toplantilar") },
       ]}
       fields={[
-        { key: "title", label: "Toplantı Adı", placeholder: "Toplantı adını giriniz" },
+        { key: "title", label: t("fields.meeting_title"), placeholder: t("fields.meeting_title_placeholder") },
         { key: "date", label: t("common.date"), placeholder: "Tarih" },
       ]}
       apiPath="/api/etkinlikler/bilimsel-toplantilar"
       
       columns={[
-        { key: "title", label: "Toplantı Adı" },
+        { key: "title", label: t("fields.meeting_title") },
         { key: "date", label: t("common.date") },
       ]}
     />

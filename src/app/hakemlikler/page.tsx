@@ -9,13 +9,13 @@ export default function Page() {
       title={t("navbar.hakemlikler")}
       breadcrumbs={[{ label: t("navbar.hakemlikler") }]}
       fields={[
-        { key: "name", label: "Organizasyon/Kitap/Dergi Adı", placeholder: "Organizasyon/Kitap/Dergi adını giriniz" },
+        { key: "name", label: t("fields.organization_book_journal"), placeholder: t("fields.organization_book_journal_placeholder") },
         { key: "year", label: t("common.year"), placeholder: "Yıl" },
       ]}
       apiPath="/api/hakemlikler"
       
       columns={[
-        { key: "name", label: "Organizasyon/Kitap/Dergi Adı" },
+        { key: "name", label: t("fields.organization_book_journal") },
         { key: "year", label: t("common.year") },
       ]}
     />

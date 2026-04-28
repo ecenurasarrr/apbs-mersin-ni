@@ -12,14 +12,14 @@ export default function Page() {
         { label: t("menu.projeler") },
       ]}
       fields={[
-        { key: "title", label: "Proje Adı", placeholder: "Proje adını giriniz" },
+        { key: "title", label: t("fields.project_name"), placeholder: t("fields.project_name_placeholder") },
         { key: "status", label: t("common.status"), placeholder: "Durum" },
         { key: "date", label: t("common.date"), placeholder: "Tarih" },
       ]}
       apiPath="/api/projeler-ve-patentler/projeler"
       
       columns={[
-        { key: "title", label: "Proje Adı" },
+        { key: "title", label: t("fields.project_name") },
         { key: "status", label: t("common.status") },
         { key: "date", label: t("common.date") },
       ]}

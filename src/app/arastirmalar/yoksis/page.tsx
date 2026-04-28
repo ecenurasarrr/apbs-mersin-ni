@@ -12,13 +12,13 @@ export default function Page() {
         { label: t("menu.arastirma_yoksis") },
       ]}
       fields={[
-        { key: "title", label: "Araştırma Adı", placeholder: "Araştırma adını giriniz" },
+        { key: "title", label: t("fields.research_name"), placeholder: t("fields.research_name_placeholder") },
         { key: "date", label: t("common.date"), placeholder: "Tarih" },
       ]}
       apiPath="/api/arastirmalar/yoksis"
       
       columns={[
-        { key: "title", label: "Araştırma Adı" },
+        { key: "title", label: t("fields.research_name") },
         { key: "date", label: t("common.date") },
       ]}
     />

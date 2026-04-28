@@ -8,38 +8,41 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Input } from "@/components/ui/input";
 import { useLanguage } from "@/context/LanguageContext";
 
-const SECTIONS = [
-  { value: "tezlerim",                    label: "Tezlerim",                       api: "/api/akademik-calismalar/tezlerim" },
-  { value: "yonetilen-tezler",            label: "Yönetilen Tezler",               api: "/api/akademik-calismalar/yonetilen-tezler" },
-  { value: "ogrenim-durumu",              label: "Öğrenim Durumu",                 api: "/api/akademik-calismalar/ogrenim-durumu" },
-  { value: "akademik-gorevler",           label: "Akademik Görevler",              api: "/api/akademik-calismalar/akademik-gorevler" },
-  { value: "bilimsel-gorevler",           label: "Bilimsel Görevler",              api: "/api/akademik-calismalar/bilimsel-gorevler" },
-  { value: "idari-gorevler",              label: "İdari Görevler",                 api: "/api/akademik-calismalar/idari-gorevler" },
-  { value: "yayinlar",                    label: "Yayınlar",                       api: "/api/akademik-calismalar/yayinlar" },
-  { value: "atiflar",                     label: "Atıflar",                        api: "/api/akademik-calismalar/atiflar" },
-  { value: "kitaplar",                    label: "Kitaplar",                       api: "/api/akademik-calismalar/kitaplar" },
-  { value: "yabanci-dil",                 label: "Yabancı Dil",                    api: "/api/akademik-calismalar/yabanci-dil" },
-  { value: "yurtdisi",                    label: "Yurtdışı Akademik Deneyim",      api: "/api/akademik-calismalar/yurtdisi-akademik-deneyim" },
-  { value: "belge-sertifika",             label: "Belge/Sertifika",                api: "/api/akademik-calismalar/belge-sertifika" },
-  { value: "projeler",                    label: "Projeler",                       api: "/api/projeler-ve-patentler/projeler" },
-  { value: "patentler",                   label: "Patentler",                      api: "/api/projeler-ve-patentler/patentler" },
-  { value: "tasarimlar",                  label: "Tasarımlar",                     api: "/api/projeler-ve-patentler/tasarimlar" },
-  { value: "bilimsel-toplantilar",        label: "Bilimsel Toplantılar",           api: "/api/etkinlikler/bilimsel-toplantilar" },
-  { value: "uyelikler",                   label: "Bilimsel Kuruluş Üyelikleri",    api: "/api/etkinlikler/bilimsel-kuruluslara-uyelikler" },
-  { value: "sanatsal",                    label: "Sanatsal Etkinlikler",           api: "/api/etkinlikler/sanatsal-etkinlikler" },
-  { value: "doktora-sonrasi",             label: "Doktora Sonrası Araştırma",      api: "/api/arastirmalar/doktora-sonrasi" },
-  { value: "misafir",                     label: "Misafir Araştırma",              api: "/api/arastirmalar/misafir" },
-  { value: "yoksis",                      label: "Araştırma (YÖKSİS)",             api: "/api/arastirmalar/yoksis" },
-  { value: "hakemlikler",                 label: "Hakemlikler",                    api: "/api/hakemlikler" },
-  { value: "oduller",                     label: "Ödüller",                        api: "/api/oduller" },
+const SECTIONS_CONFIG = [
+  { value: "tezlerim",                    key: "menu.tezlerim",                    api: "/api/akademik-calismalar/tezlerim" },
+  { value: "yonetilen-tezler",            key: "menu.yonetilen_tezler",             api: "/api/akademik-calismalar/yonetilen-tezler" },
+  { value: "ogrenim-durumu",              key: "menu.ogrenim_durumu",               api: "/api/akademik-calismalar/ogrenim-durumu" },
+  { value: "akademik-gorevler",           key: "menu.akademik_gorevler",            api: "/api/akademik-calismalar/akademik-gorevler" },
+  { value: "bilimsel-gorevler",           key: "menu.bilimsel_gorevler",            api: "/api/akademik-calismalar/bilimsel-gorevler" },
+  { value: "idari-gorevler",              key: "menu.idari_gorevler",               api: "/api/akademik-calismalar/idari-gorevler" },
+  { value: "yayinlar",                    key: "menu.yayinlar",                    api: "/api/akademik-calismalar/yayinlar" },
+  { value: "atiflar",                     key: "menu.atiflar",                     api: "/api/akademik-calismalar/atiflar" },
+  { value: "kitaplar",                    key: "menu.kitaplar",                    api: "/api/akademik-calismalar/kitaplar" },
+  { value: "yabanci-dil",                 key: "menu.yabanci_dil",                 api: "/api/akademik-calismalar/yabanci-dil" },
+  { value: "yurtdisi",                    key: "menu.yurtdisi_akademik_deneyim",   api: "/api/akademik-calismalar/yurtdisi-akademik-deneyim" },
+  { value: "belge-sertifika",             key: "menu.belge_sertifika",             api: "/api/akademik-calismalar/belge-sertifika" },
+  { value: "projeler",                    key: "menu.projeler",                    api: "/api/projeler-ve-patentler/projeler" },
+  { value: "patentler",                   key: "menu.patentler",                   api: "/api/projeler-ve-patentler/patentler" },
+  { value: "tasarimlar",                  key: "menu.tasarimlar",                  api: "/api/projeler-ve-patentler/tasarimlar" },
+  { value: "bilimsel-toplantilar",        key: "menu.bilimsel_toplantilar",        api: "/api/etkinlikler/bilimsel-toplantilar" },
+  { value: "uyelikler",                   key: "menu.bilimsel_kuruluslara_uyelikler", api: "/api/etkinlikler/bilimsel-kuruluslara-uyelikler" },
+  { value: "sanatsal",                    key: "menu.sanatsal_etkinlikler",        api: "/api/etkinlikler/sanatsal-etkinlikler" },
+  { value: "doktora-sonrasi",             key: "menu.doktora_sonrasi_arastirma",   api: "/api/arastirmalar/doktora-sonrasi" },
+  { value: "misafir",                     key: "menu.misafir_arastirma",           api: "/api/arastirmalar/misafir" },
+  { value: "yoksis",                      key: "menu.arastirma_yoksis",            api: "/api/arastirmalar/yoksis" },
+  { value: "hakemlikler",                 key: "navbar.hakemlikler",               api: "/api/hakemlikler" },
+  { value: "oduller",                     key: "navbar.oduller",                   api: "/api/oduller" },
 ];
 
 export default function FaaliyetRaporuPage() {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [selected, setSelected] = useState<string[]>(SECTIONS.map((s) => s.value));
   const [generating, setGenerating] = useState(false);
   const { t } = useLanguage();
+
+  // Create SECTIONS array dynamically using translations
+  const SECTIONS = SECTIONS_CONFIG.map((s) => ({ ...s, label: t(s.key) }));
+  const [selected, setSelected] = useState<string[]>(SECTIONS.map((s) => s.value));
 
   const toggleSection = (value: string) => {
     setSelected((prev) =>
@@ -101,18 +104,18 @@ export default function FaaliyetRaporuPage() {
 
       <Card className="shadow-sm border-border">
         <CardHeader className="bg-slate-50/50 border-b">
-          <CardTitle className="text-xl">Rapor Kriterleri</CardTitle>
-          <CardDescription>Raporunuza dahil edilecek zaman aralığını ve bölümleri seçin.</CardDescription>
+          <CardTitle className="text-xl">{t("report.criteria")}</CardTitle>
+          <CardDescription>{t("report.description")}</CardDescription>
         </CardHeader>
         <CardContent className="p-6 space-y-6">
           {/* Tarih aralığı */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <label className="text-sm font-medium">Başlangıç Tarihi</label>
+              <label className="text-sm font-medium">{t("report.start_date")}</label>
               <Input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
             </div>
             <div className="space-y-2">
-              <label className="text-sm font-medium">Bitiş Tarihi</label>
+              <label className="text-sm font-medium">{t("report.end_date")}</label>
               <Input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
             </div>
           </div>
@@ -120,11 +123,11 @@ export default function FaaliyetRaporuPage() {
           {/* Bölüm seçimi */}
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <label className="text-sm font-medium">Dahil Edilecek Bölümler</label>
+              <label className="text-sm font-medium">{t("report.sections")}</label>
               <div className="flex gap-2">
-                <button onClick={() => setSelected(SECTIONS.map((s) => s.value))} className="text-xs text-blue-600 hover:underline">Tümünü Seç</button>
+                <button onClick={() => setSelected(SECTIONS.map((s) => s.value))} className="text-xs text-blue-600 hover:underline">{t("report.select_all")}</button>
                 <span className="text-xs text-slate-300">|</span>
-                <button onClick={() => setSelected([])} className="text-xs text-slate-500 hover:underline">Temizle</button>
+                <button onClick={() => setSelected([])} className="text-xs text-slate-500 hover:underline">{t("report.clear")}</button>
               </div>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-2 border rounded-lg p-4 bg-slate-50/50">

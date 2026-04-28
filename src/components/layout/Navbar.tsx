@@ -30,6 +30,11 @@ export function Navbar() {
       .catch(() => {});
   }, []);
 
+  // Update HTML lang attribute based on current language
+  useEffect(() => {
+    document.documentElement.lang = lang;
+  }, [lang]);
+
   const handleLogout = async () => {
     await fetch("/api/auth/logout", { method: "POST" });
     router.push("/giris");
@@ -57,12 +62,12 @@ export function Navbar() {
           <div className="flex items-center gap-6 text-sm text-[#7392B7] font-medium">
             <button 
               onClick={() => setLang(lang === 'tr' ? 'en' : 'tr')} 
-              className="hover:text-[#1E6B9B] transition-colors hidden md:block cursor-pointer outline-none"
+              className="hover:text-[#1E6B9B] transition-colors cursor-pointer outline-none"
             >
               {lang === 'tr' ? 'English' : 'Türkçe'}
             </button>
             
-            <div className="h-4 w-px bg-slate-200 hidden md:block"></div>
+            <div className="h-4 w-px bg-slate-200"></div>
             
             <Link href="/profil" className="hover:text-[#1E6B9B] transition-colors flex items-center gap-2">
               <User size={16} /> <span className="hidden sm:inline-block">{fullName || t('navbar.profile')}</span>

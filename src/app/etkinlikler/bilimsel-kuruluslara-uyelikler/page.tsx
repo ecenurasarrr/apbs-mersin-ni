@@ -12,13 +12,13 @@ export default function Page() {
         { label: t("menu.bilimsel_kuruluslara_uyelikler") },
       ]}
       fields={[
-        { key: "organization", label: "Kuruluş Adı", placeholder: "Kuruluş adını giriniz" },
+        { key: "organization", label: t("fields.organization_name"), placeholder: t("fields.organization_name_placeholder") },
         { key: "date", label: t("common.date"), placeholder: "Tarih" },
       ]}
       apiPath="/api/etkinlikler/bilimsel-kuruluslara-uyelikler"
       
       columns={[
-        { key: "organization", label: "Kuruluş Adı" },
+        { key: "organization", label: t("fields.organization_name") },
         { key: "date", label: t("common.date") },
       ]}
     />

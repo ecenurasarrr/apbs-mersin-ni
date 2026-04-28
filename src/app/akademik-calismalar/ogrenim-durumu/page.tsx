@@ -12,13 +12,13 @@ export default function Page() {
         { label: t("menu.ogrenim_durumu") },
       ]}
       fields={[
-        { key: "title", label: "Öğrenim Bilgisi", placeholder: "Öğrenim bilgisini giriniz" },
+        { key: "title", label: t("fields.education_info"), placeholder: t("fields.education_info_placeholder") },
         { key: "date", label: t("common.date"), placeholder: "Tarih" },
       ]}
       apiPath="/api/akademik-calismalar/ogrenim-durumu"
       
       columns={[
-        { key: "title", label: "Öğrenim Bilgisi" },
+        { key: "title", label: t("fields.education_info") },
         { key: "date", label: t("common.date") },
       ]}
     />

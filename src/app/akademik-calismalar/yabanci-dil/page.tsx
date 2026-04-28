@@ -12,14 +12,14 @@ export default function Page() {
         { label: t("menu.yabanci_dil") },
       ]}
       fields={[
-        { key: "language", label: "Dil", placeholder: "Dil adını giriniz" },
-        { key: "level", label: "Seviye", placeholder: "Seviye" },
+        { key: "language", label: t("fields.language"), placeholder: t("fields.language_placeholder") },
+        { key: "level", label: t("fields.level"), placeholder: t("fields.level_placeholder") },
       ]}
       apiPath="/api/akademik-calismalar/yabanci-dil"
       
       columns={[
-        { key: "language", label: "Dil" },
-        { key: "level", label: "Seviye" },
+        { key: "language", label: t("fields.language") },
+        { key: "level", label: t("fields.level") },
       ]}
     />
   );
