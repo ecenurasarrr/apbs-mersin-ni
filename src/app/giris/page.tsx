@@ -37,7 +37,7 @@ export default function GirisPage() {
       });
       const data = await res.json();
       if (!res.ok) { setKurError(data.error || "Giriş başarısız."); return; }
-      window.location.href = "/";
+      window.location.href = "/profil";
     } catch { setKurError("Sunucu hatası. Lütfen tekrar deneyin."); }
     finally { setKurLoading(false); }
   };
@@ -56,7 +56,7 @@ export default function GirisPage() {
       });
       const data = await res.json();
       if (!res.ok) { setMisafirError(data.error || "Giriş başarısız."); return; }
-      window.location.href = "/";
+      window.location.href = "/profil";
     } catch { setMisafirError("Sunucu hatası."); }
     finally { setMisafirLoading(false); }
   };

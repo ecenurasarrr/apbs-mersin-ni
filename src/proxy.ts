@@ -46,6 +46,11 @@ export function proxy(request: NextRequest) {
     return NextResponse.redirect(loginUrl);
   }
 
+  // Ana sayfayı profil sayfasına yönlendir
+  if (pathname === '/') {
+    return NextResponse.redirect(new URL('/profil', request.url));
+  }
+
   return NextResponse.next();
 }
 
