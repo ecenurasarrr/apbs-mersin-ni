@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useLanguage } from "@/context/LanguageContext";
+import { translations } from "@/config/translations";
 
 interface UserProfile {
   id: number; tcNo: string; fullName: string; title: string | null;
@@ -127,7 +128,7 @@ export default function ProfilePage() {
   const [pwSuccess, setPwSuccess] = useState(false);
   const [pwSaving, setPwSaving] = useState(false);
 
-  // Dynamic CV sections with translations
+  // Dynamic CV sections with translations — her zaman mevcut UI diline göre
   const cvSections = CV_SECTIONS_CONFIG.map((s) => ({ label: t(s.key), api: s.api }));
   const cvLabels = {
     tc: t("cv.tc"),
@@ -139,6 +140,38 @@ export default function ProfilePage() {
     other_email: t("cv.other_email"),
     url: t("cv.url"),
     personal_info: t("cv.personal_info"),
+  };
+
+  // CV için dile özgü çeviri — UI dilinden bağımsız
+  const getCvLabelsForLang = (cvLang: "tr" | "en") => {
+    const tr = translations[cvLang];
+    return {
+      tc: tr.profile.tc,
+      birth: tr.profile.birth,
+      home_address: tr.profile.home_address,
+      work_address: tr.profile.work_address,
+      gsm: tr.profile.gsm,
+      email: tr.profile.email,
+      other_email: tr.profile.other_email,
+      url: tr.profile.url,
+      personal_info: cvLang === "tr" ? "Kişisel Bilgiler" : "Personal Information",
+    };
+  };
+
+  const getCvSectionsForLang = (cvLang: "tr" | "en") => {
+    const tr = translations[cvLang];
+    return [
+      { label: tr.menu.yayinlar, api: "/api/akademik-calismalar/yayinlar" },
+      { label: tr.menu.kitaplar, api: "/api/akademik-calismalar/kitaplar" },
+      { label: tr.menu.atiflar, api: "/api/akademik-calismalar/atiflar" },
+      { label: tr.menu.tezlerim, api: "/api/akademik-calismalar/tezlerim" },
+      { label: tr.menu.yonetilen_tezler, api: "/api/akademik-calismalar/yonetilen-tezler" },
+      { label: tr.menu.projeler, api: "/api/projeler-ve-patentler/projeler" },
+      { label: tr.menu.patentler, api: "/api/projeler-ve-patentler/patentler" },
+      { label: tr.navbar.hakemlikler, api: "/api/hakemlikler" },
+      { label: tr.navbar.oduller, api: "/api/oduller" },
+      { label: tr.menu.bilimsel_toplantilar, api: "/api/etkinlikler/bilimsel-toplantilar" },
+    ];
   };
 
   useEffect(() => {
@@ -223,10 +256,10 @@ export default function ProfilePage() {
                 <h2 className="text-xl font-bold text-[#006DCF] mb-1">{profile?.fullName}</h2>
                 {profile?.title && <p className="text-sm text-slate-500 mb-2">{profile.title}</p>}
                 <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 mt-2">
-                  <Button size="sm" variant="outline" className="h-8 gap-1 border-blue-200 text-blue-700 hover:bg-blue-50" onClick={() => profile && openCv(t("profile.cv_turkish"), "tr", profile, cvSections, cvLabels)}><Download size={14} /> {t("profile.cv_turkish")}</Button>
-                  <Button size="sm" variant="outline" className="h-8 gap-1 border-yellow-500 text-yellow-700 hover:bg-yellow-50" onClick={() => profile && openCv(t("profile.cv_english"), "en", profile, cvSections, cvLabels)}><Download size={14} /> {t("profile.cv_english")}</Button>
-                  <Button size="sm" className="h-8 gap-1 bg-red-600 hover:bg-red-700 text-white" onClick={() => profile && openCv(t("profile.cv_performance"), "tr", profile, cvSections, cvLabels)}><Download size={14} /> {t("profile.cv_perf")}</Button>
-                  <Button size="sm" variant="secondary" className="h-8 gap-1" onClick={() => profile && openCv(t("profile.cv_yok"), "tr", profile, cvSections, cvLabels)}><Download size={14} /> {t("profile.cv_yok")}</Button>
+                  <Button size="sm" variant="outline" className="h-8 gap-1 border-blue-200 text-blue-700 hover:bg-blue-50" onClick={() => profile && openCv("CV Türkçe", "tr", profile, getCvSectionsForLang("tr"), getCvLabelsForLang("tr"))}><Download size={14} /> {t("profile.cv_turkish")}</Button>
+                  <Button size="sm" variant="outline" className="h-8 gap-1 border-yellow-500 text-yellow-700 hover:bg-yellow-50" onClick={() => profile && openCv("CV English", "en", profile, getCvSectionsForLang("en"), getCvLabelsForLang("en"))}><Download size={14} /> {t("profile.cv_english")}</Button>
+                  <Button size="sm" className="h-8 gap-1 bg-red-600 hover:bg-red-700 text-white" onClick={() => profile && openCv("CV Performans", "tr", profile, getCvSectionsForLang("tr"), getCvLabelsForLang("tr"))}><Download size={14} /> {t("profile.cv_perf")}</Button>
+                  <Button size="sm" variant="secondary" className="h-8 gap-1" onClick={() => profile && openCv("CV YÖK", "tr", profile, getCvSectionsForLang("tr"), getCvLabelsForLang("tr"))}><Download size={14} /> {t("profile.cv_yok")}</Button>
                 </div>
               </div>
             </CardHeader>
