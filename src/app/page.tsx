@@ -19,7 +19,6 @@ export default function HomePage() {
         { label: t("menu.bilimsel_gorevler"), path: "/akademik-calismalar/bilimsel-gorevler" },
         { label: t("menu.idari_gorevler"), path: "/akademik-calismalar/idari-gorevler" },
         { label: t("menu.yayinlar"), path: "/akademik-calismalar/yayinlar" },
-        { label: t("menu.bildiriler"), path: "/akademik-calismalar/bildiriler" },
         { label: t("menu.atiflar"), path: "/akademik-calismalar/atiflar" },
         { label: t("menu.kitaplar"), path: "/akademik-calismalar/kitaplar" },
         { label: t("menu.yabanci_dil"), path: "/akademik-calismalar/yabanci-dil" },

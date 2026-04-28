@@ -9,7 +9,7 @@ export async function GET() {
     const uid = user!.id;
 
     const [
-      tezlerim, yonetilenTezler, yayinlar, bildiriler, kitaplar, atiflar,
+      tezlerim, yonetilenTezler, yayinlar, kitaplar, atiflar,
       projeler, patentler, tasarimlar,
       hakemlikler, oduller,
       bilimselToplantilar, uyelikler, sanatsal,
@@ -20,7 +20,6 @@ export async function GET() {
       prisma.thesis.count({ where: { userId: uid } }),
       prisma.supervisedThesis.count({ where: { userId: uid } }),
       prisma.publication.count({ where: { userId: uid } }),
-      prisma.bildiri.count({ where: { userId: uid } }),
       prisma.book.count({ where: { userId: uid } }),
       prisma.citation.count({ where: { userId: uid } }),
       prisma.project.count({ where: { userId: uid } }),
@@ -48,7 +47,6 @@ export async function GET() {
         { label: 'Tezlerim', value: tezlerim },
         { label: 'Yönetilen Tezler', value: yonetilenTezler },
         { label: 'Yayınlar', value: yayinlar },
-        { label: 'Bildiriler', value: bildiriler },
         { label: 'Kitaplar', value: kitaplar },
         { label: 'Atıflar', value: atiflar },
         { label: 'Akademik Görevler', value: akademikGorevler },
@@ -78,7 +76,7 @@ export async function GET() {
         { label: 'Hakemlikler', value: hakemlikler },
         { label: 'Ödüller', value: oduller },
       ],
-      toplam: tezlerim + yonetilenTezler + yayinlar + bildiriler + kitaplar + atiflar +
+      toplam: tezlerim + yonetilenTezler + yayinlar + kitaplar + atiflar +
               projeler + patentler + tasarimlar + hakemlikler + oduller +
               bilimselToplantilar + uyelikler + sanatsal +
               doktoraSonrasi + misafir + yoksis +
