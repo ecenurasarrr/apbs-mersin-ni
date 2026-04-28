@@ -16,7 +16,7 @@ interface UserProfile {
   email: string; otherEmail: string | null; url: string | null;
 }
 
-interface StatItem { label: string; value: number; }
+interface StatItem { key: string; value: number; }
 interface Stats {
   akademik: StatItem[]; projeler: StatItem[]; etkinlikler: StatItem[];
   arastirmalar: StatItem[]; taninma: StatItem[]; toplam: number;
@@ -91,13 +91,14 @@ async function openCv(title: string, lang: "tr" | "en", data: UserProfile, cvSec
 }
 
 function StatGroup({ title, items, color }: { title: string; items: StatItem[]; color: string }) {
+  const { t } = useLanguage();
   return (
     <div>
       <h3 className={`text-xs font-bold uppercase tracking-wider mb-2 ${color}`}>{title}</h3>
       <div className="grid grid-cols-2 gap-1.5">
         {items.map((item) => (
-          <div key={item.label} className="flex items-center justify-between bg-slate-50 rounded px-2 py-1.5">
-            <span className="text-xs text-slate-600 truncate">{item.label}</span>
+          <div key={item.key} className="flex items-center justify-between bg-slate-50 rounded px-2 py-1.5">
+            <span className="text-xs text-slate-600 truncate">{t(item.key)}</span>
             <span className={`text-sm font-bold ml-2 ${item.value > 0 ? "text-[#1E6B9B]" : "text-slate-300"}`}>{item.value}</span>
           </div>
         ))}
@@ -293,18 +294,18 @@ export default function ProfilePage() {
               <div className="flex items-center justify-between">
                 <CardTitle className="text-lg font-medium text-slate-700">{t("profile.stats")}</CardTitle>
                 {stats && (
-                  <span className="text-2xl font-bold text-[#1E6B9B]">{stats.toplam} <span className="text-xs font-normal text-slate-400">toplam kayıt</span></span>
+                  <span className="text-2xl font-bold text-[#1E6B9B]">{stats.toplam} <span className="text-xs font-normal text-slate-400">{t("profile.total_records")}</span></span>
                 )}
               </div>
             </CardHeader>
             <CardContent className="pt-4 space-y-5">
               {stats ? (
                 <>
-                  <StatGroup title="Akademik Çalışmalar" items={stats.akademik} color="text-blue-600" />
-                  <StatGroup title="Projeler & Patentler" items={stats.projeler} color="text-emerald-600" />
-                  <StatGroup title="Etkinlikler" items={stats.etkinlikler} color="text-purple-600" />
-                  <StatGroup title="Araştırmalar" items={stats.arastirmalar} color="text-red-500" />
-                  <StatGroup title="Tanınma" items={stats.taninma} color="text-yellow-600" />
+                  <StatGroup title={t("navbar.akademik_calismalar")} items={stats.akademik} color="text-blue-600" />
+                  <StatGroup title={t("navbar.projeler_patentler")} items={stats.projeler} color="text-emerald-600" />
+                  <StatGroup title={t("navbar.etkinlikler")} items={stats.etkinlikler} color="text-purple-600" />
+                  <StatGroup title={t("navbar.arastirmalar")} items={stats.arastirmalar} color="text-red-500" />
+                  <StatGroup title={t("dashboard.taninma")} items={stats.taninma} color="text-yellow-600" />
                 </>
               ) : (
                 <div className="flex items-center justify-center h-48">
@@ -331,19 +332,19 @@ export default function ProfilePage() {
               <table className="w-full text-sm border-collapse">
                 <thead>
                   <tr className="bg-slate-50">
-                    <th className="text-left px-4 py-2 font-semibold text-slate-600 border-b">Faaliyet</th>
-                    <th className="text-center px-4 py-2 font-semibold text-slate-600 border-b">Kayıt Sayısı</th>
+                    <th className="text-left px-4 py-2 font-semibold text-slate-600 border-b">{t("profile.activity")}</th>
+                    <th className="text-center px-4 py-2 font-semibold text-slate-600 border-b">{t("profile.record_count")}</th>
                   </tr>
                 </thead>
                 <tbody>
                   {[...stats.akademik, ...stats.projeler, ...stats.etkinlikler, ...stats.arastirmalar, ...stats.taninma].map((item) => (
-                    <tr key={item.label} className="border-b border-slate-50 hover:bg-slate-50/50">
-                      <td className="px-4 py-2 text-slate-700">{item.label}</td>
+                    <tr key={item.key} className="border-b border-slate-50 hover:bg-slate-50/50">
+                      <td className="px-4 py-2 text-slate-700">{t(item.key)}</td>
                       <td className="px-4 py-2 text-center font-semibold text-[#1E6B9B]">{item.value}</td>
                     </tr>
                   ))}
                   <tr className="bg-slate-100 font-bold">
-                    <td className="px-4 py-2 text-slate-800">TOPLAM</td>
+                    <td className="px-4 py-2 text-slate-800">{t("profile.total")}</td>
                     <td className="px-4 py-2 text-center text-[#1E6B9B] text-base">{stats.toplam}</td>
                   </tr>
                 </tbody>

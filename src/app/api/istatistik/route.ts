@@ -42,39 +42,40 @@ export async function GET() {
       prisma.education.count({ where: { userId: uid } }),
     ]);
 
+    // label yerine key kullanıyoruz — frontend t() ile çevirecek
     return NextResponse.json({
       akademik: [
-        { label: 'Tezlerim', value: tezlerim },
-        { label: 'Yönetilen Tezler', value: yonetilenTezler },
-        { label: 'Yayınlar', value: yayinlar },
-        { label: 'Kitaplar', value: kitaplar },
-        { label: 'Atıflar', value: atiflar },
-        { label: 'Akademik Görevler', value: akademikGorevler },
-        { label: 'Bilimsel Görevler', value: bilimselGorevler },
-        { label: 'İdari Görevler', value: idariGorevler },
-        { label: 'Yabancı Dil', value: yabancıDil },
-        { label: 'Yurtdışı Deneyim', value: yurtdisi },
-        { label: 'Belge/Sertifika', value: belgeSertifika },
-        { label: 'Öğrenim', value: egitim },
+        { key: 'menu.tezlerim', value: tezlerim },
+        { key: 'menu.yonetilen_tezler', value: yonetilenTezler },
+        { key: 'menu.yayinlar', value: yayinlar },
+        { key: 'menu.kitaplar', value: kitaplar },
+        { key: 'menu.atiflar', value: atiflar },
+        { key: 'menu.akademik_gorevler', value: akademikGorevler },
+        { key: 'menu.bilimsel_gorevler', value: bilimselGorevler },
+        { key: 'menu.idari_gorevler', value: idariGorevler },
+        { key: 'menu.yabanci_dil', value: yabancıDil },
+        { key: 'menu.yurtdisi_akademik_deneyim', value: yurtdisi },
+        { key: 'menu.belge_sertifika', value: belgeSertifika },
+        { key: 'menu.ogrenim_durumu', value: egitim },
       ],
       projeler: [
-        { label: 'Projeler', value: projeler },
-        { label: 'Patentler', value: patentler },
-        { label: 'Tasarımlar', value: tasarimlar },
+        { key: 'menu.projeler', value: projeler },
+        { key: 'menu.patentler', value: patentler },
+        { key: 'menu.tasarimlar', value: tasarimlar },
       ],
       etkinlikler: [
-        { label: 'Bilimsel Toplantılar', value: bilimselToplantilar },
-        { label: 'Kuruluş Üyelikleri', value: uyelikler },
-        { label: 'Sanatsal Etkinlikler', value: sanatsal },
+        { key: 'menu.bilimsel_toplantilar', value: bilimselToplantilar },
+        { key: 'menu.bilimsel_kuruluslara_uyelikler', value: uyelikler },
+        { key: 'menu.sanatsal_etkinlikler', value: sanatsal },
       ],
       arastirmalar: [
-        { label: 'Doktora Sonrası', value: doktoraSonrasi },
-        { label: 'Misafir Araştırma', value: misafir },
-        { label: 'YÖKSİS', value: yoksis },
+        { key: 'menu.doktora_sonrasi_arastirma', value: doktoraSonrasi },
+        { key: 'menu.misafir_arastirma', value: misafir },
+        { key: 'menu.arastirma_yoksis', value: yoksis },
       ],
       taninma: [
-        { label: 'Hakemlikler', value: hakemlikler },
-        { label: 'Ödüller', value: oduller },
+        { key: 'navbar.hakemlikler', value: hakemlikler },
+        { key: 'navbar.oduller', value: oduller },
       ],
       toplam: tezlerim + yonetilenTezler + yayinlar + kitaplar + atiflar +
               projeler + patentler + tasarimlar + hakemlikler + oduller +
