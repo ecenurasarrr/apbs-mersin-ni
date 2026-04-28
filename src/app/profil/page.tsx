@@ -197,9 +197,9 @@ export default function ProfilePage() {
 
   const handleChangePassword = async () => {
     setPwError(""); setPwSuccess(false);
-    if (!currentPw || !newPw || !newPw2) { setPwError("Tüm alanları doldurunuz."); return; }
-    if (newPw !== newPw2) { setPwError("Yeni şifreler eşleşmiyor."); return; }
-    if (newPw.length < 6) { setPwError("Yeni şifre en az 6 karakter olmalıdır."); return; }
+    if (!currentPw || !newPw || !newPw2) { setPwError(t("common.confirm_delete").replace("Bu kaydı", "Tüm alanları doldurunuz.")); setPwError(lang === "tr" ? "Tüm alanları doldurunuz." : "Please fill in all fields."); return; }
+    if (newPw !== newPw2) { setPwError(lang === "tr" ? "Yeni şifreler eşleşmiyor." : "New passwords do not match."); return; }
+    if (newPw.length < 6) { setPwError(lang === "tr" ? "Yeni şifre en az 6 karakter olmalıdır." : "New password must be at least 6 characters."); return; }
     setPwSaving(true);
     try {
       const res = await fetch("/api/auth/change-password", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ currentPassword: currentPw, newPassword: newPw }) });
@@ -266,13 +266,13 @@ export default function ProfilePage() {
             <CardContent className="pt-6">
               <div className="flex justify-end mb-4 gap-2">
                 <Button size="sm" variant="outline" onClick={() => { setShowPwForm((v) => !v); setPwError(""); setPwSuccess(false); }} className="gap-1">
-                  <KeyRound size={14} /> Şifre Değiştir
+                  <KeyRound size={14} /> {t("profile.change_password")}
                 </Button>
                 {editing ? (
                   <>
-                    <Button size="sm" variant="outline" onClick={() => { setEditing(false); setForm(profile ?? {}); }} className="gap-1"><X size={14} /> İptal</Button>
+                    <Button size="sm" variant="outline" onClick={() => { setEditing(false); setForm(profile ?? {}); }} className="gap-1"><X size={14} /> {t("common.cancel")}</Button>
                     <Button size="sm" onClick={handleSave} disabled={saving} className="gap-1 bg-[#1E6B9B] hover:bg-[#165375]">
-                      {saving ? <Loader2 size={14} className="animate-spin" /> : <Save size={14} />} Kaydet
+                      {saving ? <Loader2 size={14} className="animate-spin" /> : <Save size={14} />} {t("common.save")}
                     </Button>
                   </>
                 ) : (
@@ -283,22 +283,22 @@ export default function ProfilePage() {
               {/* Şifre Değiştirme Formu */}
               {showPwForm && (
                 <div className="mb-4 p-4 bg-slate-50 rounded-lg border border-slate-200 space-y-3">
-                  <p className="text-sm font-medium text-slate-700">Şifre Değiştir</p>
+                  <p className="text-sm font-medium text-slate-700">{t("profile.change_password")}</p>
                   <div className="relative">
-                    <Input type={showCurrent ? "text" : "password"} placeholder="Mevcut Şifre" value={currentPw} onChange={(e) => setCurrentPw(e.target.value)} className="h-8 text-sm bg-white pr-9" />
+                    <Input type={showCurrent ? "text" : "password"} placeholder={t("profile.current_password")} value={currentPw} onChange={(e) => setCurrentPw(e.target.value)} className="h-8 text-sm bg-white pr-9" />
                     <button type="button" onClick={() => setShowCurrent((v) => !v)} className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400">{showCurrent ? <EyeOff size={14} /> : <Eye size={14} />}</button>
                   </div>
                   <div className="relative">
-                    <Input type={showNew ? "text" : "password"} placeholder="Yeni Şifre (min. 6 karakter)" value={newPw} onChange={(e) => setNewPw(e.target.value)} className="h-8 text-sm bg-white pr-9" />
+                    <Input type={showNew ? "text" : "password"} placeholder={t("profile.new_password")} value={newPw} onChange={(e) => setNewPw(e.target.value)} className="h-8 text-sm bg-white pr-9" />
                     <button type="button" onClick={() => setShowNew((v) => !v)} className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400">{showNew ? <EyeOff size={14} /> : <Eye size={14} />}</button>
                   </div>
-                  <Input type="password" placeholder="Yeni Şifre (Tekrar)" value={newPw2} onChange={(e) => setNewPw2(e.target.value)} className="h-8 text-sm bg-white" />
+                  <Input type="password" placeholder={t("profile.new_password_repeat")} value={newPw2} onChange={(e) => setNewPw2(e.target.value)} className="h-8 text-sm bg-white" />
                   {pwError && <p className="text-xs text-red-600 bg-red-50 border border-red-200 rounded px-2 py-1">{pwError}</p>}
-                  {pwSuccess && <p className="text-xs text-green-600 bg-green-50 border border-green-200 rounded px-2 py-1">Şifre başarıyla değiştirildi.</p>}
+                  {pwSuccess && <p className="text-xs text-green-600 bg-green-50 border border-green-200 rounded px-2 py-1">{t("profile.password_changed")}</p>}
                   <div className="flex gap-2 justify-end">
-                    <Button size="sm" variant="outline" onClick={() => setShowPwForm(false)}>İptal</Button>
+                    <Button size="sm" variant="outline" onClick={() => setShowPwForm(false)}>{t("common.cancel")}</Button>
                     <Button size="sm" onClick={handleChangePassword} disabled={pwSaving} className="bg-[#1E6B9B] hover:bg-[#165375]">
-                      {pwSaving ? <Loader2 size={14} className="animate-spin" /> : "Kaydet"}
+                      {pwSaving ? <Loader2 size={14} className="animate-spin" /> : t("common.save")}
                     </Button>
                   </div>
                 </div>
