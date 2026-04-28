@@ -14,7 +14,7 @@ export default function Page() {
       fields={[
         { key: "title", label: t("fields.research_name"), placeholder: t("fields.research_name_placeholder") },
         { key: "institution", label: t("fields.institution"), placeholder: t("fields.institution_placeholder") },
-        { key: "date", label: t("common.date"), placeholder: "Tarih" },
+        { key: "date", label: t("common.date"), placeholder: t("common.date") },
       ]}
       apiPath="/api/arastirmalar/misafir"
       

@@ -16,7 +16,7 @@ export default function Page() {
         { key: "advisor", label: t("fields.advisor_name"), placeholder: t("fields.advisor_name_placeholder") },
         { key: "title", label: t("fields.title"), placeholder: t("fields.title_placeholder") },
         { key: "file", label: t("fields.file"), placeholder: t("fields.file_placeholder") },
-        { key: "date", label: t("common.date"), placeholder: "Tarih" },
+        { key: "date", label: t("common.date"), placeholder: t("common.date") },
       ]}
       apiPath="/api/akademik-calismalar/tezlerim"
       

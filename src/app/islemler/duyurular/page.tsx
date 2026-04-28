@@ -13,7 +13,7 @@ export default function Page() {
       ]}
       fields={[
         { key: "title", label: t("fields.announcement_title"), placeholder: t("fields.announcement_title_placeholder") },
-        { key: "date", label: t("common.date"), placeholder: "Tarih" },
+        { key: "date", label: t("common.date"), placeholder: t("common.date") },
       ]}
       apiPath="/api/islemler/duyurular"
       

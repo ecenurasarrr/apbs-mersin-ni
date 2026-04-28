@@ -14,7 +14,7 @@ export default function Page() {
       fields={[
         { key: "title", label: t("fields.thesis_title"), placeholder: t("fields.thesis_title_placeholder") },
         { key: "student", label: t("fields.student"), placeholder: t("fields.student_placeholder") },
-        { key: "date", label: t("common.date"), placeholder: "Tarih" },
+        { key: "date", label: t("common.date"), placeholder: t("common.date") },
       ]}
       apiPath="/api/akademik-calismalar/yonetilen-tezler"
       

@@ -13,7 +13,7 @@ export default function Page() {
       ]}
       fields={[
         { key: "title", label: t("fields.publication_title"), placeholder: t("fields.publication_title_placeholder") },
-        { key: "date", label: t("common.date"), placeholder: "Tarih" },
+        { key: "date", label: t("common.date"), placeholder: t("common.date") },
       ]}
       apiPath="/api/akademik-calismalar/yayinlar"
       

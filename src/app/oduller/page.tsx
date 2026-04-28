@@ -11,7 +11,7 @@ export default function Page() {
       apiPath="/api/oduller"
       fields={[
         { key: "name", label: t("fields.award_name"), placeholder: t("fields.award_name_placeholder") },
-        { key: "year", label: t("common.year"), placeholder: "Yıl" },
+        { key: "year", label: t("common.year"), placeholder: t("common.year") },
       ]}
       columns={[
         { key: "name", label: t("fields.award_name") },

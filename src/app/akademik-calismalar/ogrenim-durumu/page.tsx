@@ -13,7 +13,7 @@ export default function Page() {
       ]}
       fields={[
         { key: "title", label: t("fields.education_info"), placeholder: t("fields.education_info_placeholder") },
-        { key: "date", label: t("common.date"), placeholder: "Tarih" },
+        { key: "date", label: t("common.date"), placeholder: t("common.date") },
       ]}
       apiPath="/api/akademik-calismalar/ogrenim-durumu"
       

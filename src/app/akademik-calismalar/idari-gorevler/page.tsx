@@ -13,7 +13,7 @@ export default function Page() {
       ]}
       fields={[
         { key: "title", label: t("fields.task_name"), placeholder: t("fields.task_name_placeholder") },
-        { key: "date", label: t("common.date"), placeholder: "Tarih" },
+        { key: "date", label: t("common.date"), placeholder: t("common.date") },
       ]}
       apiPath="/api/akademik-calismalar/idari-gorevler"
       

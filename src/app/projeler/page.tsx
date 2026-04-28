@@ -10,12 +10,12 @@ export default function Page() {
       breadcrumbs={[{ label: t("menu.projeler") }]}
       apiPath="/api/projeler-ve-patentler/projeler"
       fields={[
-        { key: "title", label: "Proje Adı", placeholder: "Proje adını giriniz" },
-        { key: "status", label: t("common.status"), placeholder: "Durum" },
-        { key: "date", label: t("common.date"), placeholder: "Tarih" },
+        { key: "title", label: t("fields.project_name"), placeholder: t("fields.project_name_placeholder") },
+        { key: "status", label: t("common.status"), placeholder: t("common.status") },
+        { key: "date", label: t("common.date"), placeholder: t("common.date") },
       ]}
       columns={[
-        { key: "title", label: "Proje Adı" },
+        { key: "title", label: t("fields.project_name") },
         { key: "status", label: t("common.status") },
         { key: "date", label: t("common.date") },
       ]}

@@ -10,7 +10,7 @@ export default function Page() {
       breadcrumbs={[{ label: t("navbar.hakemlikler") }]}
       fields={[
         { key: "name", label: t("fields.organization_book_journal"), placeholder: t("fields.organization_book_journal_placeholder") },
-        { key: "year", label: t("common.year"), placeholder: "Yıl" },
+        { key: "year", label: t("common.year"), placeholder: t("common.year") },
       ]}
       apiPath="/api/hakemlikler"
       

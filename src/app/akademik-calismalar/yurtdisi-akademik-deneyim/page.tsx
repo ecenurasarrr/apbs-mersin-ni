@@ -14,7 +14,7 @@ export default function Page() {
       fields={[
         { key: "institution", label: t("fields.institution"), placeholder: t("fields.institution_placeholder") },
         { key: "country", label: t("fields.country"), placeholder: t("fields.country_placeholder") },
-        { key: "date", label: t("common.date"), placeholder: "Tarih" },
+        { key: "date", label: t("common.date"), placeholder: t("common.date") },
       ]}
       apiPath="/api/akademik-calismalar/yurtdisi-akademik-deneyim"
       
