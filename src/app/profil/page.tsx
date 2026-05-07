@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Home, ChevronRight, FileText, Download, Edit2, Save, X, Loader2, KeyRound, Eye, EyeOff } from "lucide-react";
+import { Home, ChevronRight, Download, Edit2, Save, X, Loader2, KeyRound, Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -23,35 +23,27 @@ interface Stats {
   arastirmalar: StatItem[]; taninma: StatItem[]; toplam: number;
 }
 
-interface CVSection {
-  key: string;
-  api: string;
-  keys: string[];
-}
-
-const CV_SECTIONS_CONFIG: CVSection[] = [
-  { key: "cv.publications", api: "/api/akademik-calismalar/yayinlar", keys: ["title", "date"] },
-  { key: "cv.books", api: "/api/akademik-calismalar/kitaplar", keys: ["title", "date"] },
-  { key: "cv.citations", api: "/api/akademik-calismalar/atiflar", keys: ["title", "date"] },
-  { key: "cv.my_theses", api: "/api/akademik-calismalar/tezlerim", keys: ["title", "date"] },
-  { key: "cv.supervised_theses", api: "/api/akademik-calismalar/yonetilen-tezler", keys: ["title", "student", "date"] },
-  { key: "cv.projects", api: "/api/projeler-ve-patentler/projeler", keys: ["title", "status", "date"] },
-  { key: "cv.patents", api: "/api/projeler-ve-patentler/patentler", keys: ["title", "number", "date"] },
-  { key: "cv.peer_reviews", api: "/api/hakemlikler", keys: ["name", "year"] },
-  { key: "cv.awards", api: "/api/oduller", keys: ["name", "year"] },
-  { key: "cv.scientific_meetings", api: "/api/etkinlikler/bilimsel-toplantilar", keys: ["title", "date"] },
-];
+const FIELD_LABELS: Record<"tr" | "en", Record<string, string>> = {
+  tr: {
+    title: "Başlık", date: "Tarih", student: "Öğrenci", name: "Ad", year: "Yıl",
+    status: "Durum", number: "Numara", department: "Bölüm", advisor: "Danışman", file: "Dosya",
+    language: "Dil", level: "Seviye", institution: "Kurum", country: "Ülke", organization: "Kuruluş",
+  },
+  en: {
+    title: "Title", date: "Date", student: "Student", name: "Name", year: "Year",
+    status: "Status", number: "Number", department: "Department", advisor: "Advisor", file: "File",
+    language: "Language", level: "Level", institution: "Institution", country: "Country", organization: "Organization",
+  },
+};
 
 function buildCvHtml(title: string, lang: "tr" | "en", data: UserProfile, sections: { label: string; rows: Record<string, string>[] }[], cvLabels: Record<string, string>) {
-  const labels = lang === "tr"
-    ? { tc: cvLabels.tc, birth: cvLabels.birth, home: cvLabels.home_address, work: cvLabels.work_address, gsm: cvLabels.gsm, email: cvLabels.email, other: cvLabels.other_email, url: cvLabels.url }
-    : { tc: cvLabels.tc, birth: cvLabels.birth, home: cvLabels.home_address, work: cvLabels.work_address, gsm: cvLabels.gsm, email: cvLabels.email, other: cvLabels.other_email, url: cvLabels.url };
   const birth = data.birthDate ? new Date(data.birthDate).toLocaleDateString(lang === "tr" ? "tr-TR" : "en-GB") : "-";
+  const fieldLabels = FIELD_LABELS[lang];
 
   const sectionsHtml = sections.filter(s => s.rows.length > 0).map(s => {
     const keys = Object.keys(s.rows[0]).filter(k => !["id","userId","createdAt","updatedAt"].includes(k));
     const rows = s.rows.map(r => `<tr>${keys.map(k => `<td>${r[k] ?? "-"}</td>`).join("")}</tr>`).join("");
-    const headers = keys.map(k => `<th style="background:#f1f5f9;text-align:left;padding:6px 10px;font-size:11px;text-transform:uppercase;color:#64748b">${k}</th>`).join("");
+    const headers = keys.map(k => `<th style="background:#f1f5f9;text-align:left;padding:6px 10px;font-size:11px;text-transform:uppercase;color:#64748b">${fieldLabels[k] ?? k}</th>`).join("");
     return `<h2>${s.label} (${s.rows.length})</h2><table><thead><tr>${headers}</tr></thead><tbody>${rows}</tbody></table>`;
   }).join("");
 
@@ -62,21 +54,21 @@ function buildCvHtml(title: string, lang: "tr" | "en", data: UserProfile, sectio
   <p style="color:#64748b;font-size:12px;margin-top:-8px">${title} — ${lang === "tr" ? "Oluşturulma:" : "Created:"} ${new Date().toLocaleDateString(lang === "tr" ? "tr-TR" : "en-GB")}</p>
   <h2>${cvLabels.personal_info}</h2>
   <table>
-  <tr><td>${labels.tc}</td><td>${data.tcNo}</td></tr>
-  <tr><td>${labels.birth}</td><td>${birth}</td></tr>
-  <tr><td>${labels.home}</td><td>${data.homeAddress ?? "-"}</td></tr>
-  <tr><td>${labels.work}</td><td>${data.workAddress ?? "-"}</td></tr>
-  <tr><td>${labels.gsm}</td><td>${data.gsm ?? "-"}</td></tr>
-  <tr><td>${labels.email}</td><td>${data.email}</td></tr>
-  <tr><td>${labels.other}</td><td>${data.otherEmail ?? "-"}</td></tr>
-  <tr><td>${labels.url}</td><td>${data.url ?? "-"}</td></tr>
+  <tr><td>${cvLabels.tc}</td><td>${data.tcNo}</td></tr>
+  <tr><td>${cvLabels.birth}</td><td>${birth}</td></tr>
+  <tr><td>${cvLabels.home_address}</td><td>${data.homeAddress ?? "-"}</td></tr>
+  <tr><td>${cvLabels.work_address}</td><td>${data.workAddress ?? "-"}</td></tr>
+  <tr><td>${cvLabels.gsm}</td><td>${data.gsm ?? "-"}</td></tr>
+  <tr><td>${cvLabels.email}</td><td>${data.email}</td></tr>
+  <tr><td>${cvLabels.other_email}</td><td>${data.otherEmail ?? "-"}</td></tr>
+  <tr><td>${cvLabels.url}</td><td>${data.url ?? "-"}</td></tr>
   </table>
   ${sectionsHtml}
   <br/><button onclick="window.print()" style="margin-top:24px;padding:8px 20px;background:#1E6B9B;color:white;border:none;border-radius:4px;cursor:pointer;font-size:13px;">${lang === "tr" ? "PDF olarak kaydet (Yazdır)" : "Save as PDF (Print)"}</button>
   </body></html>`;
 }
 
-async function openCv(title: string, lang: "tr" | "en", data: UserProfile, cvSections: { label: string; api: string; }[], cvLabels: Record<string, string>) {
+async function downloadCv(title: string, lang: "tr" | "en", data: UserProfile, cvSections: { label: string; api: string; }[], cvLabels: Record<string, string>) {
   const sections = await Promise.all(
     cvSections.map(async (s) => {
       try {
@@ -87,8 +79,11 @@ async function openCv(title: string, lang: "tr" | "en", data: UserProfile, cvSec
     })
   );
   const blob = new Blob([buildCvHtml(title, lang, data, sections, cvLabels)], { type: "text/html;charset=utf-8" });
-  const win = window.open(URL.createObjectURL(blob), "_blank");
-  if (win) win.focus();
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = `${data.fullName.replace(/\s+/g, "_")}_CV_${lang.toUpperCase()}.html`;
+  a.click();
+  URL.revokeObjectURL(a.href);
 }
 
 function StatGroup({ title, items, color }: { title: string; items: StatItem[]; color: string }) {
@@ -127,20 +122,6 @@ export default function ProfilePage() {
   const [pwError, setPwError] = useState("");
   const [pwSuccess, setPwSuccess] = useState(false);
   const [pwSaving, setPwSaving] = useState(false);
-
-  // Dynamic CV sections with translations — her zaman mevcut UI diline göre
-  const cvSections = CV_SECTIONS_CONFIG.map((s) => ({ label: t(s.key), api: s.api }));
-  const cvLabels = {
-    tc: t("cv.tc"),
-    birth: t("cv.birth"),
-    home_address: t("cv.home_address"),
-    work_address: t("cv.work_address"),
-    gsm: t("cv.gsm"),
-    email: t("cv.email"),
-    other_email: t("cv.other_email"),
-    url: t("cv.url"),
-    personal_info: t("cv.personal_info"),
-  };
 
   // CV için dile özgü çeviri — UI dilinden bağımsız
   const getCvLabelsForLang = (cvLang: "tr" | "en") => {
@@ -256,10 +237,10 @@ export default function ProfilePage() {
                 <h2 className="text-xl font-bold text-[#006DCF] mb-1">{profile?.fullName}</h2>
                 {profile?.title && <p className="text-sm text-slate-500 mb-2">{profile.title}</p>}
                 <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 mt-2">
-                  <Button size="sm" variant="outline" className="h-8 gap-1 border-blue-200 text-blue-700 hover:bg-blue-50" onClick={() => profile && openCv("CV Türkçe", "tr", profile, getCvSectionsForLang("tr"), getCvLabelsForLang("tr"))}><Download size={14} /> {t("profile.cv_turkish")}</Button>
-                  <Button size="sm" variant="outline" className="h-8 gap-1 border-yellow-500 text-yellow-700 hover:bg-yellow-50" onClick={() => profile && openCv("CV English", "en", profile, getCvSectionsForLang("en"), getCvLabelsForLang("en"))}><Download size={14} /> {t("profile.cv_english")}</Button>
-                  <Button size="sm" className="h-8 gap-1 bg-red-600 hover:bg-red-700 text-white" onClick={() => profile && openCv("CV Performans", "tr", profile, getCvSectionsForLang("tr"), getCvLabelsForLang("tr"))}><Download size={14} /> {t("profile.cv_perf")}</Button>
-                  <Button size="sm" variant="secondary" className="h-8 gap-1" onClick={() => profile && openCv("CV YÖK", "tr", profile, getCvSectionsForLang("tr"), getCvLabelsForLang("tr"))}><Download size={14} /> {t("profile.cv_yok")}</Button>
+                  <Button size="sm" variant="outline" className="h-8 gap-1 border-blue-200 text-blue-700 hover:bg-blue-50" onClick={() => profile && downloadCv("CV Türkçe", "tr", profile, getCvSectionsForLang("tr"), getCvLabelsForLang("tr"))}><Download size={14} /> {t("profile.cv_turkish")}</Button>
+                  <Button size="sm" variant="outline" className="h-8 gap-1 border-yellow-500 text-yellow-700 hover:bg-yellow-50" onClick={() => profile && downloadCv("CV English", "en", profile, getCvSectionsForLang("en"), getCvLabelsForLang("en"))}><Download size={14} /> {t("profile.cv_english")}</Button>
+                  <Button size="sm" className="h-8 gap-1 bg-red-600 hover:bg-red-700 text-white" onClick={() => profile && downloadCv("CV Performans", "tr", profile, getCvSectionsForLang("tr"), getCvLabelsForLang("tr"))}><Download size={14} /> {t("profile.cv_perf")}</Button>
+                  <Button size="sm" variant="secondary" className="h-8 gap-1" onClick={() => profile && downloadCv("CV YÖK", "tr", profile, getCvSectionsForLang("tr"), getCvLabelsForLang("tr"))}><Download size={14} /> {t("profile.cv_yok")}</Button>
                 </div>
               </div>
             </CardHeader>

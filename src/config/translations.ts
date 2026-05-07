@@ -86,7 +86,11 @@ export const translations = {
       total_records: "toplam kayıt",
       activity: "Faaliyet",
       record_count: "Kayıt Sayısı",
-      total: "TOPLAM"
+      total: "TOPLAM",
+      cv_turkish: "CV İndir Türkçe",
+      cv_english: "CV İndir İngilizce",
+      cv_perf: "CV Performans",
+      cv_yok: "CV YÖK"
     },
     admin: {
       title: "Kullanıcı Yönetimi",
@@ -268,7 +272,11 @@ export const translations = {
       total_records: "total records",
       activity: "Activity",
       record_count: "Record Count",
-      total: "TOTAL"
+      total: "TOTAL",
+      cv_turkish: "Download CV Turkish",
+      cv_english: "Download CV English",
+      cv_perf: "CV Performance",
+      cv_yok: "CV YÖK"
     },
     admin: {
       title: "User Management",

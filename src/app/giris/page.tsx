@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { Loader2, Eye, EyeOff } from "lucide-react";
+import { Loader2, Eye, EyeOff, ArrowLeft, Mail, GraduationCap } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 type Step = "landing" | "kurumsal" | "misafir";
 
@@ -62,147 +64,232 @@ export default function GirisPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#3d5166] px-4">
-      <div className="bg-[#eef1f5] rounded-lg shadow-xl w-full max-w-sm overflow-hidden">
-        <div className="flex flex-col items-center pt-8 pb-6 px-6 sm:px-8">
+    <div className="min-h-screen flex items-center justify-center bg-slate-50 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-50 to-slate-100 p-4 relative overflow-hidden">
+      
+      {/* Decorative background shapes */}
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+        <div className="absolute -top-[20%] -left-[10%] w-[50%] h-[50%] rounded-full bg-blue-100/50 blur-[120px]" />
+        <div className="absolute top-[60%] -right-[10%] w-[40%] h-[40%] rounded-full bg-blue-200/40 blur-[100px]" />
+      </div>
+
+      <div className="bg-white/80 backdrop-blur-xl rounded-2xl shadow-2xl w-full max-w-[440px] overflow-hidden border border-white relative z-10">
+        <div className="flex flex-col pt-10 pb-8 px-8 sm:px-10">
 
           {/* Logo */}
-          <div className="mb-4">
-            <img src="/logo_tr.png" alt="Mersin Üniversitesi" className="w-[120px] h-[120px] sm:w-[140px] sm:h-[140px] object-contain" />
+          <div className="flex justify-center mb-6">
+            <div className="relative">
+              <div className="absolute inset-0 bg-blue-100 rounded-full blur-xl opacity-50"></div>
+              <img src="/logo_tr.png" alt="Mersin Üniversitesi" className="w-[110px] h-[110px] sm:w-[130px] sm:h-[130px] object-contain relative z-10 drop-shadow-sm" />
+            </div>
           </div>
 
-          {/* LANDING */}
-          {step === "landing" && (
-            <>
-              <h3 className="text-center text-[#3d8b8b] font-semibold text-sm sm:text-base leading-snug mb-6">
-                Mersin Üniversitesi<br />Akademik Personel Bilgi Sistemi
-              </h3>
-              <button
-                onClick={() => setStep("kurumsal")}
-                className="w-full bg-[#3d8b8b] hover:bg-[#2e7070] active:bg-[#256060] text-white font-bold uppercase py-3 rounded transition-colors tracking-widest text-sm mb-4"
-              >
-                Oturum Aç
-              </button>
-              <hr className="w-full border-slate-300 mb-4" />
-              <button
-                onClick={() => setStep("misafir")}
-                className="text-[#3d8b8b] hover:underline text-sm text-center"
-              >
-                Misafir Öğretim Elemanları için Giriş
-              </button>
-            </>
-          )}
+          <h3 className="text-center text-[#1E6B9B] font-bold text-base sm:text-lg leading-tight mb-8">
+            Mersin Üniversitesi<br />
+            <span className="text-slate-600 font-medium text-sm sm:text-base mt-1 block">
+              Akademik Personel Bilgi Sistemi
+            </span>
+          </h3>
 
-          {/* KURUMSAL GİRİŞ */}
-          {step === "kurumsal" && (
-            <>
-              <p className="text-[#3d8b8b] font-semibold text-sm mb-1 text-center">Lütfen Oturum Açınız</p>
-              <form onSubmit={handleKurumsal} className="w-full space-y-3 mt-3">
-                <div className="flex gap-1 items-center">
-                  <input
-                    type="text"
-                    placeholder="Kullanıcı Adı"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    className="flex-1 min-w-0 px-3 py-2 rounded border border-slate-300 bg-white text-sm outline-none focus:border-[#3d8b8b] transition"
-                    autoComplete="new-password"
-                    autoFocus
-                  />
-                  <span className="text-slate-500 text-sm px-1 shrink-0">@</span>
-                  <select
-                    value={domain}
-                    onChange={(e) => setDomain(e.target.value)}
-                    className="shrink-0 px-1 py-2 rounded border border-slate-300 bg-white text-xs outline-none focus:border-[#3d8b8b] transition"
-                  >
-                    <option value="mersin.edu.tr">mersin.edu.tr</option>
-                    <option value="ogr.mersin.edu.tr">ogr.mersin.edu.tr</option>
-                  </select>
+          <div className="min-h-[280px] flex flex-col justify-center">
+            {/* LANDING */}
+            {step === "landing" && (
+              <div className="flex flex-col gap-4 w-full animate-in fade-in slide-in-from-bottom-4 duration-500">
+                <Button
+                  onClick={() => setStep("kurumsal")}
+                  className="w-full h-14 bg-[#1E6B9B] hover:bg-[#165375] text-white font-semibold text-base rounded-xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-3"
+                >
+                  <GraduationCap size={22} className="opacity-90" />
+                  Kurumsal Giriş
+                </Button>
+                
+                <div className="relative flex items-center py-2">
+                  <div className="flex-grow border-t border-slate-200"></div>
+                  <span className="flex-shrink-0 mx-4 text-slate-400 text-xs uppercase font-medium tracking-wider">veya</span>
+                  <div className="flex-grow border-t border-slate-200"></div>
                 </div>
-                <div className="relative">
-                  <input
-                    type={showKurPw ? "text" : "password"}
-                    placeholder="Parola"
-                    value={kurPassword}
-                    onChange={(e) => setKurPassword(e.target.value)}
-                    className="w-full px-3 py-2 rounded border border-slate-300 bg-white text-sm outline-none focus:border-[#3d8b8b] transition pr-9"
-                  />
-                  <button type="button" onClick={() => setShowKurPw(v => !v)} className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400">
-                    {showKurPw ? <EyeOff size={15} /> : <Eye size={15} />}
-                  </button>
-                </div>
-                <a href="#" className="block text-xs text-[#3d8b8b] hover:underline">Parola Değiştirme</a>
-                {kurError && <p className="text-red-600 text-xs bg-red-50 border border-red-200 rounded px-2 py-1">{kurError}</p>}
-                <button type="submit" disabled={kurLoading}
-                  className="w-full bg-[#3d8b8b] hover:bg-[#2e7070] active:bg-[#256060] disabled:opacity-60 text-white font-bold py-2.5 rounded transition-colors text-sm flex items-center justify-center gap-2">
-                  {kurLoading && <Loader2 size={15} className="animate-spin" />} Giriş Yap
-                </button>
-                <div className="text-xs text-slate-500 text-center pt-1">
-                  ePosta Yardım için dahili numaralar : 34045 - 34043 - 13530
-                </div>
-                <div className="border rounded p-3 text-xs space-y-1">
-                  <p className="font-semibold text-slate-600 text-center">Yardım Dokümanları</p>
-                  <a href="#" className="block text-[#3d8b8b] hover:underline text-center">ePosta Sistemi Hakkında</a>
-                  <a href="#" className="block text-[#3d8b8b] hover:underline text-center">ePosta İstemcisi Yapılandırmaları</a>
-                  <a href="#" className="block text-[#3d8b8b] hover:underline text-center">Uzaktan Destek Kılavuzu</a>
-                </div>
-                <button type="button" onClick={() => { setStep("landing"); setKurError(""); }}
-                  className="w-full text-slate-400 hover:text-slate-600 text-xs py-1">← Geri</button>
-              </form>
-            </>
-          )}
 
-          {/* MİSAFİR GİRİŞ */}
-          {step === "misafir" && (
-            <>
-              <h3 className="text-center text-[#3d8b8b] font-semibold text-sm sm:text-base leading-snug mb-4">
-                Misafir Öğretim Elemanları<br />için Giriş
-              </h3>
-              <form onSubmit={handleMisafir} className="w-full space-y-3">
-                <input
-                  type="text"
-                  placeholder="E-posta adresiniz"
-                  value={misafirEmail}
-                  onChange={(e) => setMisafirEmail(e.target.value)}
-                  className="w-full px-3 py-2 rounded border border-slate-300 bg-white text-sm outline-none focus:border-[#3d8b8b] transition"
-                  autoComplete="new-password"
-                  autoFocus
-                />
-                <div className="relative">
-                  <input
-                    type={showMisafirPw ? "text" : "password"}
-                    placeholder="Parola"
-                    value={misafirPassword}
-                    onChange={(e) => setMisafirPassword(e.target.value)}
-                    className="w-full px-3 py-2 rounded border border-slate-300 bg-white text-sm outline-none focus:border-[#3d8b8b] transition pr-9"
-                  />
-                  <button type="button" onClick={() => setShowMisafirPw(v => !v)} className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400">
-                    {showMisafirPw ? <EyeOff size={15} /> : <Eye size={15} />}
+                <Button
+                  variant="outline"
+                  onClick={() => setStep("misafir")}
+                  className="w-full h-14 border-2 border-slate-200 hover:border-[#1E6B9B] hover:bg-blue-50/50 text-slate-600 hover:text-[#1E6B9B] font-medium text-base rounded-xl transition-all flex items-center justify-center gap-3"
+                >
+                  <Mail size={20} className="opacity-70" />
+                  Misafir Öğretim Elemanı
+                </Button>
+              </div>
+            )}
+
+            {/* KURUMSAL GİRİŞ */}
+            {step === "kurumsal" && (
+              <div className="w-full animate-in fade-in slide-in-from-right-4 duration-300">
+                <div className="flex items-center gap-2 mb-6">
+                  <button onClick={() => { setStep("landing"); setKurError(""); }} className="p-1.5 text-slate-400 hover:text-[#1E6B9B] transition-colors rounded-full hover:bg-blue-50">
+                    <ArrowLeft size={20} />
                   </button>
+                  <h4 className="font-semibold text-slate-800">Kurumsal Oturum Aç</h4>
                 </div>
-                {misafirError && <p className="text-red-600 text-xs bg-red-50 border border-red-200 rounded px-2 py-1">{misafirError}</p>}
-                <button type="submit" disabled={misafirLoading}
-                  className="w-full bg-[#3d8b8b] hover:bg-[#2e7070] active:bg-[#256060] disabled:opacity-60 text-white font-bold py-2.5 rounded transition-colors text-sm flex items-center justify-center gap-2">
-                  {misafirLoading && <Loader2 size={15} className="animate-spin" />} Oturum Aç
-                </button>
-                <p className="text-xs text-slate-500 text-center">
-                  Not: Kullanıcı adınız mersin.edu.tr uzantılı e-posta adresiniz, parolanız da e-posta adresinizin parolasıdır
-                </p>
-                <div className="space-y-1 text-center">
-                  <a href="#" className="block text-xs text-[#3d8b8b] hover:underline">Misafir Öğretim Elemanları için Başvuru Formu</a>
-                  <a href="#" className="block text-xs text-[#3d8b8b] hover:underline">Kullanım Kılavuzu</a>
-                  <a href="#" className="block text-xs text-[#3d8b8b] hover:underline">Change Language English</a>
+                
+                <form onSubmit={handleKurumsal} className="space-y-4">
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-bold uppercase text-slate-500 ml-1">E-posta</label>
+                    <div className="flex gap-1 items-stretch">
+                      <Input
+                        type="text"
+                        placeholder="Kullanıcı Adı"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        className="flex-1 h-12 bg-slate-50/50 border-slate-200 focus-visible:ring-[#1E6B9B]"
+                        autoComplete="username"
+                        autoFocus
+                      />
+                      <div className="flex items-center px-1 text-slate-400 font-medium">@</div>
+                      <select
+                        value={domain}
+                        onChange={(e) => setDomain(e.target.value)}
+                        className="h-12 px-2 rounded-md border border-slate-200 bg-slate-50/50 text-sm outline-none focus:border-[#1E6B9B] focus:ring-1 focus:ring-[#1E6B9B] transition text-slate-700"
+                      >
+                        <option value="mersin.edu.tr">mersin.edu.tr</option>
+                        <option value="ogr.mersin.edu.tr">ogr.mersin.edu.tr</option>
+                      </select>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-1.5">
+                    <div className="flex items-center justify-between ml-1">
+                      <label className="text-xs font-bold uppercase text-slate-500">Parola</label>
+                      <a href="#" className="text-[11px] text-[#1E6B9B] hover:underline font-medium">Parola Değiştirme</a>
+                    </div>
+                    <div className="relative">
+                      <Input
+                        type={showKurPw ? "text" : "password"}
+                        placeholder="Parolanız"
+                        value={kurPassword}
+                        onChange={(e) => setKurPassword(e.target.value)}
+                        className="w-full h-12 bg-slate-50/50 border-slate-200 focus-visible:ring-[#1E6B9B] pr-10"
+                        autoComplete="current-password"
+                      />
+                      <button type="button" onClick={() => setShowKurPw(v => !v)} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors">
+                        {showKurPw ? <EyeOff size={18} /> : <Eye size={18} />}
+                      </button>
+                    </div>
+                  </div>
+
+                  {kurError && (
+                    <div className="p-3 bg-red-50 border border-red-100 rounded-lg text-red-600 text-sm font-medium animate-in fade-in">
+                      {kurError}
+                    </div>
+                  )}
+
+                  <Button type="submit" disabled={kurLoading}
+                    className="w-full h-12 bg-[#1E6B9B] hover:bg-[#165375] text-white font-bold rounded-xl shadow-md transition-all mt-6 text-base">
+                    {kurLoading ? <Loader2 size={20} className="animate-spin mr-2" /> : null} 
+                    Giriş Yap
+                  </Button>
+                </form>
+
+                <div className="mt-8 pt-6 border-t border-slate-100">
+                  <p className="font-semibold text-slate-700 text-sm mb-3">Yardım Dokümanları</p>
+                  <div className="space-y-2">
+                    <a href="#" className="flex items-center text-[#1E6B9B] hover:underline text-xs group">
+                      <div className="w-1.5 h-1.5 rounded-full bg-blue-300 mr-2 group-hover:bg-[#1E6B9B] transition-colors" />
+                      ePosta Sistemi Hakkında
+                    </a>
+                    <a href="#" className="flex items-center text-[#1E6B9B] hover:underline text-xs group">
+                      <div className="w-1.5 h-1.5 rounded-full bg-blue-300 mr-2 group-hover:bg-[#1E6B9B] transition-colors" />
+                      ePosta İstemcisi Yapılandırmaları
+                    </a>
+                    <a href="#" className="flex items-center text-[#1E6B9B] hover:underline text-xs group">
+                      <div className="w-1.5 h-1.5 rounded-full bg-blue-300 mr-2 group-hover:bg-[#1E6B9B] transition-colors" />
+                      Uzaktan Destek Kılavuzu
+                    </a>
+                  </div>
+                  <div className="mt-4 p-3 bg-slate-50 rounded-lg text-xs text-slate-500 border border-slate-100">
+                    <span className="font-semibold text-slate-600 block mb-1">Destek için dahili numaralar:</span>
+                    34045 - 34043 - 13530
+                  </div>
                 </div>
-                <button type="button" onClick={() => { setStep("landing"); setMisafirError(""); }}
-                  className="w-full text-slate-400 hover:text-slate-600 text-xs py-1">← Geri</button>
-              </form>
-            </>
-          )}
+              </div>
+            )}
+
+            {/* MİSAFİR GİRİŞ */}
+            {step === "misafir" && (
+              <div className="w-full animate-in fade-in slide-in-from-left-4 duration-300">
+                <div className="flex items-center gap-2 mb-6">
+                  <button onClick={() => { setStep("landing"); setMisafirError(""); }} className="p-1.5 text-slate-400 hover:text-[#1E6B9B] transition-colors rounded-full hover:bg-blue-50">
+                    <ArrowLeft size={20} />
+                  </button>
+                  <h4 className="font-semibold text-slate-800">Misafir Oturum Aç</h4>
+                </div>
+
+                <form onSubmit={handleMisafir} className="space-y-4">
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-bold uppercase text-slate-500 ml-1">Kurumsal E-posta</label>
+                    <Input
+                      type="email"
+                      placeholder="ad.soyad@mersin.edu.tr"
+                      value={misafirEmail}
+                      onChange={(e) => setMisafirEmail(e.target.value)}
+                      className="w-full h-12 bg-slate-50/50 border-slate-200 focus-visible:ring-[#1E6B9B]"
+                      autoComplete="username"
+                      autoFocus
+                    />
+                  </div>
+                  
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-bold uppercase text-slate-500 ml-1">Parola</label>
+                    <div className="relative">
+                      <Input
+                        type={showMisafirPw ? "text" : "password"}
+                        placeholder="Parolanız"
+                        value={misafirPassword}
+                        onChange={(e) => setMisafirPassword(e.target.value)}
+                        className="w-full h-12 bg-slate-50/50 border-slate-200 focus-visible:ring-[#1E6B9B] pr-10"
+                        autoComplete="current-password"
+                      />
+                      <button type="button" onClick={() => setShowMisafirPw(v => !v)} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors">
+                        {showMisafirPw ? <EyeOff size={18} /> : <Eye size={18} />}
+                      </button>
+                    </div>
+                  </div>
+
+                  {misafirError && (
+                    <div className="p-3 bg-red-50 border border-red-100 rounded-lg text-red-600 text-sm font-medium animate-in fade-in">
+                      {misafirError}
+                    </div>
+                  )}
+
+                  <div className="bg-amber-50 border border-amber-100 rounded-lg p-3 text-xs text-amber-800 leading-relaxed mt-2">
+                    <span className="font-bold">Not:</span> Kullanıcı adınız mersin.edu.tr uzantılı e-posta adresiniz, parolanız da bu adresin parolasıdır.
+                  </div>
+
+                  <Button type="submit" disabled={misafirLoading}
+                    className="w-full h-12 bg-[#1E6B9B] hover:bg-[#165375] text-white font-bold rounded-xl shadow-md transition-all mt-4 text-base">
+                    {misafirLoading ? <Loader2 size={20} className="animate-spin mr-2" /> : null} 
+                    Oturum Aç
+                  </Button>
+                </form>
+
+                <div className="mt-8 pt-6 border-t border-slate-100 flex flex-col gap-3">
+                  <a href="#" className="flex items-center justify-center p-2 rounded-lg text-sm text-[#1E6B9B] hover:bg-blue-50 font-medium transition-colors">
+                    Misafir Öğretim Elemanları Başvuru Formu
+                  </a>
+                  <div className="flex items-center justify-center gap-4 text-xs">
+                    <a href="#" className="text-slate-500 hover:text-slate-800 transition-colors">Kullanım Kılavuzu</a>
+                    <span className="text-slate-300">•</span>
+                    <a href="#" className="text-slate-500 hover:text-slate-800 transition-colors">English Version</a>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
         </div>
 
         {/* Footer */}
-        <div className="bg-[#d8dde3] text-center py-3">
-          <a href="http://www.mersin.edu.tr" className="text-slate-500 text-sm hover:text-slate-700">
-            {step === "misafir" ? "© Mersin Üniversitesi" : "2017 © Mersin Üniversitesi"}
+        <div className="bg-slate-50 border-t border-slate-100 px-8 py-4 flex justify-between items-center">
+          <span className="text-xs text-slate-400 font-medium">v2.0.1</span>
+          <a href="http://www.mersin.edu.tr" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-[#1E6B9B] text-xs font-medium transition-colors">
+            {new Date().getFullYear()} © Mersin Üniversitesi
           </a>
         </div>
       </div>

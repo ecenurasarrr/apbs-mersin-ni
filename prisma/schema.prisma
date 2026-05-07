@@ -73,16 +73,37 @@ model PeerReview {
 }
 
 model Thesis {
-  id          Int      @id @default(autoincrement())
-  title       String
-  department  String?
-  advisor     String?
-  file        String?
-  date        String
-  userId      Int
-  user        User     @relation(fields: [userId], references: [id])
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id                 Int      @id @default(autoincrement())
+  sectionId          String?
+  advisorCount       String?
+  advisorName        String?
+  advisorMidName     String?
+  advisorSurname     String?
+  coAdvisorName      String?
+  coAdvisorMidName   String?
+  coAdvisorSurname   String?
+  university         String?
+  universityOther    String?
+  institute          String?
+  instituteOther     String?
+  department         String?
+  departmentOther    String?
+  title              String
+  titleEn            String?
+  abstract           String?
+  abstractEn         String?
+  pageCount          String?
+  status             String?  @default("0") // 0=Devam Ediyor, 1=Tamamlandı
+  keywords           String?  // JSON string: [["tr1","en1"],["tr2","en2"],...]
+  file               String?
+  url                String?
+  city               String?
+  country            String?
+  date               String
+  userId             Int
+  user               User     @relation(fields: [userId], references: [id])
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
 }
 
 model SupervisedThesis {

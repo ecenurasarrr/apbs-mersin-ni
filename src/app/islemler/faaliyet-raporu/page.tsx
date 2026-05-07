@@ -158,6 +158,12 @@ export default function FaaliyetRaporuPage() {
   );
 }
 
+const REPORT_FIELD_LABELS: Record<string, string> = {
+  title: "Başlık", date: "Tarih", student: "Öğrenci", name: "Ad", year: "Yıl",
+  status: "Durum", number: "Numara", department: "Bölüm", advisor: "Danışman", file: "Dosya",
+  language: "Dil", level: "Seviye", institution: "Kurum", country: "Ülke", organization: "Kuruluş",
+};
+
 function buildReportHtml(
   profile: Record<string, string>,
   sections: { label: string; data: Record<string, string>[] }[],
@@ -177,7 +183,7 @@ function buildReportHtml(
     const rows = filtered.map((row) =>
       `<tr>${keys.map((k) => `<td>${row[k] ?? "-"}</td>`).join("")}</tr>`
     ).join("");
-    const headers = keys.map((k) => `<th>${k}</th>`).join("");
+    const headers = keys.map((k) => `<th>${REPORT_FIELD_LABELS[k] ?? k}</th>`).join("");
     return `<h2>${label} <span class="count">(${filtered.length})</span></h2><table><thead><tr>${headers}</tr></thead><tbody>${rows}</tbody></table>`;
   }).join("");
 

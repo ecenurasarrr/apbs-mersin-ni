@@ -34,7 +34,12 @@ export function proxy(request: NextRequest) {
 
   // Session geçerli mi?
   try {
-    const payload = JSON.parse(Buffer.from(session.value, 'base64').toString());
+    const [encoded] = session.value.split('.');
+    if (!encoded) {
+      const loginUrl = new URL('/giris', request.url);
+      return NextResponse.redirect(loginUrl);
+    }
+    const payload = JSON.parse(Buffer.from(encoded, 'base64').toString());
     if (payload.exp < Date.now()) {
       const loginUrl = new URL('/giris', request.url);
       const response = NextResponse.redirect(loginUrl);
