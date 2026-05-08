@@ -167,22 +167,22 @@ export default function TezlerimPage() {
               {/* Danışman */}
               <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
                 <div>
-                  <label className={labelCls}>{t("thesis.advisor_count") || "Danışman Sayısı"}</label>
+                  <label className={labelCls}>{t("thesis.advisor_count")}</label>
                   <select value={form.advisorCount} onChange={e => { f("advisorCount")(e); setShowCoAdvisor(e.target.value === "2"); }} className={inputCls}>
                     <option value="1">1</option>
                     <option value="2">2</option>
                   </select>
                 </div>
                 <div>
-                  <label className={labelCls}>{t("thesis.advisor_name") || "Danışman Adı"}</label>
+                  <label className={labelCls}>{t("thesis.advisor_name")}</label>
                   <Input value={form.advisorName} onChange={f("advisorName")} placeholder="Ad" className="bg-white" />
                 </div>
                 <div>
-                  <label className={labelCls}>{t("thesis.advisor_mid") || "Orta Ad"}</label>
+                  <label className={labelCls}>{t("thesis.advisor_mid")}</label>
                   <Input value={form.advisorMidName} onChange={f("advisorMidName")} placeholder="Orta Ad" className="bg-white" />
                 </div>
                 <div>
-                  <label className={labelCls}>{t("thesis.advisor_surname") || "Danışman Soyadı"}</label>
+                  <label className={labelCls}>{t("thesis.advisor_surname")}</label>
                   <Input value={form.advisorSurname} onChange={f("advisorSurname")} placeholder="Soyad" className="bg-white" />
                 </div>
               </div>
@@ -190,15 +190,15 @@ export default function TezlerimPage() {
               {showCoAdvisor && (
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                   <div>
-                    <label className={labelCls}>{t("thesis.co_advisor_name") || "Eş Danışman Adı"}</label>
+                    <label className={labelCls}>{t("thesis.co_advisor_name")}</label>
                     <Input value={form.coAdvisorName} onChange={f("coAdvisorName")} placeholder="Ad" className="bg-white" />
                   </div>
                   <div>
-                    <label className={labelCls}>{t("thesis.co_advisor_mid") || "Orta Ad"}</label>
+                    <label className={labelCls}>{t("thesis.co_advisor_mid")}</label>
                     <Input value={form.coAdvisorMidName} onChange={f("coAdvisorMidName")} placeholder="Orta Ad" className="bg-white" />
                   </div>
                   <div>
-                    <label className={labelCls}>{t("thesis.co_advisor_surname") || "Eş Danışman Soyadı"}</label>
+                    <label className={labelCls}>{t("thesis.co_advisor_surname")}</label>
                     <Input value={form.coAdvisorSurname} onChange={f("coAdvisorSurname")} placeholder="Soyad" className="bg-white" />
                   </div>
                 </div>
@@ -207,11 +207,11 @@ export default function TezlerimPage() {
               {/* Üniversite & Enstitü */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <div>
-                  <label className={labelCls}>{t("thesis.university") || "Üniversite"}</label>
+                  <label className={labelCls}>{t("thesis.university")}</label>
                   <Input value={form.university} onChange={f("university")} placeholder="Üniversite adı" className="bg-white" />
                 </div>
                 <div>
-                  <label className={labelCls}>{t("thesis.institute") || "Enstitü"}</label>
+                  <label className={labelCls}>{t("thesis.institute")}</label>
                   <Input value={form.institute} onChange={f("institute")} placeholder="Enstitü adı" className="bg-white" />
                 </div>
               </div>
@@ -223,7 +223,7 @@ export default function TezlerimPage() {
                   <Input value={form.department} onChange={f("department")} placeholder={t("fields.department_placeholder")} className="bg-white" />
                 </div>
                 <div>
-                  <label className={labelCls}>{t("thesis.department_other") || "Ana Bilim Dalı Diğer"}</label>
+                  <label className={labelCls}>{t("thesis.department_other")}</label>
                   <Input value={form.departmentOther} onChange={f("departmentOther")} placeholder="Diğer" className="bg-white" />
                 </div>
               </div>
@@ -243,11 +243,11 @@ export default function TezlerimPage() {
               {/* Özet */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <div>
-                  <label className={labelCls}>{t("thesis.abstract") || "Özet"} (TR)</label>
+                  <label className={labelCls}>{t("thesis.abstract")} (TR)</label>
                   <textarea value={form.abstract} onChange={f("abstract")} placeholder="Özet" className={`${inputCls} min-h-[80px] resize-y`} />
                 </div>
                 <div>
-                  <label className={labelCls}>{t("thesis.abstract") || "Abstract"} (EN)</label>
+                  <label className={labelCls}>{t("thesis.abstract")} (EN)</label>
                   <textarea value={form.abstractEn} onChange={f("abstractEn")} placeholder="Abstract" className={`${inputCls} min-h-[80px] resize-y`} />
                 </div>
               </div>
@@ -255,14 +255,14 @@ export default function TezlerimPage() {
               {/* Sayfa, Durum, Tarih */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                 <div>
-                  <label className={labelCls}>{t("thesis.page_count") || "Sayfa Sayısı"}</label>
+                  <label className={labelCls}>{t("thesis.page_count")}</label>
                   <Input value={form.pageCount} onChange={f("pageCount")} placeholder="Sayfa sayısı" type="number" className="bg-white" />
                 </div>
                 <div>
-                  <label className={labelCls}>{t("thesis.status") || "Tez Durumu"}</label>
+                  <label className={labelCls}>{t("thesis.status")}</label>
                   <select value={form.status} onChange={f("status")} className={inputCls}>
-                    <option value="0">{t("thesis.in_progress") || "Devam Ediyor"}</option>
-                    <option value="1">{t("thesis.completed") || "Tamamlandı"}</option>
+                    <option value="0">{t("thesis.in_progress")}</option>
+                    <option value="1">{t("thesis.completed")}</option>
                   </select>
                 </div>
                 <div>
@@ -273,7 +273,7 @@ export default function TezlerimPage() {
 
               {/* Anahtar Kelimeler */}
               <div>
-                <label className={labelCls}>{t("thesis.keywords") || "Anahtar Kelimeler"}</label>
+                <label className={labelCls}>{t("thesis.keywords")}</label>
                 <Input value={form.keywords} onChange={f("keywords")} placeholder="Anahtar kelimeler (virgülle ayırın)" className="bg-white" />
               </div>
 
@@ -288,7 +288,7 @@ export default function TezlerimPage() {
                   <Input value={form.url} onChange={f("url")} placeholder="http://..." className="bg-white" />
                 </div>
                 <div>
-                  <label className={labelCls}>{t("thesis.city") || "Şehir"}</label>
+                  <label className={labelCls}>{t("thesis.city")}</label>
                   <Input value={form.city} onChange={f("city")} placeholder="Şehir" className="bg-white" />
                 </div>
                 <div>
@@ -315,10 +315,10 @@ export default function TezlerimPage() {
                 <TableRow>
                   <TableHead className="w-[60px]">#</TableHead>
                   <TableHead>{t("fields.department")}</TableHead>
-                  <TableHead>{t("thesis.advisor_name") || "Danışman"}</TableHead>
+                  <TableHead>{t("thesis.advisor_name")}</TableHead>
                   <TableHead>{t("fields.title")}</TableHead>
                   <TableHead>{t("common.date")}</TableHead>
-                  <TableHead>{t("thesis.status") || "Durum"}</TableHead>
+                  <TableHead>{t("thesis.status")}</TableHead>
                   <TableHead className="text-right">{t("common.options")}</TableHead>
                 </TableRow>
               </TableHeader>
@@ -338,7 +338,7 @@ export default function TezlerimPage() {
                     <TableCell className="text-sm">{item.date}</TableCell>
                     <TableCell>
                       <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${item.status === "1" ? "bg-green-100 text-green-700" : "bg-blue-100 text-blue-700"}`}>
-                        {item.status === "1" ? (t("thesis.completed") || "Tamamlandı") : (t("thesis.in_progress") || "Devam Ediyor")}
+                        {item.status === "1" ? t("thesis.completed") : t("thesis.in_progress")}
                       </span>
                     </TableCell>
                     <TableCell className="text-right">
