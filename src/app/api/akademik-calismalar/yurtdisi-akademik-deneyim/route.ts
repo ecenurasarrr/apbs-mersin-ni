@@ -4,7 +4,13 @@ import { requireSessionUser } from '@/lib/api-helpers';
 
 export async function GET() {
   try {
-    const data = await prisma.internationalExperience.findMany({ orderBy: { createdAt: 'desc' } });
+    const { user, error: authError } = await requireSessionUser();
+    if (authError) return authError;
+    // En son kaydı döndür (tek kayıt sistemi)
+    const data = await prisma.internationalExperience.findFirst({
+      where: { userId: user!.id },
+      orderBy: { updatedAt: 'desc' }
+    });
     return NextResponse.json(data);
   } catch { return NextResponse.json({ error: 'Failed' }, { status: 500 }); }
 }
@@ -14,7 +20,27 @@ export async function POST(req: Request) {
     const body = await req.json();
     const { user, error: authError } = await requireSessionUser();
     if (authError) return authError;
-    const item = await prisma.internationalExperience.create({ data: { institution: body.institution?.trim(), country: body.country?.trim(), date: body.date?.trim(), userId: user!.id } });
-    return NextResponse.json(item, { status: 201 });
+
+    // Mevcut kayıt varsa güncelle, yoksa oluştur
+    const existing = await prisma.internationalExperience.findFirst({
+      where: { userId: user!.id }
+    });
+
+    if (existing) {
+      const updated = await prisma.internationalExperience.update({
+        where: { id: existing.id },
+        data: { content: body.content, date: new Date().toISOString().slice(0, 10) }
+      });
+      return NextResponse.json(updated);
+    } else {
+      const created = await prisma.internationalExperience.create({
+        data: {
+          content: body.content,
+          date: new Date().toISOString().slice(0, 10),
+          userId: user!.id
+        }
+      });
+      return NextResponse.json(created, { status: 201 });
+    }
   } catch { return NextResponse.json({ error: 'Failed' }, { status: 500 }); }
 }

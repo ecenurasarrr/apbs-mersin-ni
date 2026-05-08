@@ -1,26 +1,149 @@
 "use client";
-import GenericListPage from "@/components/GenericListPage";
+import { useState, useEffect, useCallback } from "react";
+import Link from "next/link";
+import { Plus, Search, Edit, Trash2, Home, ChevronRight, X, Loader2, Save } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useLanguage } from "@/context/LanguageContext";
 
-export default function Page() {
+interface Certificate { id: number; documentType?: string; description?: string; date: string; }
+
+const EMPTY_FORM = { documentType: "", description: "", date: "" };
+const API = "/api/akademik-calismalar/belge-sertifika";
+
+export default function BelgeSertifikaPage() {
   const { t } = useLanguage();
+  const [data, setData] = useState<Certificate[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [creating, setCreating] = useState(false);
+  const [editingId, setEditingId] = useState<number | null>(null);
+  const [form, setForm] = useState({ ...EMPTY_FORM });
+  const [saving, setSaving] = useState(false);
+
+  const fetchData = useCallback(async () => {
+    try { setLoading(true); const res = await fetch(API); const json = await res.json(); if (Array.isArray(json)) setData(json); }
+    catch (e) { console.error(e); } finally { setLoading(false); }
+  }, []);
+
+  useEffect(() => { fetchData(); }, [fetchData]);
+
+  const handleCreate = async () => {
+    if (!form.documentType.trim()) return;
+    setSaving(true);
+    try { await fetch(API, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(form) }); setForm({ ...EMPTY_FORM }); setCreating(false); fetchData(); }
+    finally { setSaving(false); }
+  };
+
+  const handleDelete = async (id: number) => {
+    if (!confirm(t("common.confirm_delete"))) return;
+    await fetch(`${API}/${id}`, { method: "DELETE" }); fetchData();
+  };
+
+  const handleEditSave = async (id: number) => {
+    setSaving(true);
+    try { await fetch(`${API}/${id}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(form) }); setEditingId(null); fetchData(); }
+    finally { setSaving(false); }
+  };
+
+  const startEdit = (item: Certificate) => {
+    setEditingId(item.id); setForm({ documentType: item.documentType || "", description: item.description || "", date: item.date }); setCreating(true);
+  };
+
+  const filteredData = data.filter(item =>
+    (item.documentType || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (item.description || "").toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const f = (key: keyof typeof EMPTY_FORM) => (e: React.ChangeEvent<HTMLInputElement>) => setForm(prev => ({ ...prev, [key]: e.target.value }));
+  const labelCls = "block text-xs font-semibold text-slate-600 mb-1";
+
   return (
-    <GenericListPage
-      title={t("menu.belge_sertifika")}
-      breadcrumbs={[
-        { label: t("navbar.akademik_calismalar") },
-        { label: t("menu.belge_sertifika") },
-      ]}
-      fields={[
-        { key: "title", label: t("fields.certificate"), placeholder: t("fields.certificate_placeholder") },
-        { key: "date", label: t("common.date"), placeholder: t("common.date") },
-      ]}
-      apiPath="/api/akademik-calismalar/belge-sertifika"
-      
-      columns={[
-        { key: "title", label: t("fields.certificate") },
-        { key: "date", label: t("common.date") },
-      ]}
-    />
+    <div className="container mx-auto px-4 py-8">
+      <nav className="flex items-center text-sm text-muted-foreground mb-6">
+        <ol className="flex items-center space-x-2">
+          <li><Link href="/" className="hover:text-foreground flex items-center gap-1"><Home size={14} /> {t("common.home")}</Link></li>
+          <ChevronRight size={14} /><li><span className="text-foreground font-medium">{t("navbar.akademik_calismalar")}</span></li>
+          <ChevronRight size={14} /><li><span className="text-foreground font-medium">{t("menu.belge_sertifika")}</span></li>
+        </ol>
+      </nav>
+      <div className="mb-6"><h1 className="text-3xl font-bold tracking-tight">{t("menu.belge_sertifika")}</h1></div>
+      <Card className="shadow-sm border-border">
+        <CardHeader className="bg-slate-50/50 border-b pb-4">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <Button onClick={() => { setCreating(v => !v); setEditingId(null); setForm({ ...EMPTY_FORM }); }} className="gap-2">
+              {creating ? <X size={16} /> : <Plus size={16} />} {creating ? t("common.cancel") : t("common.create")}
+            </Button>
+            <div className="relative w-full sm:w-[350px]">
+              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Input type="search" placeholder={t("common.search")} className="pl-9 bg-white" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} />
+            </div>
+          </div>
+          {creating && (
+            <div className="mt-4 space-y-3 border-t pt-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div>
+                  <label className={labelCls}>{t("certificate.document_type") || "Belge Türü / Kurum"} <span className="text-red-500">*</span></label>
+                  <Input value={form.documentType} onChange={f("documentType")} placeholder="Belge türü veya kurum adı" className="bg-white" />
+                </div>
+                <div>
+                  <label className={labelCls}>{t("certificate.description") || "Belge Tanımı"}</label>
+                  <Input value={form.description} onChange={f("description")} placeholder="Belge tanımı" className="bg-white" />
+                </div>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div>
+                  <label className={labelCls}>{t("common.date")}</label>
+                  <Input value={form.date} onChange={f("date")} type="date" className="bg-white" />
+                </div>
+              </div>
+              <div className="flex justify-end gap-2 pt-2 border-t">
+                <Button variant="outline" onClick={() => { setCreating(false); setEditingId(null); }}>{t("common.cancel")}</Button>
+                <Button onClick={() => editingId ? handleEditSave(editingId) : handleCreate()} disabled={saving} className="bg-[#1E6B9B] hover:bg-[#165375]">
+                  {saving ? <Loader2 size={14} className="animate-spin mr-1" /> : <Save size={14} className="mr-1" />}{t("common.save")}
+                </Button>
+              </div>
+            </div>
+          )}
+        </CardHeader>
+        <CardContent className="p-0">
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader className="bg-slate-50/80">
+                <TableRow>
+                  <TableHead className="w-[60px]">#</TableHead>
+                  <TableHead>{t("certificate.document_type") || "Belge Türü / Kurum"}</TableHead>
+                  <TableHead>{t("certificate.description") || "Belge Tanımı"}</TableHead>
+                  <TableHead>{t("common.date")}</TableHead>
+                  <TableHead className="text-right">{t("common.options")}</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {loading ? (
+                  <TableRow><TableCell colSpan={5} className="h-32 text-center"><div className="flex items-center justify-center gap-2"><Loader2 className="h-5 w-5 animate-spin" /> {t("common.loading")}</div></TableCell></TableRow>
+                ) : filteredData.length > 0 ? filteredData.map((item, index) => (
+                  <TableRow key={item.id} className="hover:bg-slate-50/50">
+                    <TableCell>{index + 1}</TableCell>
+                    <TableCell className="font-medium text-primary">{item.documentType || "-"}</TableCell>
+                    <TableCell className="text-sm">{item.description || "-"}</TableCell>
+                    <TableCell className="text-sm">{item.date}</TableCell>
+                    <TableCell className="text-right">
+                      <div className="flex justify-end gap-2">
+                        <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-500 hover:text-blue-600" onClick={() => startEdit(item)}><Edit size={16} /></Button>
+                        <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-500 hover:text-red-600" onClick={() => handleDelete(item.id)}><Trash2 size={16} /></Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                )) : (
+                  <TableRow><TableCell colSpan={5} className="h-32 text-center text-muted-foreground">{t("common.no_records")}</TableCell></TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
   );
 }

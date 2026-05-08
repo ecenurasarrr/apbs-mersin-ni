@@ -230,8 +230,9 @@ model Book {
 
 model ForeignLanguage {
   id        Int      @id @default(autoincrement())
-  language  String
-  level     String
+  language  String   // Dil Adı
+  year      String?  // Yıl
+  level     String   // Seviyesi
   userId    Int
   user      User     @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
@@ -240,9 +241,10 @@ model ForeignLanguage {
 
 model InternationalExperience {
   id          Int      @id @default(autoincrement())
-  institution String
-  country     String
-  date        String
+  content     String?  // Serbest metin (wysihtml5 editör içeriği)
+  institution String?  // Kurum (opsiyonel yapılandırılmış alan)
+  country     String?  // Ülke
+  date        String   // Tarih
   userId      Int
   user        User     @relation(fields: [userId], references: [id])
   createdAt   DateTime @default(now())
@@ -250,13 +252,15 @@ model InternationalExperience {
 }
 
 model Certificate {
-  id        Int      @id @default(autoincrement())
-  title     String
-  date      String
-  userId    Int
-  user      User     @relation(fields: [userId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id             Int      @id @default(autoincrement())
+  documentType   String?  // Belge Türü / Kurum
+  description    String?  // Belge Tanımı
+  title          String   // backward compat
+  date           String
+  userId         Int
+  user           User     @relation(fields: [userId], references: [id])
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 }
 
 model Project {
