@@ -151,17 +151,19 @@ model AcademicDuty {
 }
 
 model ScientificDuty {
-  id          Int      @id @default(autoincrement())
-  titleTr     String?
-  titleEn     String?
-  institution String?
-  faculty     String?
-  title       String
-  date        String
-  userId      Int
-  user        User     @relation(fields: [userId], references: [id])
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id               Int      @id @default(autoincrement())
+  role             String?  // Görev
+  organizationName String?  // Organizasyon/Kitap/Dergi Adı
+  titleTr          String?
+  titleEn          String?
+  institution      String?
+  faculty          String?
+  title            String
+  date             String
+  userId           Int
+  user             User     @relation(fields: [userId], references: [id])
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 }
 
 model AdministrativeDuty {

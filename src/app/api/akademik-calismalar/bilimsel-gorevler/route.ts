@@ -6,7 +6,10 @@ export async function GET() {
   try {
     const { user, error: authError } = await requireSessionUser();
     if (authError) return authError;
-    const data = await prisma.scientificDuty.findMany({ where: { userId: user!.id }, orderBy: { createdAt: 'desc' } });
+    const data = await prisma.scientificDuty.findMany({
+      where: { userId: user!.id },
+      orderBy: { createdAt: 'desc' }
+    });
     return NextResponse.json(data);
   } catch { return NextResponse.json({ error: 'Failed' }, { status: 500 }); }
 }
@@ -18,11 +21,9 @@ export async function POST(req: Request) {
     if (authError) return authError;
     const item = await prisma.scientificDuty.create({
       data: {
-        titleTr: body.titleTr?.trim(),
-        titleEn: body.titleEn?.trim(),
-        institution: body.institution?.trim(),
-        faculty: body.faculty?.trim(),
-        title: body.titleTr?.trim() || body.title?.trim() || '',
+        role: body.role?.trim(),
+        organizationName: body.organizationName?.trim(),
+        title: body.role?.trim() || body.title?.trim() || '',
         date: body.date?.trim() || '',
         userId: user!.id
       }

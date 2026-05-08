@@ -9,26 +9,19 @@ import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useLanguage } from "@/context/LanguageContext";
 
-interface DutyItem {
+interface ScientificDuty {
   id: number;
-  titleTr?: string;
-  titleEn?: string;
-  institution?: string;
-  faculty?: string;
+  role?: string;
+  organizationName?: string;
   date: string;
 }
 
-const EMPTY_FORM = {
-  titleTr: "",
-  titleEn: "",
-  institution: "",
-  faculty: "",
-  date: "",
-};
+const EMPTY_FORM = { role: "", organizationName: "", date: "" };
+const API = "/api/akademik-calismalar/bilimsel-gorevler";
 
 export default function BilimselGorevlerPage() {
   const { t } = useLanguage();
-  const [data, setData] = useState<DutyItem[]>([]);
+  const [data, setData] = useState<ScientificDuty[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [creating, setCreating] = useState(false);
@@ -39,7 +32,7 @@ export default function BilimselGorevlerPage() {
   const fetchData = useCallback(async () => {
     try {
       setLoading(true);
-      const res = await fetch("/api/akademik-calismalar/bilimsel-gorevler");
+      const res = await fetch(API);
       const json = await res.json();
       if (Array.isArray(json)) setData(json);
     } catch (e) { console.error(e); }
@@ -49,54 +42,36 @@ export default function BilimselGorevlerPage() {
   useEffect(() => { fetchData(); }, [fetchData]);
 
   const handleCreate = async () => {
-    if (!form.titleTr.trim()) return;
+    if (!form.role.trim()) return;
     setSaving(true);
     try {
-      await fetch("/api/akademik-calismalar/bilimsel-gorevler", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
-      setForm({ ...EMPTY_FORM });
-      setCreating(false);
-      fetchData();
+      await fetch(API, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(form) });
+      setForm({ ...EMPTY_FORM }); setCreating(false); fetchData();
     } finally { setSaving(false); }
   };
 
   const handleDelete = async (id: number) => {
     if (!confirm(t("common.confirm_delete"))) return;
-    await fetch(`/api/akademik-calismalar/bilimsel-gorevler/${id}`, { method: "DELETE" });
-    fetchData();
+    await fetch(`${API}/${id}`, { method: "DELETE" }); fetchData();
   };
 
   const handleEditSave = async (id: number) => {
     setSaving(true);
     try {
-      await fetch(`/api/akademik-calismalar/bilimsel-gorevler/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
-      setEditingId(null);
-      fetchData();
+      await fetch(`${API}/${id}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(form) });
+      setEditingId(null); fetchData();
     } finally { setSaving(false); }
   };
 
-  const startEdit = (item: DutyItem) => {
+  const startEdit = (item: ScientificDuty) => {
     setEditingId(item.id);
-    setForm({
-      titleTr: item.titleTr || "",
-      titleEn: item.titleEn || "",
-      institution: item.institution || "",
-      faculty: item.faculty || "",
-      date: item.date,
-    });
+    setForm({ role: item.role || "", organizationName: item.organizationName || "", date: item.date });
     setCreating(true);
   };
 
   const filteredData = data.filter(item =>
-    (item.titleTr || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (item.institution || "").toLowerCase().includes(searchTerm.toLowerCase())
+    (item.role || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (item.organizationName || "").toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const f = (key: keyof typeof EMPTY_FORM) => (e: React.ChangeEvent<HTMLInputElement>) =>
@@ -134,25 +109,15 @@ export default function BilimselGorevlerPage() {
           </div>
 
           {creating && (
-            <div className="mt-4 space-y-4 border-t pt-4">
+            <div className="mt-4 space-y-3 border-t pt-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <div>
-                  <label className={labelCls}>Türkçe Ünvan <span className="text-red-500">*</span></label>
-                  <Input value={form.titleTr} onChange={f("titleTr")} placeholder="Türkçe ünvan giriniz" className="bg-white" />
+                  <label className={labelCls}>{t("scientific.role") || "Görev"} <span className="text-red-500">*</span></label>
+                  <Input value={form.role} onChange={f("role")} placeholder="Görev adı" className="bg-white" />
                 </div>
                 <div>
-                  <label className={labelCls}>İngilizce Ünvan</label>
-                  <Input value={form.titleEn} onChange={f("titleEn")} placeholder="English title" className="bg-white" />
-                </div>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <div>
-                  <label className={labelCls}>{t("fields.institution")}</label>
-                  <Input value={form.institution} onChange={f("institution")} placeholder={t("fields.institution_placeholder")} className="bg-white" />
-                </div>
-                <div>
-                  <label className={labelCls}>{t("education.faculty") || "Fakülte/Enstitü"}</label>
-                  <Input value={form.faculty} onChange={f("faculty")} placeholder="Fakülte veya enstitü adı" className="bg-white" />
+                  <label className={labelCls}>{t("scientific.organization") || "Organizasyon/Kitap/Dergi Adı"}</label>
+                  <Input value={form.organizationName} onChange={f("organizationName")} placeholder="Organizasyon, kitap veya dergi adı" className="bg-white" />
                 </div>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -178,22 +143,24 @@ export default function BilimselGorevlerPage() {
               <TableHeader className="bg-slate-50/80">
                 <TableRow>
                   <TableHead className="w-[60px]">#</TableHead>
-                  <TableHead>Türkçe Ünvan</TableHead>
-                  <TableHead>{t("fields.institution")}</TableHead>
-                  <TableHead>{t("education.faculty") || "Fakülte/Enstitü"}</TableHead>
+                  <TableHead>{t("scientific.role") || "Görev"}</TableHead>
+                  <TableHead>{t("scientific.organization") || "Organizasyon/Kitap/Dergi Adı"}</TableHead>
                   <TableHead>{t("common.date")}</TableHead>
                   <TableHead className="text-right">{t("common.options")}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {loading ? (
-                  <TableRow><TableCell colSpan={6} className="h-32 text-center"><div className="flex items-center justify-center gap-2"><Loader2 className="h-5 w-5 animate-spin" /> {t("common.loading")}</div></TableCell></TableRow>
+                  <TableRow>
+                    <TableCell colSpan={5} className="h-32 text-center text-muted-foreground">
+                      <div className="flex items-center justify-center gap-2"><Loader2 className="h-5 w-5 animate-spin" /> {t("common.loading")}</div>
+                    </TableCell>
+                  </TableRow>
                 ) : filteredData.length > 0 ? filteredData.map((item, index) => (
                   <TableRow key={item.id} className="hover:bg-slate-50/50">
                     <TableCell>{index + 1}</TableCell>
-                    <TableCell className="font-medium text-primary">{item.titleTr || "-"}</TableCell>
-                    <TableCell className="text-sm">{item.institution || "-"}</TableCell>
-                    <TableCell className="text-sm">{item.faculty || "-"}</TableCell>
+                    <TableCell className="font-medium text-primary">{item.role || "-"}</TableCell>
+                    <TableCell className="text-sm">{item.organizationName || "-"}</TableCell>
                     <TableCell className="text-sm">{item.date}</TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-2">
@@ -203,7 +170,9 @@ export default function BilimselGorevlerPage() {
                     </TableCell>
                   </TableRow>
                 )) : (
-                  <TableRow><TableCell colSpan={6} className="h-32 text-center text-muted-foreground">{t("common.no_records")}</TableCell></TableRow>
+                  <TableRow>
+                    <TableCell colSpan={5} className="h-32 text-center text-muted-foreground">{t("common.no_records")}</TableCell>
+                  </TableRow>
                 )}
               </TableBody>
             </Table>
