@@ -196,13 +196,26 @@ model Publication {
 }
 
 model Citation {
-  id        Int      @id @default(autoincrement())
-  title     String
-  date      String
-  userId    Int
-  user      User     @relation(fields: [userId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                      Int      @id @default(autoincrement())
+  sourceType              String?  // publication, book, thesis, bildiri, sanatsal, proje, patent, tasarim
+  sourceId                Int?     // ilgili kaydın ID'si
+  sourceTitle             String?  // kaynak başlığı (denormalized)
+  sourceYear              String?  // kaynak yılı
+  citationYear            String?  // atıf yılı (örn. 2025)
+  ssci                    Int?     @default(0)
+  alanEndeksleri          Int?     @default(0)
+  ulakbim                 Int?     @default(0)
+  digerUluslararasi       Int?     @default(0)
+  uluslararasiKitap       Int?     @default(0)
+  ulusalKitap             Int?     @default(0)
+  guzelSanatlarUluslararasi Int?   @default(0)
+  guzelSanatlarUlusal     Int?     @default(0)
+  title                   String   // backward compat
+  date                    String   // backward compat
+  userId                  Int
+  user                    User     @relation(fields: [userId], references: [id])
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
 }
 
 model Book {
