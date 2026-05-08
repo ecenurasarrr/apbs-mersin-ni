@@ -9,26 +9,21 @@ import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useLanguage } from "@/context/LanguageContext";
 
-interface DutyItem {
+interface AdministrativeDuty {
   id: number;
   titleTr?: string;
   titleEn?: string;
+  role?: string;
   institution?: string;
-  faculty?: string;
   date: string;
 }
 
-const EMPTY_FORM = {
-  titleTr: "",
-  titleEn: "",
-  institution: "",
-  faculty: "",
-  date: "",
-};
+const EMPTY_FORM = { titleTr: "", titleEn: "", role: "", institution: "", date: "" };
+const API = "/api/akademik-calismalar/idari-gorevler";
 
 export default function IdariGorevlerPage() {
   const { t } = useLanguage();
-  const [data, setData] = useState<DutyItem[]>([]);
+  const [data, setData] = useState<AdministrativeDuty[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [creating, setCreating] = useState(false);
@@ -39,7 +34,7 @@ export default function IdariGorevlerPage() {
   const fetchData = useCallback(async () => {
     try {
       setLoading(true);
-      const res = await fetch("/api/akademik-calismalar/idari-gorevler");
+      const res = await fetch(API);
       const json = await res.json();
       if (Array.isArray(json)) setData(json);
     } catch (e) { console.error(e); }
@@ -52,50 +47,33 @@ export default function IdariGorevlerPage() {
     if (!form.titleTr.trim()) return;
     setSaving(true);
     try {
-      await fetch("/api/akademik-calismalar/idari-gorevler", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
-      setForm({ ...EMPTY_FORM });
-      setCreating(false);
-      fetchData();
+      await fetch(API, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(form) });
+      setForm({ ...EMPTY_FORM }); setCreating(false); fetchData();
     } finally { setSaving(false); }
   };
 
   const handleDelete = async (id: number) => {
     if (!confirm(t("common.confirm_delete"))) return;
-    await fetch(`/api/akademik-calismalar/idari-gorevler/${id}`, { method: "DELETE" });
-    fetchData();
+    await fetch(`${API}/${id}`, { method: "DELETE" }); fetchData();
   };
 
   const handleEditSave = async (id: number) => {
     setSaving(true);
     try {
-      await fetch(`/api/akademik-calismalar/idari-gorevler/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
-      setEditingId(null);
-      fetchData();
+      await fetch(`${API}/${id}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(form) });
+      setEditingId(null); fetchData();
     } finally { setSaving(false); }
   };
 
-  const startEdit = (item: DutyItem) => {
+  const startEdit = (item: AdministrativeDuty) => {
     setEditingId(item.id);
-    setForm({
-      titleTr: item.titleTr || "",
-      titleEn: item.titleEn || "",
-      institution: item.institution || "",
-      faculty: item.faculty || "",
-      date: item.date,
-    });
+    setForm({ titleTr: item.titleTr || "", titleEn: item.titleEn || "", role: item.role || "", institution: item.institution || "", date: item.date });
     setCreating(true);
   };
 
   const filteredData = data.filter(item =>
     (item.titleTr || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (item.role || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
     (item.institution || "").toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -134,25 +112,25 @@ export default function IdariGorevlerPage() {
           </div>
 
           {creating && (
-            <div className="mt-4 space-y-4 border-t pt-4">
+            <div className="mt-4 space-y-3 border-t pt-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <div>
-                  <label className={labelCls}>Türkçe Ünvan <span className="text-red-500">*</span></label>
-                  <Input value={form.titleTr} onChange={f("titleTr")} placeholder="Türkçe ünvan giriniz" className="bg-white" />
+                  <label className={labelCls}>{t("duty.title_tr") || "Görev Ünvan (TR)"} <span className="text-red-500">*</span></label>
+                  <Input value={form.titleTr} onChange={f("titleTr")} placeholder="Türkçe görev ünvanı" className="bg-white" />
                 </div>
                 <div>
-                  <label className={labelCls}>İngilizce Ünvan</label>
+                  <label className={labelCls}>{t("duty.title_en") || "Görev Ünvan (EN)"}</label>
                   <Input value={form.titleEn} onChange={f("titleEn")} placeholder="English title" className="bg-white" />
                 </div>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <div>
-                  <label className={labelCls}>{t("fields.institution")}</label>
-                  <Input value={form.institution} onChange={f("institution")} placeholder={t("fields.institution_placeholder")} className="bg-white" />
+                  <label className={labelCls}>{t("duty.role") || "Görev"}</label>
+                  <Input value={form.role} onChange={f("role")} placeholder="Görev" className="bg-white" />
                 </div>
                 <div>
-                  <label className={labelCls}>{t("education.faculty") || "Fakülte/Enstitü"}</label>
-                  <Input value={form.faculty} onChange={f("faculty")} placeholder="Fakülte veya enstitü adı" className="bg-white" />
+                  <label className={labelCls}>{t("duty.institution_other") || "Kurum/Diğer"}</label>
+                  <Input value={form.institution} onChange={f("institution")} placeholder="Kurum veya diğer" className="bg-white" />
                 </div>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -178,22 +156,26 @@ export default function IdariGorevlerPage() {
               <TableHeader className="bg-slate-50/80">
                 <TableRow>
                   <TableHead className="w-[60px]">#</TableHead>
-                  <TableHead>Türkçe Ünvan</TableHead>
-                  <TableHead>{t("fields.institution")}</TableHead>
-                  <TableHead>{t("education.faculty") || "Fakülte/Enstitü"}</TableHead>
+                  <TableHead>{t("duty.title_tr") || "Görev Ünvan"}</TableHead>
+                  <TableHead>{t("duty.role") || "Görev"}</TableHead>
+                  <TableHead>{t("duty.institution_other") || "Kurum/Diğer"}</TableHead>
                   <TableHead>{t("common.date")}</TableHead>
                   <TableHead className="text-right">{t("common.options")}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {loading ? (
-                  <TableRow><TableCell colSpan={6} className="h-32 text-center"><div className="flex items-center justify-center gap-2"><Loader2 className="h-5 w-5 animate-spin" /> {t("common.loading")}</div></TableCell></TableRow>
+                  <TableRow>
+                    <TableCell colSpan={6} className="h-32 text-center text-muted-foreground">
+                      <div className="flex items-center justify-center gap-2"><Loader2 className="h-5 w-5 animate-spin" /> {t("common.loading")}</div>
+                    </TableCell>
+                  </TableRow>
                 ) : filteredData.length > 0 ? filteredData.map((item, index) => (
                   <TableRow key={item.id} className="hover:bg-slate-50/50">
                     <TableCell>{index + 1}</TableCell>
                     <TableCell className="font-medium text-primary">{item.titleTr || "-"}</TableCell>
+                    <TableCell className="text-sm">{item.role || "-"}</TableCell>
                     <TableCell className="text-sm">{item.institution || "-"}</TableCell>
-                    <TableCell className="text-sm">{item.faculty || "-"}</TableCell>
                     <TableCell className="text-sm">{item.date}</TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-2">
@@ -203,7 +185,9 @@ export default function IdariGorevlerPage() {
                     </TableCell>
                   </TableRow>
                 )) : (
-                  <TableRow><TableCell colSpan={6} className="h-32 text-center text-muted-foreground">{t("common.no_records")}</TableCell></TableRow>
+                  <TableRow>
+                    <TableCell colSpan={6} className="h-32 text-center text-muted-foreground">{t("common.no_records")}</TableCell>
+                  </TableRow>
                 )}
               </TableBody>
             </Table>

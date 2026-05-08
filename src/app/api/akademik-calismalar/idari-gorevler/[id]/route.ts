@@ -11,7 +11,14 @@ export async function PUT(req: Request) {
     const body = await req.json();
     const item = await prisma.administrativeDuty.update({
       where: { id },
-      data: { titleTr: body.titleTr?.trim(), titleEn: body.titleEn?.trim(), institution: body.institution?.trim(), faculty: body.faculty?.trim(), title: body.titleTr?.trim() || '', date: body.date?.trim() }
+      data: {
+        titleTr: body.titleTr?.trim(),
+        titleEn: body.titleEn?.trim(),
+        role: body.role?.trim(),
+        institution: body.institution?.trim(),
+        title: body.titleTr?.trim() || body.title?.trim() || '',
+        date: body.date?.trim(),
+      }
     });
     return NextResponse.json(item);
   } catch { return NextResponse.json({ error: 'Failed' }, { status: 500 }); }
