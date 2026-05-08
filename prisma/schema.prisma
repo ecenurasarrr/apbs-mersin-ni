@@ -123,13 +123,17 @@ model SupervisedThesis {
 }
 
 model Education {
-  id        Int      @id @default(autoincrement())
-  title     String
-  date      String
-  userId    Int
-  user      User     @relation(fields: [userId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          Int      @id @default(autoincrement())
+  degree      String?  // Lisans, Yüksek Lisans, Doktora, vb.
+  department  String?  // Bölüm
+  university  String?  // Üniversite/Kurum
+  faculty     String?  // Fakülte/Enstitü
+  title       String   // Genel başlık (geriye dönük uyumluluk)
+  date        String   // Yıl
+  userId      Int
+  user        User     @relation(fields: [userId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model AcademicDuty {
