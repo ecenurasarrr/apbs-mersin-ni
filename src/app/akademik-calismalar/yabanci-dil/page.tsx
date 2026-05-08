@@ -83,15 +83,15 @@ export default function YabanciDilPage() {
             <div className="mt-4 space-y-3 border-t pt-4">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                 <div>
-                  <label className={labelCls}>{t("fields.language")} <span className="text-red-500">*</span></label>
-                  <Input value={form.language} onChange={f("language")} placeholder={t("fields.language_placeholder")} className="bg-white" />
+                  <label className={labelCls}>Dil Adı <span className="text-red-500">*</span></label>
+                  <Input value={form.language} onChange={f("language")} placeholder="Dil adını giriniz" className="bg-white" />
                 </div>
                 <div>
-                  <label className={labelCls}>{t("common.year")}</label>
+                  <label className={labelCls}>Yıl</label>
                   <Input value={form.year} onChange={f("year")} placeholder="Yıl" className="bg-white" />
                 </div>
                 <div>
-                  <label className={labelCls}>{t("fields.level")} <span className="text-red-500">*</span></label>
+                  <label className={labelCls}>Seviye <span className="text-red-500">*</span></label>
                   <select value={form.level} onChange={f("level")} className={inputCls}>
                     {LEVELS.map(l => <option key={l} value={l}>{l}</option>)}
                   </select>
@@ -112,9 +112,9 @@ export default function YabanciDilPage() {
               <TableHeader className="bg-slate-50/80">
                 <TableRow>
                   <TableHead className="w-[60px]">#</TableHead>
-                  <TableHead>{t("fields.language")}</TableHead>
-                  <TableHead>{t("common.year")}</TableHead>
-                  <TableHead>{t("fields.level")}</TableHead>
+                  <TableHead>Dil Adı</TableHead>
+                  <TableHead>Yıl</TableHead>
+                  <TableHead>Seviye</TableHead>
                   <TableHead className="text-right">{t("common.options")}</TableHead>
                 </TableRow>
               </TableHeader>

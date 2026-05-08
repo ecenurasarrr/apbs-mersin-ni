@@ -14,6 +14,64 @@ export const translations = {
       faaliyet_raporu: "Faaliyet Raporu",
       duyurular: "Duyurular"
     },
+    thesis: {
+      advisor_count: "Danışman Sayısı",
+      advisor_name: "Danışman Adı",
+      advisor_mid: "Danışman Orta Adı",
+      advisor_surname: "Danışman Soyadı",
+      co_advisor_name: "Eş Danışman Adı",
+      co_advisor_mid: "Eş Danışman Orta Adı",
+      co_advisor_surname: "Eş Danışman Soyadı",
+      university: "Üniversite",
+      institute: "Enstitü",
+      department_other: "Ana Bilim Dalı Diğer",
+      abstract: "Özet",
+      page_count: "Sayfa Sayısı",
+      status: "Tez Durumu",
+      in_progress: "Devam Ediyor",
+      completed: "Tamamlandı",
+      keywords: "Anahtar Kelimeler",
+      city: "Şehir",
+    },
+    supervised: {
+      student_name: "Öğrenci Adı",
+      thesis_type: "Tez Türü",
+    },
+    duty: {
+      title_tr: "Türkçe Ünvan",
+      title_en: "İngilizce Ünvan",
+      role: "Görev",
+      institution_other: "Kurum/Diğer",
+    },
+    scientific: {
+      role: "Görev",
+      organization: "Organizasyon/Kitap/Dergi Adı",
+    },
+    artistic: {
+      scope: "Kapsam",
+      type: "Tür (Faaliyet/Eser)",
+    },
+    research: {
+      institution_address: "Kurum Adresi",
+      name: "Adı",
+    },
+    publication: {
+      journal: "Dergi Adı",
+      volume: "Cilt",
+    },
+    project: {
+      project_no: "Proje No",
+      supporting_institution: "Destekleyen Kurum",
+    },
+    education: {
+      degree: "Derece",
+      university: "Üniversite/Kurum",
+      faculty: "Fakülte/Enstitü",
+    },
+    certificate: {
+      document_type: "Belge Türü / Kurum",
+      description: "Belge Tanımı",
+    },
     menu: {
       tezlerim: "Tezlerim",
       yonetilen_tezler: "Yönetilen Tezler",
@@ -128,6 +186,25 @@ export const translations = {
       period: "Dönem",
       no_records: "Kayıt bulunamadı."
     },
+    thesis: {
+      advisor_count: "Danışman Sayısı",
+      advisor_name: "Danışman Adı",
+      advisor_mid: "Danışman Orta Adı",
+      advisor_surname: "Danışman Soyadı",
+      co_advisor_name: "Eş Danışman Adı",
+      co_advisor_mid: "Eş Danışman Orta Adı",
+      co_advisor_surname: "Eş Danışman Soyadı",
+      university: "Üniversite",
+      institute: "Enstitü",
+      department_other: "Ana Bilim Dalı Diğer",
+      abstract: "Özet",
+      page_count: "Sayfa Sayısı",
+      status: "Tez Durumu",
+      in_progress: "Devam Ediyor",
+      completed: "Tamamlandı",
+      keywords: "Anahtar Kelimeler",
+      city: "Şehir"
+    },
     fields: {
       thesis_title: "Tez Adı",
       thesis_title_placeholder: "Tez adını giriniz",
@@ -199,6 +276,64 @@ export const translations = {
       islemler: "Operations",
       faaliyet_raporu: "Activity Report",
       duyurular: "Announcements"
+    },
+    thesis: {
+      advisor_count: "Number of Advisors",
+      advisor_name: "Advisor Name",
+      advisor_mid: "Advisor Middle Name",
+      advisor_surname: "Advisor Surname",
+      co_advisor_name: "Co-Advisor Name",
+      co_advisor_mid: "Co-Advisor Middle Name",
+      co_advisor_surname: "Co-Advisor Surname",
+      university: "University",
+      institute: "Institute",
+      department_other: "Department (Other)",
+      abstract: "Abstract",
+      page_count: "Page Count",
+      status: "Thesis Status",
+      in_progress: "In Progress",
+      completed: "Completed",
+      keywords: "Keywords",
+      city: "City",
+    },
+    supervised: {
+      student_name: "Student Name",
+      thesis_type: "Thesis Type",
+    },
+    duty: {
+      title_tr: "Title (TR)",
+      title_en: "Title (EN)",
+      role: "Role",
+      institution_other: "Institution/Other",
+    },
+    scientific: {
+      role: "Role",
+      organization: "Organization/Book/Journal",
+    },
+    artistic: {
+      scope: "Scope",
+      type: "Type (Activity/Work)",
+    },
+    research: {
+      institution_address: "Institution Address",
+      name: "Name",
+    },
+    publication: {
+      journal: "Journal Name",
+      volume: "Volume",
+    },
+    project: {
+      project_no: "Project No",
+      supporting_institution: "Supporting Institution",
+    },
+    education: {
+      degree: "Degree",
+      university: "University/Institution",
+      faculty: "Faculty/Institute",
+    },
+    certificate: {
+      document_type: "Document Type / Institution",
+      description: "Document Description",
     },
     menu: {
       tezlerim: "My Theses",
@@ -313,6 +448,25 @@ export const translations = {
       created: "Created",
       period: "Period",
       no_records: "No records found."
+    },
+    thesis: {
+      advisor_count: "Advisor Count",
+      advisor_name: "Advisor Name",
+      advisor_mid: "Advisor Middle Name",
+      advisor_surname: "Advisor Surname",
+      co_advisor_name: "Co-Advisor Name",
+      co_advisor_mid: "Co-Advisor Middle Name",
+      co_advisor_surname: "Co-Advisor Surname",
+      university: "University",
+      institute: "Institute",
+      department_other: "Department (Other)",
+      abstract: "Abstract",
+      page_count: "Page Count",
+      status: "Thesis Status",
+      in_progress: "In Progress",
+      completed: "Completed",
+      keywords: "Keywords",
+      city: "City"
     },
     fields: {
       thesis_title: "Thesis Title",
