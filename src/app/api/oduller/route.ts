@@ -1,66 +1,29 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { requireSessionUser } from '@/lib/api-helpers';
 
 export async function GET() {
   try {
+    const { user, error: authError } = await requireSessionUser();
+    if (authError) return authError;
     const data = await prisma.award.findMany({
+      where: { userId: user!.id },
       orderBy: { createdAt: 'desc' }
     });
     return NextResponse.json(data);
-  } catch (error) {
-    return NextResponse.json({ error: 'Failed to fetch awards' }, { status: 500 });
-  }
+  } catch { return NextResponse.json({ error: 'Failed' }, { status: 500 }); }
 }
 
-export async function POST(request: Request) {
+export async function POST(req: Request) {
   try {
-    const raw = await request.text();
-
-    let body: any;
-    try {
-      body = raw ? JSON.parse(raw) : {};
-    } catch (error) {
-      const message = error instanceof Error ? error.message : String(error);
-      return NextResponse.json(
-        { error: 'Invalid JSON body', message, raw },
-        { status: 400 }
-      );
-    }
-
-    const name = body?.name;
-    const year = body?.year;
-    if (typeof name !== 'string' || name.trim().length === 0) {
-      return NextResponse.json({ error: 'Invalid `name`' }, { status: 400 });
-    }
-    if (typeof year !== 'string' || year.trim().length === 0) {
-      return NextResponse.json({ error: 'Invalid `year`' }, { status: 400 });
-    }
-
-    // Id=1 varsayimi bazen unique (tcNo/email) çakismalarina sebep oluyor.
-    // Varsayilan kullaniciyi tcNo uzerinden upsert ediyoruz.
-    const defaultTcNo = '18974099456';
-    const defaultUser = await prisma.user.upsert({
-      where: { tcNo: defaultTcNo },
-      update: {},
-      create: {
-        tcNo: defaultTcNo,
-        fullName: 'Lis. Öğr. Ece Nur Aşar',
-        email: 'ecenurasar123@gmail.com',
-      },
+    const body = await req.json();
+    const { user, error: authError } = await requireSessionUser();
+    if (authError) return authError;
+    const { name, year } = body;
+    if (!name?.trim() || !year?.trim()) return NextResponse.json({ error: 'Invalid fields' }, { status: 400 });
+    const item = await prisma.award.create({
+      data: { name: name.trim(), year: year.trim(), userId: user!.id }
     });
-
-    const newAward = await prisma.award.create({
-      data: {
-        name: name.trim(),
-        year: year.trim(),
-        userId: defaultUser.id,
-      }
-    });
-
-    return NextResponse.json(newAward, { status: 201 });
-  } catch (error) {
-    console.error('POST /api/oduller failed:', error);
-    const message = error instanceof Error ? error.message : String(error);
-    return NextResponse.json({ error: 'Failed to create award', message }, { status: 500 });
-  }
+    return NextResponse.json(item, { status: 201 });
+  } catch { return NextResponse.json({ error: 'Failed' }, { status: 500 }); }
 }
