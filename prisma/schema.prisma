@@ -182,13 +182,17 @@ model AdministrativeDuty {
 }
 
 model Publication {
-  id        Int      @id @default(autoincrement())
-  title     String
-  date      String
-  userId    Int
-  user      User     @relation(fields: [userId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          Int      @id @default(autoincrement())
+  department  String?  // Bölüm
+  title       String   // Başlık
+  journalName String?  // Dergi Adı
+  volume      String?  // Cilt
+  year        String?  // Yıl
+  date        String
+  userId      Int
+  user        User     @relation(fields: [userId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model Citation {
