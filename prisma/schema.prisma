@@ -264,14 +264,16 @@ model Certificate {
 }
 
 model Project {
-  id        Int      @id @default(autoincrement())
-  title     String
-  status    String
-  date      String
-  userId    Int
-  user      User     @relation(fields: [userId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                   Int      @id @default(autoincrement())
+  projectNo            String?  // Proje No
+  title                String   // Proje Başlığı
+  supportingInstitution String? // Destekleyen Kurum
+  status               String   @default("Devam Ediyor")
+  date                 String
+  userId               Int
+  user                 User     @relation(fields: [userId], references: [id])
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
 }
 
 model Patent {
