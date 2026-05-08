@@ -75,7 +75,7 @@ model PeerReview {
 model Thesis {
   id                 Int      @id @default(autoincrement())
   sectionId          String?
-  advisorCount       String?
+  advisorCount       String?  @default("1")
   advisorName        String?
   advisorMidName     String?
   advisorSurname     String?

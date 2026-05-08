@@ -53,3 +53,15 @@ generate_apis.js
 generate_pages.js
 hash_passwords.js
 update_pages.js
+update_apis.js
+fix_apis.js
+seed_user.js
+seed_user_pg.js
+
+# Test files
+*.py
+__pycache__/
+screenshots/
+v2/screenshots/
+cookie.txt
+next_server.log
