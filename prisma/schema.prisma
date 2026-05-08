@@ -137,33 +137,45 @@ model Education {
 }
 
 model AcademicDuty {
-  id        Int      @id @default(autoincrement())
-  title     String
-  date      String
-  userId    Int
-  user      User     @relation(fields: [userId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          Int      @id @default(autoincrement())
+  titleTr     String?  // Türkçe Ünvan
+  titleEn     String?  // İngilizce Ünvan
+  institution String?  // Kurum
+  faculty     String?  // Fakülte/Enstitü
+  title       String   // geriye dönük uyumluluk
+  date        String
+  userId      Int
+  user        User     @relation(fields: [userId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model ScientificDuty {
-  id        Int      @id @default(autoincrement())
-  title     String
-  date      String
-  userId    Int
-  user      User     @relation(fields: [userId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          Int      @id @default(autoincrement())
+  titleTr     String?
+  titleEn     String?
+  institution String?
+  faculty     String?
+  title       String
+  date        String
+  userId      Int
+  user        User     @relation(fields: [userId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model AdministrativeDuty {
-  id        Int      @id @default(autoincrement())
-  title     String
-  date      String
-  userId    Int
-  user      User     @relation(fields: [userId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          Int      @id @default(autoincrement())
+  titleTr     String?
+  titleEn     String?
+  institution String?
+  faculty     String?
+  title       String
+  date        String
+  userId      Int
+  user        User     @relation(fields: [userId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model Publication {
