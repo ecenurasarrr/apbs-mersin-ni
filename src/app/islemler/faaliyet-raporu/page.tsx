@@ -159,9 +159,44 @@ export default function FaaliyetRaporuPage() {
 }
 
 const REPORT_FIELD_LABELS: Record<string, string> = {
-  title: "Başlık", date: "Tarih", student: "Öğrenci", name: "Ad", year: "Yıl",
-  status: "Durum", number: "Numara", department: "Bölüm", advisor: "Danışman", file: "Dosya",
-  language: "Dil", level: "Seviye", institution: "Kurum", country: "Ülke", organization: "Kuruluş",
+  // Genel
+  title: "Başlık", titleEn: "Başlık (EN)", date: "Tarih", year: "Yıl",
+  status: "Durum", number: "Numara", file: "Dosya", url: "URL",
+  // Tez
+  advisorCount: "Danışman Sayısı", advisorName: "Danışman Adı", advisorMidName: "Danışman Orta Adı",
+  advisorSurname: "Danışman Soyadı", coAdvisorName: "Eş Danışman Adı", coAdvisorMidName: "Eş Danışman Orta Adı",
+  coAdvisorSurname: "Eş Danışman Soyadı", university: "Üniversite", universityOther: "Üniversite (Diğer)",
+  institute: "Enstitü", instituteOther: "Enstitü (Diğer)", department: "Bölüm", departmentOther: "Bölüm (Diğer)",
+  abstract: "Özet", abstractEn: "Özet (EN)", pageCount: "Sayfa Sayısı", keywords: "Anahtar Kelimeler",
+  city: "Şehir", country: "Ülke", sectionId: "Bölüm ID",
+  // Yönetilen tez
+  student: "Öğrenci", studentName: "Öğrenci Adı", thesisType: "Tez Türü",
+  // Öğrenim
+  degree: "Derece", faculty: "Fakülte/Enstitü",
+  // Görevler
+  titleTr: "Türkçe Ünvan", role: "Görev", institution: "Kurum", organizationName: "Organizasyon/Dergi",
+  // Yayın
+  journalName: "Dergi Adı", volume: "Cilt",
+  // Yabancı dil
+  language: "Dil Adı", level: "Seviye",
+  // Proje
+  projectNo: "Proje No", supportingInstitution: "Destekleyen Kurum",
+  // Patent
+  name: "Ad",
+  // Sanatsal
+  scope: "Kapsam", activityType: "Tür",
+  // Atıf
+  sourceType: "Kaynak Türü", sourceTitle: "Kaynak Başlığı", sourceYear: "Kaynak Yılı",
+  citationYear: "Atıf Yılı", ssci: "SSCI/SCI", alanEndeksleri: "Alan Endeksleri",
+  ulakbim: "ULAKBİM", digerUluslararasi: "Diğer Uluslararası",
+  uluslararasiKitap: "Uluslararası Kitap", ulusalKitap: "Ulusal Kitap",
+  guzelSanatlarUluslararasi: "G.S. Uluslararası", guzelSanatlarUlusal: "G.S. Ulusal",
+  // Belge
+  documentType: "Belge Türü/Kurum", description: "Belge Tanımı",
+  // Toplantı
+  meetingName: "Toplantı Adı",
+  // Diğer
+  organization: "Kuruluş Adı", content: "İçerik",
 };
 
 function buildReportHtml(

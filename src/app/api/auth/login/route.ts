@@ -36,7 +36,7 @@ export async function POST(req: Request) {
     await createSession(user.id);
     return NextResponse.json({ success: true });
   } catch (e) {
-    console.error(e);
+    console.error('LOGIN_HATASI:', e);
     return NextResponse.json({ error: 'Sunucu hatası.' }, { status: 500 });
   }
 }

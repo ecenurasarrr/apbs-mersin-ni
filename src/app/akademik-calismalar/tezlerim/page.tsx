@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useLanguage } from "@/context/LanguageContext";
+import { useToast } from "@/components/ui/toast";
 
 interface Thesis {
   id: number;
@@ -44,6 +45,7 @@ const EMPTY_FORM = {
 
 export default function TezlerimPage() {
   const { t } = useLanguage();
+  const { toast } = useToast();
   const [data, setData] = useState<Thesis[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
@@ -66,37 +68,47 @@ export default function TezlerimPage() {
   useEffect(() => { fetchData(); }, [fetchData]);
 
   const handleCreate = async () => {
-    if (!form.title.trim()) return;
+    if (!form.title.trim()) { toast(t("common.fill_required"), "error"); return; }
     setSaving(true);
     try {
-      await fetch("/api/akademik-calismalar/tezlerim", {
+      const res = await fetch("/api/akademik-calismalar/tezlerim", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
+      if (!res.ok) throw new Error();
       setForm({ ...EMPTY_FORM });
       setCreating(false);
       fetchData();
-    } finally { setSaving(false); }
+      toast(t("common.saved"), "success");
+    } catch { toast(t("common.error_save"), "error"); }
+    finally { setSaving(false); }
   };
 
   const handleDelete = async (id: number) => {
     if (!confirm(t("common.confirm_delete"))) return;
-    await fetch(`/api/akademik-calismalar/tezlerim/${id}`, { method: "DELETE" });
-    fetchData();
+    try {
+      const res = await fetch(`/api/akademik-calismalar/tezlerim/${id}`, { method: "DELETE" });
+      if (!res.ok) throw new Error();
+      fetchData();
+      toast(t("common.deleted"), "success");
+    } catch { toast(t("common.error_delete"), "error"); }
   };
 
   const handleEditSave = async (id: number) => {
     setSaving(true);
     try {
-      await fetch(`/api/akademik-calismalar/tezlerim/${id}`, {
+      const res = await fetch(`/api/akademik-calismalar/tezlerim/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
+      if (!res.ok) throw new Error();
       setEditingId(null);
       fetchData();
-    } finally { setSaving(false); }
+      toast(t("common.saved"), "success");
+    } catch { toast(t("common.error_save"), "error"); }
+    finally { setSaving(false); }
   };
 
   const startEdit = (thesis: Thesis) => {
@@ -167,22 +179,22 @@ export default function TezlerimPage() {
               {/* Danışman */}
               <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
                 <div>
-                  <label className={labelCls}>{t("thesis.advisor_count")}</label>
+                  <label className={labelCls}>Danışman Sayısı</label>
                   <select value={form.advisorCount} onChange={e => { f("advisorCount")(e); setShowCoAdvisor(e.target.value === "2"); }} className={inputCls}>
                     <option value="1">1</option>
                     <option value="2">2</option>
                   </select>
                 </div>
                 <div>
-                  <label className={labelCls}>{t("thesis.advisor_name")}</label>
+                  <label className={labelCls}>Danışman Adı</label>
                   <Input value={form.advisorName} onChange={f("advisorName")} placeholder="Ad" className="bg-white" />
                 </div>
                 <div>
-                  <label className={labelCls}>{t("thesis.advisor_mid")}</label>
+                  <label className={labelCls}>Danışman Orta Adı</label>
                   <Input value={form.advisorMidName} onChange={f("advisorMidName")} placeholder="Orta Ad" className="bg-white" />
                 </div>
                 <div>
-                  <label className={labelCls}>{t("thesis.advisor_surname")}</label>
+                  <label className={labelCls}>Danışman Soyadı</label>
                   <Input value={form.advisorSurname} onChange={f("advisorSurname")} placeholder="Soyad" className="bg-white" />
                 </div>
               </div>
@@ -190,15 +202,15 @@ export default function TezlerimPage() {
               {showCoAdvisor && (
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                   <div>
-                    <label className={labelCls}>{t("thesis.co_advisor_name")}</label>
+                    <label className={labelCls}>Eş Danışman Adı</label>
                     <Input value={form.coAdvisorName} onChange={f("coAdvisorName")} placeholder="Ad" className="bg-white" />
                   </div>
                   <div>
-                    <label className={labelCls}>{t("thesis.co_advisor_mid")}</label>
+                    <label className={labelCls}>Eş Danışman Orta Adı</label>
                     <Input value={form.coAdvisorMidName} onChange={f("coAdvisorMidName")} placeholder="Orta Ad" className="bg-white" />
                   </div>
                   <div>
-                    <label className={labelCls}>{t("thesis.co_advisor_surname")}</label>
+                    <label className={labelCls}>Eş Danışman Soyadı</label>
                     <Input value={form.coAdvisorSurname} onChange={f("coAdvisorSurname")} placeholder="Soyad" className="bg-white" />
                   </div>
                 </div>
@@ -207,11 +219,11 @@ export default function TezlerimPage() {
               {/* Üniversite & Enstitü */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <div>
-                  <label className={labelCls}>{t("thesis.university")}</label>
+                  <label className={labelCls}>Üniversite</label>
                   <Input value={form.university} onChange={f("university")} placeholder="Üniversite adı" className="bg-white" />
                 </div>
                 <div>
-                  <label className={labelCls}>{t("thesis.institute")}</label>
+                  <label className={labelCls}>Enstitü</label>
                   <Input value={form.institute} onChange={f("institute")} placeholder="Enstitü adı" className="bg-white" />
                 </div>
               </div>
@@ -219,11 +231,11 @@ export default function TezlerimPage() {
               {/* Bölüm */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <div>
-                  <label className={labelCls}>{t("fields.department")}</label>
-                  <Input value={form.department} onChange={f("department")} placeholder={t("fields.department_placeholder")} className="bg-white" />
+                  <label className={labelCls}>Anabilim Dalı</label>
+                  <Input value={form.department} onChange={f("department")} placeholder="Anabilim dalı adı" className="bg-white" />
                 </div>
                 <div>
-                  <label className={labelCls}>{t("thesis.department_other")}</label>
+                  <label className={labelCls}>Ana Bilim Dalı Diğer</label>
                   <Input value={form.departmentOther} onChange={f("departmentOther")} placeholder="Diğer" className="bg-white" />
                 </div>
               </div>
@@ -231,11 +243,11 @@ export default function TezlerimPage() {
               {/* Başlık */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <div>
-                  <label className={labelCls}>{t("fields.title")} (TR) <span className="text-red-500">*</span></label>
+                  <label className={labelCls}>Başlık (TR) <span className="text-red-500">*</span></label>
                   <Input value={form.title} onChange={f("title")} placeholder="Başlık" className="bg-white" />
                 </div>
                 <div>
-                  <label className={labelCls}>{t("fields.title")} (EN)</label>
+                  <label className={labelCls}>Başlık (EN)</label>
                   <Input value={form.titleEn} onChange={f("titleEn")} placeholder="Title" className="bg-white" />
                 </div>
               </div>
@@ -243,11 +255,11 @@ export default function TezlerimPage() {
               {/* Özet */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <div>
-                  <label className={labelCls}>{t("thesis.abstract")} (TR)</label>
+                  <label className={labelCls}>Özet (TR)</label>
                   <textarea value={form.abstract} onChange={f("abstract")} placeholder="Özet" className={`${inputCls} min-h-[80px] resize-y`} />
                 </div>
                 <div>
-                  <label className={labelCls}>{t("thesis.abstract")} (EN)</label>
+                  <label className={labelCls}>Özet (EN)</label>
                   <textarea value={form.abstractEn} onChange={f("abstractEn")} placeholder="Abstract" className={`${inputCls} min-h-[80px] resize-y`} />
                 </div>
               </div>
@@ -255,45 +267,45 @@ export default function TezlerimPage() {
               {/* Sayfa, Durum, Tarih */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                 <div>
-                  <label className={labelCls}>{t("thesis.page_count")}</label>
+                  <label className={labelCls}>Sayfa Sayısı</label>
                   <Input value={form.pageCount} onChange={f("pageCount")} placeholder="Sayfa sayısı" type="number" className="bg-white" />
                 </div>
                 <div>
-                  <label className={labelCls}>{t("thesis.status")}</label>
+                  <label className={labelCls}>Tez Durumu</label>
                   <select value={form.status} onChange={f("status")} className={inputCls}>
-                    <option value="0">{t("thesis.in_progress")}</option>
-                    <option value="1">{t("thesis.completed")}</option>
+                    <option value="0">Devam Ediyor</option>
+                    <option value="1">Tamamlandı</option>
                   </select>
                 </div>
                 <div>
-                  <label className={labelCls}>{t("common.date")}</label>
+                  <label className={labelCls}>Tarih</label>
                   <Input value={form.date} onChange={f("date")} type="date" className="bg-white" />
                 </div>
               </div>
 
               {/* Anahtar Kelimeler */}
               <div>
-                <label className={labelCls}>{t("thesis.keywords")}</label>
+                <label className={labelCls}>Anahtar Kelimeler</label>
                 <Input value={form.keywords} onChange={f("keywords")} placeholder="Anahtar kelimeler (virgülle ayırın)" className="bg-white" />
               </div>
 
               {/* Dosya, URL, Şehir, Ülke */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <div>
-                  <label className={labelCls}>{t("fields.file")}</label>
-                  <Input value={form.file} onChange={f("file")} placeholder={t("fields.file_placeholder")} className="bg-white" />
+                  <label className={labelCls}>Dosya</label>
+                  <Input value={form.file} onChange={f("file")} placeholder="Dosya adı veya bağlantısı" className="bg-white" />
                 </div>
                 <div>
                   <label className={labelCls}>URL</label>
                   <Input value={form.url} onChange={f("url")} placeholder="http://..." className="bg-white" />
                 </div>
                 <div>
-                  <label className={labelCls}>{t("thesis.city")}</label>
+                  <label className={labelCls}>Şehir</label>
                   <Input value={form.city} onChange={f("city")} placeholder="Şehir" className="bg-white" />
                 </div>
                 <div>
-                  <label className={labelCls}>{t("fields.country")}</label>
-                  <Input value={form.country} onChange={f("country")} placeholder={t("fields.country_placeholder")} className="bg-white" />
+                  <label className={labelCls}>Ülke</label>
+                  <Input value={form.country} onChange={f("country")} placeholder="Ülke" className="bg-white" />
                 </div>
               </div>
 
@@ -314,11 +326,11 @@ export default function TezlerimPage() {
               <TableHeader className="bg-slate-50/80">
                 <TableRow>
                   <TableHead className="w-[60px]">#</TableHead>
-                  <TableHead>{t("fields.department")}</TableHead>
-                  <TableHead>{t("thesis.advisor_name")}</TableHead>
-                  <TableHead>{t("fields.title")}</TableHead>
-                  <TableHead>{t("common.date")}</TableHead>
-                  <TableHead>{t("thesis.status")}</TableHead>
+                  <TableHead>Bölüm</TableHead>
+                  <TableHead>Danışman</TableHead>
+                  <TableHead>Başlık</TableHead>
+                  <TableHead>Tarih</TableHead>
+                  <TableHead>Durum</TableHead>
                   <TableHead className="text-right">{t("common.options")}</TableHead>
                 </TableRow>
               </TableHeader>

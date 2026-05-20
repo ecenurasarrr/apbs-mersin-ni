@@ -12,8 +12,7 @@ import { translations } from "@/config/translations";
 
 interface UserProfile {
   id: number; tcNo: string; fullName: string; title: string | null;
-  birthDate: string | null; homeAddress: string | null; workAddress: string | null;
-  gsm: string | null; phone: string | null; fax: string | null;
+  workAddress: string | null; phone: string | null;
   email: string; otherEmail: string | null; url: string | null;
 }
 
@@ -25,19 +24,34 @@ interface Stats {
 
 const FIELD_LABELS: Record<"tr" | "en", Record<string, string>> = {
   tr: {
-    title: "Başlık", date: "Tarih", student: "Öğrenci", name: "Ad", year: "Yıl",
-    status: "Durum", number: "Numara", department: "Bölüm", advisor: "Danışman", file: "Dosya",
-    language: "Dil", level: "Seviye", institution: "Kurum", country: "Ülke", organization: "Kuruluş",
+    title: "Başlık", titleEn: "Başlık (EN)", date: "Tarih", student: "Öğrenci", studentName: "Öğrenci Adı",
+    name: "Ad", year: "Yıl", status: "Durum", number: "Numara", department: "Bölüm",
+    advisor: "Danışman", advisorName: "Danışman Adı", advisorSurname: "Danışman Soyadı",
+    file: "Dosya", url: "URL", language: "Dil", level: "Seviye", institution: "Kurum",
+    country: "Ülke", organization: "Kuruluş", university: "Üniversite", institute: "Enstitü",
+    abstract: "Özet", keywords: "Anahtar Kelimeler", pageCount: "Sayfa Sayısı",
+    city: "Şehir", degree: "Derece", faculty: "Fakülte", role: "Görev",
+    journalName: "Dergi", volume: "Cilt", projectNo: "Proje No",
+    supportingInstitution: "Destekleyen Kurum", meetingName: "Toplantı Adı",
+    thesisType: "Tez Türü", scope: "Kapsam", activityType: "Tür",
+    documentType: "Belge Türü", description: "Açıklama", content: "İçerik",
   },
   en: {
-    title: "Title", date: "Date", student: "Student", name: "Name", year: "Year",
-    status: "Status", number: "Number", department: "Department", advisor: "Advisor", file: "File",
-    language: "Language", level: "Level", institution: "Institution", country: "Country", organization: "Organization",
+    title: "Title", titleEn: "Title (EN)", date: "Date", student: "Student", studentName: "Student Name",
+    name: "Name", year: "Year", status: "Status", number: "Number", department: "Department",
+    advisor: "Advisor", advisorName: "Advisor Name", advisorSurname: "Advisor Surname",
+    file: "File", url: "URL", language: "Language", level: "Level", institution: "Institution",
+    country: "Country", organization: "Organization", university: "University", institute: "Institute",
+    abstract: "Abstract", keywords: "Keywords", pageCount: "Page Count",
+    city: "City", degree: "Degree", faculty: "Faculty", role: "Role",
+    journalName: "Journal", volume: "Volume", projectNo: "Project No",
+    supportingInstitution: "Supporting Institution", meetingName: "Meeting Name",
+    thesisType: "Thesis Type", scope: "Scope", activityType: "Type",
+    documentType: "Document Type", description: "Description", content: "Content",
   },
 };
 
 function buildCvHtml(title: string, lang: "tr" | "en", data: UserProfile, sections: { label: string; rows: Record<string, string>[] }[], cvLabels: Record<string, string>) {
-  const birth = data.birthDate ? new Date(data.birthDate).toLocaleDateString(lang === "tr" ? "tr-TR" : "en-GB") : "-";
   const fieldLabels = FIELD_LABELS[lang];
 
   const sectionsHtml = sections.filter(s => s.rows.length > 0).map(s => {
@@ -54,14 +68,10 @@ function buildCvHtml(title: string, lang: "tr" | "en", data: UserProfile, sectio
   <p style="color:#64748b;font-size:12px;margin-top:-8px">${title} — ${lang === "tr" ? "Oluşturulma:" : "Created:"} ${new Date().toLocaleDateString(lang === "tr" ? "tr-TR" : "en-GB")}</p>
   <h2>${cvLabels.personal_info}</h2>
   <table>
-  <tr><td>${cvLabels.tc}</td><td>${data.tcNo}</td></tr>
-  <tr><td>${cvLabels.birth}</td><td>${birth}</td></tr>
-  <tr><td>${cvLabels.home_address}</td><td>${data.homeAddress ?? "-"}</td></tr>
-  <tr><td>${cvLabels.work_address}</td><td>${data.workAddress ?? "-"}</td></tr>
-  <tr><td>${cvLabels.gsm}</td><td>${data.gsm ?? "-"}</td></tr>
+  ${data.workAddress ? `<tr><td>${cvLabels.work_address}</td><td>${data.workAddress}</td></tr>` : ""}
   <tr><td>${cvLabels.email}</td><td>${data.email}</td></tr>
-  <tr><td>${cvLabels.other_email}</td><td>${data.otherEmail ?? "-"}</td></tr>
-  <tr><td>${cvLabels.url}</td><td>${data.url ?? "-"}</td></tr>
+  ${data.otherEmail ? `<tr><td>${cvLabels.other_email}</td><td>${data.otherEmail}</td></tr>` : ""}
+  ${data.url ? `<tr><td>${cvLabels.url}</td><td>${data.url}</td></tr>` : ""}
   </table>
   ${sectionsHtml}
   <br/><button onclick="window.print()" style="margin-top:24px;padding:8px 20px;background:#1E6B9B;color:white;border:none;border-radius:4px;cursor:pointer;font-size:13px;">${lang === "tr" ? "PDF olarak kaydet (Yazdır)" : "Save as PDF (Print)"}</button>
@@ -127,11 +137,7 @@ export default function ProfilePage() {
   const getCvLabelsForLang = (cvLang: "tr" | "en") => {
     const tr = translations[cvLang];
     return {
-      tc: tr.profile.tc,
-      birth: tr.profile.birth,
-      home_address: tr.profile.home_address,
       work_address: tr.profile.work_address,
-      gsm: tr.profile.gsm,
       email: tr.profile.email,
       other_email: tr.profile.other_email,
       url: tr.profile.url,
@@ -193,7 +199,6 @@ export default function ProfilePage() {
   };
 
   const initials = profile?.fullName?.split(" ").map((w) => w[0]).slice(0, 2).join("") ?? "U";
-  const birthDisplay = profile?.birthDate ? new Date(profile.birthDate).toLocaleDateString("tr-TR", { day: "2-digit", month: "long", year: "numeric" }) : "-";
 
   const Field = ({ label, field, type = "text" }: { label: string; field: keyof UserProfile; type?: string }) => (
     <div className="grid grid-cols-12 gap-2 border-b border-slate-50 pb-2">
@@ -204,7 +209,7 @@ export default function ProfilePage() {
             onChange={(e) => setForm((prev) => ({ ...prev, [field]: e.target.value }))} className="h-7 text-[13px] bg-white" />
         ) : (
           <span className="text-slate-800 text-[13px]">
-            {field === "birthDate" ? birthDisplay : field === "url"
+            {field === "url"
               ? <a href={String(profile?.[field] ?? "")} className="text-[#1E6B9B] hover:underline break-words">{String(profile?.[field] ?? "-")}</a>
               : String(profile?.[field] ?? "-")}
           </span>
@@ -239,8 +244,6 @@ export default function ProfilePage() {
                 <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 mt-2">
                   <Button size="sm" variant="outline" className="h-8 gap-1 border-blue-200 text-blue-700 hover:bg-blue-50" onClick={() => profile && downloadCv("CV Türkçe", "tr", profile, getCvSectionsForLang("tr"), getCvLabelsForLang("tr"))}><Download size={14} /> {t("profile.cv_turkish")}</Button>
                   <Button size="sm" variant="outline" className="h-8 gap-1 border-yellow-500 text-yellow-700 hover:bg-yellow-50" onClick={() => profile && downloadCv("CV English", "en", profile, getCvSectionsForLang("en"), getCvLabelsForLang("en"))}><Download size={14} /> {t("profile.cv_english")}</Button>
-                  <Button size="sm" className="h-8 gap-1 bg-red-600 hover:bg-red-700 text-white" onClick={() => profile && downloadCv("CV Performans", "tr", profile, getCvSectionsForLang("tr"), getCvLabelsForLang("tr"))}><Download size={14} /> {t("profile.cv_perf")}</Button>
-                  <Button size="sm" variant="secondary" className="h-8 gap-1" onClick={() => profile && downloadCv("CV YÖK", "tr", profile, getCvSectionsForLang("tr"), getCvLabelsForLang("tr"))}><Download size={14} /> {t("profile.cv_yok")}</Button>
                 </div>
               </div>
             </CardHeader>
@@ -287,12 +290,8 @@ export default function ProfilePage() {
 
               <div className="space-y-3">
                 <Field label={t("profile.tc")} field="tcNo" />
-                <Field label={t("profile.birth")} field="birthDate" type="date" />
-                <Field label={t("profile.home_address")} field="homeAddress" />
                 <Field label={t("profile.work_address")} field="workAddress" />
-                <Field label={t("profile.gsm")} field="gsm" />
-                <Field label="Telefon" field="phone" />
-                <Field label="Faks" field="fax" />
+                <Field label={t("profile.phone")} field="phone" />
                 <Field label={t("profile.email")} field="email" type="email" />
                 <Field label={t("profile.other_email")} field="otherEmail" type="email" />
                 <Field label={t("profile.url")} field="url" />

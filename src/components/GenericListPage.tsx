@@ -15,6 +15,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useLanguage } from "@/context/LanguageContext";
+import { useToast } from "@/components/ui/toast";
 
 export interface Field {
   key: string;
@@ -55,6 +56,7 @@ export default function GenericListPage({
   apiPath,
 }: GenericListPageProps) {
   const { t } = useLanguage();
+  const { toast } = useToast();
   const [searchTerm, setSearchTerm] = useState("");
   const [creating, setCreating] = useState(false);
   const [formValues, setFormValues] = useState<Record<string, string>>({});
@@ -80,25 +82,29 @@ export default function GenericListPage({
 
   const handleCreate = async () => {
     const hasEmpty = fields.some((f) => !formValues[f.key]?.trim());
-    if (hasEmpty) return;
+    if (hasEmpty) { toast(t("common.fill_required"), "error"); return; }
     try {
-      await fetch(apiPath, {
+      const res = await fetch(apiPath, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(Object.fromEntries(fields.map((f) => [f.key, formValues[f.key].trim()]))),
       });
+      if (!res.ok) throw new Error();
       setFormValues({});
       setCreating(false);
       fetchData();
-    } catch (e) { console.error(e); }
+      toast(t("common.saved"), "success");
+    } catch { toast(t("common.error_save"), "error"); }
   };
 
   const handleDelete = async (id: number) => {
     if (!confirm(t("common.confirm_delete"))) return;
     try {
-      await fetch(`${apiPath}/${id}`, { method: 'DELETE' });
+      const res = await fetch(`${apiPath}/${id}`, { method: 'DELETE' });
+      if (!res.ok) throw new Error();
       fetchData();
-    } catch (e) { console.error(e); }
+      toast(t("common.deleted"), "success");
+    } catch { toast(t("common.error_delete"), "error"); }
   };
 
   const handleEditStart = (row: Row) => {
@@ -110,14 +116,16 @@ export default function GenericListPage({
 
   const handleEditSave = async (id: number) => {
     try {
-      await fetch(`${apiPath}/${id}`, {
+      const res = await fetch(`${apiPath}/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(Object.fromEntries(fields.map((f) => [f.key, editValues[f.key]]))),
       });
+      if (!res.ok) throw new Error();
       setEditingId(null);
       fetchData();
-    } catch (e) { console.error(e); }
+      toast(t("common.saved"), "success");
+    } catch { toast(t("common.error_save"), "error"); }
   };
 
   const filteredData = data.filter((row) =>

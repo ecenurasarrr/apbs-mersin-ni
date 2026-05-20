@@ -49,8 +49,8 @@ export function Navbar() {
           {/* Logo Area */}
           <div className="flex items-center gap-4">
             <Link href="/" className="flex items-center gap-3">
-              <div className="relative w-12 h-12 rounded-full border-2 border-[#1E6B9B] flex items-center justify-center bg-white shadow-sm overflow-hidden">
-                 <div className="text-[#E2833F] font-bold text-xl leading-none">MÜ</div>
+              <div className="relative w-[70px] h-[56px] rounded-xl border-2 border-[#1E6B9B] bg-white shadow-sm overflow-hidden flex items-center justify-center p-1">
+                <img src="/logo_tr.png" alt="Mersin Üniversitesi" className="w-full h-full object-contain" />
               </div>
               <h1 className="text-2xl font-light text-slate-700 tracking-tight hidden sm:block">
                 {t('navbar.title')}

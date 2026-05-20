@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useLanguage } from "@/context/LanguageContext";
+import { useToast } from "@/components/ui/toast";
 
 interface Project { id: number; projectNo?: string; title: string; supportingInstitution?: string; status: string; date: string; }
 
@@ -15,6 +16,7 @@ const API = "/api/projeler-ve-patentler/projeler";
 
 export default function ProjelerPage() {
   const { t } = useLanguage();
+  const { toast } = useToast();
   const [data, setData] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
@@ -31,20 +33,23 @@ export default function ProjelerPage() {
   useEffect(() => { fetchData(); }, [fetchData]);
 
   const handleCreate = async () => {
-    if (!form.title.trim()) return;
+    if (!form.title.trim()) { toast(t("common.fill_required"), "error"); return; }
     setSaving(true);
-    try { await fetch(API, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(form) }); setForm({ ...EMPTY_FORM }); setCreating(false); fetchData(); }
+    try { const res = await fetch(API, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(form) }); if (!res.ok) throw new Error(); setForm({ ...EMPTY_FORM }); setCreating(false); fetchData(); toast(t("common.saved"), "success"); }
+    catch { toast(t("common.error_save"), "error"); }
     finally { setSaving(false); }
   };
 
   const handleDelete = async (id: number) => {
     if (!confirm(t("common.confirm_delete"))) return;
-    await fetch(`${API}/${id}`, { method: "DELETE" }); fetchData();
+    try { const res = await fetch(`${API}/${id}`, { method: "DELETE" }); if (!res.ok) throw new Error(); fetchData(); toast(t("common.deleted"), "success"); }
+    catch { toast(t("common.error_delete"), "error"); }
   };
 
   const handleEditSave = async (id: number) => {
     setSaving(true);
-    try { await fetch(`${API}/${id}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(form) }); setEditingId(null); fetchData(); }
+    try { const res = await fetch(`${API}/${id}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(form) }); if (!res.ok) throw new Error(); setEditingId(null); fetchData(); toast(t("common.saved"), "success"); }
+    catch { toast(t("common.error_save"), "error"); }
     finally { setSaving(false); }
   };
 

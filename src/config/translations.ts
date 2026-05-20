@@ -118,17 +118,18 @@ export const translations = {
       loading: "Yükleniyor...",
       confirm_delete: "Bu kaydı silmek istediğinizden emin misiniz?",
       all: "Tümünü Seç",
-      clear: "Temizle"
+      clear: "Temizle",
+      saved: "Kayıt başarıyla kaydedildi.",
+      deleted: "Kayıt silindi.",
+      error_save: "Kayıt sırasında bir hata oluştu.",
+      error_delete: "Silme işlemi başarısız oldu.",
+      fill_required: "Lütfen zorunlu alanları doldurunuz."
     },
     profile: {
       title: "Kullanıcı Bilgileri",
       tc: "T.C. Kimlik No",
-      birth: "Doğum Tarihi",
-      home_address: "Ev Adresi",
       work_address: "İş Adresi",
-      gsm: "GSM",
       phone: "Telefon",
-      fax: "Faks",
       email: "E-Mail",
       other_email: "Diğer E-Mail",
       url: "URL",
@@ -146,9 +147,7 @@ export const translations = {
       record_count: "Kayıt Sayısı",
       total: "TOPLAM",
       cv_turkish: "CV İndir Türkçe",
-      cv_english: "CV İndir İngilizce",
-      cv_perf: "CV Performans",
-      cv_yok: "CV YÖK"
+      cv_english: "CV İndir İngilizce"
     },
     admin: {
       title: "Kullanıcı Yönetimi",
@@ -185,25 +184,6 @@ export const translations = {
       created: "Oluşturulma",
       period: "Dönem",
       no_records: "Kayıt bulunamadı."
-    },
-    thesis: {
-      advisor_count: "Danışman Sayısı",
-      advisor_name: "Danışman Adı",
-      advisor_mid: "Danışman Orta Adı",
-      advisor_surname: "Danışman Soyadı",
-      co_advisor_name: "Eş Danışman Adı",
-      co_advisor_mid: "Eş Danışman Orta Adı",
-      co_advisor_surname: "Eş Danışman Soyadı",
-      university: "Üniversite",
-      institute: "Enstitü",
-      department_other: "Ana Bilim Dalı Diğer",
-      abstract: "Özet",
-      page_count: "Sayfa Sayısı",
-      status: "Tez Durumu",
-      in_progress: "Devam Ediyor",
-      completed: "Tamamlandı",
-      keywords: "Anahtar Kelimeler",
-      city: "Şehir"
     },
     fields: {
       thesis_title: "Tez Adı",
@@ -381,17 +361,18 @@ export const translations = {
       loading: "Loading...",
       confirm_delete: "Are you sure you want to delete this record?",
       all: "Select All",
-      clear: "Clear"
+      clear: "Clear",
+      saved: "Record saved successfully.",
+      deleted: "Record deleted.",
+      error_save: "An error occurred while saving.",
+      error_delete: "Failed to delete the record.",
+      fill_required: "Please fill in all required fields."
     },
     profile: {
       title: "User Information",
       tc: "National ID",
-      birth: "Date of Birth",
-      home_address: "Home Address",
       work_address: "Work Address",
-      gsm: "Mobile",
       phone: "Phone",
-      fax: "Fax",
       email: "E-Mail",
       other_email: "Alternate E-Mail",
       url: "URL",
@@ -409,9 +390,7 @@ export const translations = {
       record_count: "Record Count",
       total: "TOTAL",
       cv_turkish: "Download CV Turkish",
-      cv_english: "Download CV English",
-      cv_perf: "CV Performance",
-      cv_yok: "CV YÖK"
+      cv_english: "Download CV English"
     },
     admin: {
       title: "User Management",
@@ -448,25 +427,6 @@ export const translations = {
       created: "Created",
       period: "Period",
       no_records: "No records found."
-    },
-    thesis: {
-      advisor_count: "Advisor Count",
-      advisor_name: "Advisor Name",
-      advisor_mid: "Advisor Middle Name",
-      advisor_surname: "Advisor Surname",
-      co_advisor_name: "Co-Advisor Name",
-      co_advisor_mid: "Co-Advisor Middle Name",
-      co_advisor_surname: "Co-Advisor Surname",
-      university: "University",
-      institute: "Institute",
-      department_other: "Department (Other)",
-      abstract: "Abstract",
-      page_count: "Page Count",
-      status: "Thesis Status",
-      in_progress: "In Progress",
-      completed: "Completed",
-      keywords: "Keywords",
-      city: "City"
     },
     fields: {
       thesis_title: "Thesis Title",

@@ -1,0 +1,46 @@
+services:
+  db:
+    image: postgres:15-alpine
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: apbs_user
+      POSTGRES_PASSWORD: apbs_password
+      POSTGRES_DB: apbs_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U apbs_user -d apbs_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  migrate:
+    build:
+      context: .
+      target: builder
+    command: npx prisma db push
+    environment:
+      DATABASE_URL: postgresql://apbs_user:apbs_password@db:5432/apbs_db
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: "no"
+
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgresql://apbs_user:apbs_password@db:5432/apbs_db
+      SESSION_SECRET: ${SESSION_SECRET:-apbs-mersin-super-secret-key-2024}
+      NEXTAUTH_SECRET: "mersin-apbs-2026"
+      NEXTAUTH_URL: "http://localhost:3000"
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
